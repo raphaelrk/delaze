@@ -6,13 +6,18 @@ import android.opengl.Matrix;
 import android.os.ConditionVariable;
 import android.util.Log;
 
+import com.google.vrtoolkit.cardboard.CardboardView;
+import com.google.vrtoolkit.cardboard.EyeTransform;
+import com.google.vrtoolkit.cardboard.HeadTransform;
+import com.google.vrtoolkit.cardboard.Viewport;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by Raphael on 9/6/2014.
  */
-public class GameSurfaceRenderer implements GLSurfaceView.Renderer {
+public class GameSurfaceRenderer implements CardboardView.StereoRenderer {
     private static final String TAG = MainActivity.TAG;
     public static final boolean EXTRA_CHECK = true;         // enable additional assertions
 
@@ -290,5 +295,35 @@ public class GameSurfaceRenderer implements GLSurfaceView.Renderer {
         //Log.v(TAG, "touch at x=" + (int) x + " y=" + (int) y + " --> arenaX=" + (int) arenaX);
 
         mGameState.movePaddle(arenaX);
+    }
+
+    @Override
+    public void onNewFrame(HeadTransform headTransform) {
+
+    }
+
+    @Override
+    public void onDrawEye(EyeTransform eyeTransform) {
+
+    }
+
+    @Override
+    public void onFinishFrame(Viewport viewport) {
+
+    }
+
+    @Override
+    public void onSurfaceChanged(int i, int i2) {
+
+    }
+
+    @Override
+    public void onSurfaceCreated(EGLConfig eglConfig) {
+
+    }
+
+    @Override
+    public void onRendererShutdown() {
+
     }
 }

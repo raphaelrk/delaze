@@ -5,10 +5,12 @@ import android.opengl.GLSurfaceView;
 import android.os.ConditionVariable;
 import android.view.MotionEvent;
 
+import com.google.vrtoolkit.cardboard.CardboardView;
+
 /**
  * Created by Raphael on 9/6/2014.
  */
-public class GameSurfaceView extends GLSurfaceView {
+public class GameSurfaceView extends CardboardView {
     private static final String TAG = MainActivity.TAG;
 
     private GameSurfaceRenderer mRenderer;
