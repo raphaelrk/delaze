@@ -1,4 +1,4 @@
-package me.unblyopia.unblyopia;
+package net.qwuke.unblyopia;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

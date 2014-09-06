@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Unblyopia.iml" filepath="$PROJECT_DIR$/Unblyopia.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/unblyopia.iml" filepath="$PROJECT_DIR$/unblyopia.iml" />
     </modules>
   </component>
 </project>

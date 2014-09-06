@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "me.unblyopia.unblyopia"
+        applicationId "net.qwuke.unblyopia"
         minSdkVersion 16
         targetSdkVersion 20
         versionCode 1
@@ -20,5 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/cardboard.jar')
 }
