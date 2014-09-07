@@ -69,6 +69,7 @@ public class TetrisView extends View {
     int currentBlockColor = 0xffff0000;
     int nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
     int nextBlockType = (int)(Math.floor(Math.random()*7)+1);
+
     boolean mainMenu = false;
     boolean gameOver = false;
     boolean paused = false;
@@ -78,6 +79,32 @@ public class TetrisView extends View {
     long lastRightPressTime = 0;
     long lastUpPressTime = 0;
     long lastPausePressTime = 0;
+
+    public void reset() {
+        row = new int[]{0, 0, 1, 1};
+        col = new int[]{5, 4, 5, 4};
+        blockArray = new int[levelwidth * levelheight];
+        time = 0;
+        score = 0;
+        updateSpeed = 20;
+        level = 1;
+        linesCleared = 0;
+        currentBlockType = squareBlock;
+        currentBlockRotation = 0;
+        currentBlockColor = 0xffff0000;
+        nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
+        nextBlockType = (int)(Math.floor(Math.random()*7)+1);
+
+        mainMenu = false;
+        gameOver = false;
+        paused = false;
+        leftLag = 200;
+        rightLag = 200;
+        lastLeftPressTime = 0;
+        lastRightPressTime = 0;
+        lastUpPressTime = 0;
+        lastPausePressTime = 0;
+    }
     
     private int getX(int column) {
         return column * blockSize;
@@ -671,15 +698,21 @@ public class TetrisView extends View {
         currCanvas.drawText("By Raphael and Tristan", 72, 394, paint);
     }
 
-// draw GAME OVER on the screen
+    // draw GAME OVER on the screen
     private void drawGameOverScreen() {
         paint.setColor(Color.WHITE);
         currCanvas.drawRect(0, 0, width, height, paint);
         paint.setColor(Color.BLACK);
         // Log.d("FILLER TAG", "hi " + width);
         paint.setTextSize(40);
-        currCanvas.drawText("GAME\nOVER", 235, 95, paint);
-        currCanvas.drawText("GAME\nOVER", 235 + width/2, 95, paint);
+        currCanvas.drawText("  GAME OVER", width/6, height/6, paint);
+        currCanvas.drawText("  GAME OVER", width/6 + width/2, height/6, paint);
+
+        currCanvas.drawText("SCORE: " + score, width/6, height/6 + height/8, paint);
+        currCanvas.drawText("SCORE: " + score, width/6 + width/2, height/6 + height/8, paint);
+
+        currCanvas.drawText(" Act to restart", width/6, height/6 + height/4, paint);
+        currCanvas.drawText(" Act to restart", width/6 + width/2, height/6 + height/4, paint);
     }
 
 // makes the game go faster after you clear a line

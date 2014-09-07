@@ -53,12 +53,33 @@ public class MainActivity extends CardboardActivity {
         setContentView(mTetrisView);
         mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
     }
+
+    public void actionButton() {
+        if(!mTetrisView.mainMenu) { // in-game
+            if(!mTetrisView.paused) {
+                if(!mTetrisView.gameOver) {
+                    // Always give user feedback
+                    mVibrator.vibrate(100);
+                    mTetrisView.keyPressed(TetrisView.UP);
+                }
+                else { // if game over
+                    // Always give user feedback
+                    mVibrator.vibrate(100);
+                    mTetrisView.reset();
+                }
+            }
+            else { // if paused
+                // unpause
+            }
+        } else { // in Main Menu
+            // start
+        }
+
+    }
+
     @Override
     public void onCardboardTrigger() {
-
-        // Always give user feedback
-        mVibrator.vibrate(100);
-        mTetrisView.keyPressed(TetrisView.UP);
+        actionButton();
     }
 
     @Override
@@ -86,8 +107,7 @@ public class MainActivity extends CardboardActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        mVibrator.vibrate(100);
-        mTetrisView.keyPressed(TetrisView.UP);
+        actionButton();
         return true;
     }
 
