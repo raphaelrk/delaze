@@ -1,6 +1,7 @@
 package net.qwuke.unblyopia;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -17,14 +18,24 @@ import android.view.MenuItem;
 
 import com.google.vrtoolkit.cardboard.*;
 
+import net.qwuke.unblyopia.R;
+
 
 public class MainActivity extends CardboardActivity {
 
     private Vibrator mVibrator;
+
+    private TetrisView mTetrisView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+
+        mTetrisView = new TetrisView(this);
+        mTetrisView.setBackgroundColor(Color.WHITE);
+        setContentView(mTetrisView);
+
         mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
     }
     @Override
