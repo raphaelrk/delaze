@@ -1,6 +1,7 @@
 package net.qwuke.unblyopia;
 
 import android.app.Activity;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -26,26 +27,25 @@ import net.qwuke.unblyopia.R;
 public class MainActivity extends CardboardActivity {
 
     private Vibrator mVibrator;
-    BackgroundSound mBackgroundSound = new BackgroundSound();
     private TetrisView mTetrisView;
     public class BackgroundSound extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.Tetris);
+            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris);
             player.setLooping(true); // Set looping
             player.start();
             return null;
         }
     }
+    BackgroundSound mBackgroundSound = new BackgroundSound();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-        BackgroundSound mBackgroundSound = new BackgroundSound();
+        mBackgroundSound.doInBackground();
         mTetrisView = new TetrisView(this);
         mTetrisView.setBackgroundColor(Color.WHITE);
         setContentView(mTetrisView);
-
         mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
     }
     @Override
