@@ -122,18 +122,15 @@ public class TetrisView extends View {
         // draw active eye block colors
         for(int i = 0; i < row.length; i++) {
             int r = row[i];
-            for (int j = 0; j < col.length; j++) {
-                int c = col[j];
-                if(getBlock(c, r) != 0) {
-                    paint.setColor(activeEyeBlockColor);
-                    currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
+            int c = col[i];
+            if(getBlock(c, r) != 0) {
+                paint.setColor(activeEyeBlockColor);
+                currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
-                    paint.setColor(dormantEyeBlockColor);
-                    currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
-                }
+                paint.setColor(dormantEyeBlockColor);
+                currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
             }
         }
-        //rect(getX(col), getY(row), blockSize, blockSize);
     }
 
     // erases the block
@@ -676,10 +673,13 @@ public class TetrisView extends View {
 
 // draw GAME OVER on the screen
     private void drawGameOverScreen() {
-        paint.setColor(Color.WHITE);// fill(255, 255, 255);
-        paint.setTextSize(40); // textSize(40);
-        currCanvas.drawText("GAME\nOVER", 235/400*width, 95/400*height, paint);
-        currCanvas.drawText("GAME\nOVER", 235/400*width + width/2, 95/400*height, paint);
+        paint.setColor(Color.WHITE);
+        currCanvas.drawRect(0, 0, width, height, paint);
+        paint.setColor(Color.BLACK);
+        // Log.d("FILLER TAG", "hi " + width);
+        paint.setTextSize(40);
+        currCanvas.drawText("GAME\nOVER", 235, 95, paint);
+        currCanvas.drawText("GAME\nOVER", 235 + width/2, 95, paint);
     }
 
 // makes the game go faster after you clear a line

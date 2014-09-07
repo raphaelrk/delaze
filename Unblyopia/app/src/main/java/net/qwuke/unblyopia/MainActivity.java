@@ -30,6 +30,9 @@ public class MainActivity extends CardboardActivity {
 
     private Vibrator mVibrator;
     private TetrisView mTetrisView;
+    BackgroundSound mBackgroundSound = new BackgroundSound();
+
+
     public class BackgroundSound extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -39,12 +42,12 @@ public class MainActivity extends CardboardActivity {
             return null;
         }
     }
-    BackgroundSound mBackgroundSound = new BackgroundSound();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-        mBackgroundSound.doInBackground();
+        //mBackgroundSound.doInBackground();
         mTetrisView = new TetrisView(this);
         mTetrisView.setBackgroundColor(Color.BLACK);
         setContentView(mTetrisView);
@@ -54,7 +57,7 @@ public class MainActivity extends CardboardActivity {
     public void onCardboardTrigger() {
 
         // Always give user feedback
-        mVibrator.vibrate(300);
+        mVibrator.vibrate(100);
         mTetrisView.keyPressed(TetrisView.UP);
     }
 
@@ -65,13 +68,13 @@ public class MainActivity extends CardboardActivity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(300); // Move left
+                    mVibrator.vibrate(100); // Move left
                     mTetrisView.keyPressed(TetrisView.LEFT);
                 }
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(300); // Move right
+                    mVibrator.vibrate(100); // Move right
                     mTetrisView.keyPressed(TetrisView.RIGHT);
                 }
                 return true;
@@ -83,6 +86,7 @@ public class MainActivity extends CardboardActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+        mVibrator.vibrate(100);
         mTetrisView.keyPressed(TetrisView.UP);
         return true;
     }
@@ -100,6 +104,7 @@ public class MainActivity extends CardboardActivity {
     public void onPause() {
         super.onPause();
         mBackgroundSound.cancel(true);
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
