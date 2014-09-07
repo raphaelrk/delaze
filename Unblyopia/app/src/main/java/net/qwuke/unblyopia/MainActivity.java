@@ -53,6 +53,7 @@ public class MainActivity extends CardboardActivity {
 
         // Always give user feedback
         mVibrator.vibrate(1000);
+        mTetrisView.keyPressed(TetrisView.UP);
     }
 
     @Override
@@ -62,12 +63,14 @@ public class MainActivity extends CardboardActivity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(1000); //Move left
+                    mVibrator.vibrate(1000); // Move left
+                    mTetrisView.keyPressed(TetrisView.LEFT);
                 }
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(1000); //Move right
+                    mVibrator.vibrate(1000); // Move right
+                    mTetrisView.keyPressed(TetrisView.RIGHT);
                 }
                 return true;
             default:
