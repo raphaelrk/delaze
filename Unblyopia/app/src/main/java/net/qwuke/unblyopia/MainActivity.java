@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.EventLog;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 
 import com.google.vrtoolkit.cardboard.*;
 
@@ -44,7 +46,7 @@ public class MainActivity extends CardboardActivity {
         //setContentView(R.layout.activity_main);
         mBackgroundSound.doInBackground();
         mTetrisView = new TetrisView(this);
-        mTetrisView.setBackgroundColor(Color.WHITE);
+        mTetrisView.setBackgroundColor(Color.BLACK);
         setContentView(mTetrisView);
         mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
     }
@@ -52,7 +54,7 @@ public class MainActivity extends CardboardActivity {
     public void onCardboardTrigger() {
 
         // Always give user feedback
-        mVibrator.vibrate(1000);
+        mVibrator.vibrate(300);
         mTetrisView.keyPressed(TetrisView.UP);
     }
 
@@ -63,20 +65,28 @@ public class MainActivity extends CardboardActivity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(1000); // Move left
+                    mVibrator.vibrate(300); // Move left
                     mTetrisView.keyPressed(TetrisView.LEFT);
                 }
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(1000); // Move right
+                    mVibrator.vibrate(300); // Move right
                     mTetrisView.keyPressed(TetrisView.RIGHT);
                 }
                 return true;
             default:
                 return super.dispatchKeyEvent(event);
         }
+
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        mTetrisView.keyPressed(TetrisView.UP);
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
