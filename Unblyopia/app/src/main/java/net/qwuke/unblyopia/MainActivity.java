@@ -2,6 +2,8 @@ package net.qwuke.unblyopia;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -24,14 +26,22 @@ import net.qwuke.unblyopia.R;
 public class MainActivity extends CardboardActivity {
 
     private Vibrator mVibrator;
-
+    BackgroundSound mBackgroundSound = new BackgroundSound();
     private TetrisView mTetrisView;
-
+    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.Tetris);
+            player.setLooping(true); // Set looping
+            player.start();
+            return null;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-
+        BackgroundSound mBackgroundSound = new BackgroundSound();
         mTetrisView = new TetrisView(this);
         mTetrisView.setBackgroundColor(Color.WHITE);
         setContentView(mTetrisView);
@@ -70,7 +80,14 @@ public class MainActivity extends CardboardActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+    public void onResume() {
+        super.onResume();
+        mBackgroundSound.execute((Void[]) null);
+    }
+    public void onPause() {
+        super.onPause();
+        mBackgroundSound.cancel(true);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
