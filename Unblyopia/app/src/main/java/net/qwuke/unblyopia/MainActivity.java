@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.widget.MediaController;
 
 import com.google.vrtoolkit.cardboard.*;
 
@@ -27,21 +28,26 @@ import net.qwuke.unblyopia.R;
 
 
 public class MainActivity extends CardboardActivity {
-
     private Vibrator mVibrator;
     private TetrisView mTetrisView;
-    BackgroundSound mBackgroundSound = new BackgroundSound();
+//    BackgroundSound mBackgroundSound = new BackgroundSound();
 
-
-    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris);
-            player.setLooping(true); // Set looping
-            player.start();
-            return null;
-        }
-    }
+//NEVER FORGET THEME A
+//    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris);
+//            if(x){
+//            player.setLooping(true); // Set looping
+//            player.start();
+//            return null;}
+//            else {
+//            player.pause();
+//            return null;
+//            }
+//        }
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,14 +123,20 @@ public class MainActivity extends CardboardActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    public void onStart() {
+        super.onStart();
+    }
     public void onResume() {
         super.onResume();
-        mBackgroundSound.execute((Void[]) null);
     }
     public void onPause() {
         super.onPause();
-        mBackgroundSound.cancel(true);
-
+    }
+    public void onStop() {
+        super.onStop();
+    }
+    public void onDestroy() {
+        super.onDestroy();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
