@@ -53,7 +53,7 @@ public class MainActivity extends CardboardActivity {
                 return null;
             } else {
                 player.setLooping(true); // Set looping
-                player.start();
+                // player.start(); // commented out because testing at night and family sleeping
                 return null;
             }
         }
@@ -96,7 +96,7 @@ public class MainActivity extends CardboardActivity {
      */
     @Override
     public void onCardboardTrigger() {
-        mTetrisView.actionButton();
+        mTetrisView.tm.actionButton();
     }
 
     /**
@@ -104,7 +104,7 @@ public class MainActivity extends CardboardActivity {
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        mTetrisView.actionButton();
+        mTetrisView.tm.actionButton();
         return true;
     }
 
@@ -119,10 +119,10 @@ public class MainActivity extends CardboardActivity {
         if(action == KeyEvent.ACTION_DOWN) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_VOLUME_UP:
-                    mTetrisView.keyPressed(TetrisView.Input.LEFT);
+                    mTetrisView.tm.keyPressed(TetrisModel.Input.LEFT);
                     return true;
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
-                    mTetrisView.keyPressed(TetrisView.Input.RIGHT);
+                    mTetrisView.tm.keyPressed(TetrisModel.Input.RIGHT);
                     return true;
                 default:
                     return super.dispatchKeyEvent(event);
