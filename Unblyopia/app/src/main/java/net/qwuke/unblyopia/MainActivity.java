@@ -1,121 +1,149 @@
 package net.qwuke.unblyopia;
 
-import android.app.Activity;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.EventLog;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.MediaController;
 
 import com.google.vrtoolkit.cardboard.*;
 
-import net.qwuke.unblyopia.R;
-
 
 public class MainActivity extends CardboardActivity {
-    private Vibrator mVibrator;
+    public static final String TAG = "net.qwuke.unblyopia";
+
+    // Views
     private TetrisView mTetrisView;
-//    BackgroundSound mBackgroundSound = new BackgroundSound();
 
-//NEVER FORGET THEME A
-//    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris);
-//            if(x){
-//            player.setLooping(true); // Set looping
-//            player.start();
-//            return null;}
-//            else {
-//            player.pause();
-//            return null;
-//            }
-//        }
-//
-//    }
+    // Interfacing- sensors, buttons, etc.
+    private Vibrator mVibrator;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        //mBackgroundSound.doInBackground();
-        mTetrisView = new TetrisView(this);
-        mTetrisView.setBackgroundColor(Color.BLACK);
-        setContentView(mTetrisView);
-        mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
-    }
+    private MotionSensorModule mMotionSensorModule;
 
-    public void actionButton() {
-        if(!mTetrisView.mainMenu) { // in-game
-            if(!mTetrisView.paused) {
-                if(!mTetrisView.gameOver) {
-                    // Always give user feedback
-                    mVibrator.vibrate(100);
-                    mTetrisView.keyPressed(TetrisView.UP);
-                }
-                else { // if game over
-                    // Always give user feedback
-                    mVibrator.vibrate(100);
-                    mTetrisView.reset();
-                }
-            }
-            else { // if paused
-                // unpause
-            }
-        } else { // in Main Menu
-            // start
+    private double[] velocity = new double[3];
+    private double[] accel_offset = new double[3];
+    private boolean accel_offset_set = false;
+
+    BackgroundSound mBackgroundSound;
+
+    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
+        protected MediaPlayer player;
+
+        public BackgroundSound() {
+            player = MediaPlayer.create(MainActivity.this, R.raw.tetris);
         }
 
+        @Override
+        protected Void doInBackground(Void... params) {
+            if(player.isPlaying()){
+                player.pause();
+                return null;
+            } else {
+                player.setLooping(true); // Set looping
+                player.start();
+                return null;
+            }
+        }
+
+        protected void pause() {
+            player.pause();
+        }
+    }
+
+    /******   OVERRIDDEN ACTIVITY METHODS   ******/
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //setContentView(R.layout.activity_main);
+
+        mBackgroundSound = new BackgroundSound();
+        mBackgroundSound.doInBackground();
+
+        mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mMotionSensorModule = new MotionSensorModule(mSensorManager, this);
+
+        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator);
+        mTetrisView.setBackgroundColor(Color.BLACK);
+        setContentView(mTetrisView);
     }
 
     @Override
-    public void onCardboardTrigger() {
-        actionButton();
+    public void onPause() {
+        super.onPause();
+        mBackgroundSound.pause();
+        mMotionSensorModule.unregister();
     }
 
+    /******   INTERFACING: Methods for triggers, buttons, sensors   ******/
+
+    /**
+     * Handles the user swiping the Google Cardboard magnet
+     */
+    @Override
+    public void onCardboardTrigger() {
+        mTetrisView.actionButton();
+    }
+
+    /**
+     * Handles the user touching the screen
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        mTetrisView.actionButton();
+        return true;
+    }
+
+    /**
+     * Handles the user pressing the volume buttons
+     */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         int action = event.getAction();
         int keyCode = event.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(100); // Move left
-                    mTetrisView.keyPressed(TetrisView.LEFT);
-                }
-                return true;
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                if (action == KeyEvent.ACTION_DOWN) {
-                    mVibrator.vibrate(100); // Move right
-                    mTetrisView.keyPressed(TetrisView.RIGHT);
-                }
-                return true;
-            default:
-                return super.dispatchKeyEvent(event);
+
+        if(action == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    mTetrisView.keyPressed(TetrisView.Input.LEFT);
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    mTetrisView.keyPressed(TetrisView.Input.RIGHT);
+                    return true;
+                default:
+                    return super.dispatchKeyEvent(event);
+            }
         }
 
+        return super.dispatchKeyEvent(event);
     }
 
+    /**
+     * This method prevents the volume buttons from making a noise
+     */
     @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        actionButton();
-        return true;
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
+
+    /******   UNCHANGED INTERFACE METHODS   ******/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,21 +151,13 @@ public class MainActivity extends CardboardActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    public void onStart() {
-        super.onStart();
-    }
-    public void onResume() {
-        super.onResume();
-    }
-    public void onPause() {
-        super.onPause();
-    }
-    public void onStop() {
-        super.onStop();
-    }
-    public void onDestroy() {
-        super.onDestroy();
-    }
+
+    @Override
+    public void onStart() { super.onStart(); }
+    public void onStop() { super.onStop(); }
+    public void onDestroy() { super.onDestroy(); }
+    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

@@ -5,37 +5,54 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
-import android.util.AttributeSet;
-import android.util.Log;
+import android.os.Vibrator;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
 /**
+ * I'd recommend looking at this class with all the methods minimized
+ * if you don't want a mile-long scrollbar
+ *
+ * Structure:
+ * -get constructed
+ * -call onDraw forever (main game loop)
+ * --update
+ * ---in game
+ * ----updates based on input are immediate
+ * ----every 20 frames the block moves down
+ * ----check for game over
+ * ---out of game
+ * ----check if user's interacted with anything
+ * --draw everything
+ *
  * Created by Raphael on 9/6/2014.
  */
 public class TetrisView extends View {
 
     private ShapeDrawable mDrawable;
-    Paint paint = new Paint();
+    private Paint paint = new Paint();
 
-    long lastTimeMillis = 0;
+    private long lastTimeMillis = 0;
 
-    Canvas currCanvas = null;
+    private Canvas currCanvas = null;
+    private MotionSensorModule motionSensor;
+    private Vibrator vibrator;
 
     // dimension variables
-    int width;
-    int height;
-    int blockSize;
-    int xSideOffset;
-    int vertPadding;
+    private int width;
+    private int height;
+    private int blockSize;
+    private int xSideOffset;
+    private int vertPadding;
 
     // used in keyPress method
-    public static final int LEFT = 65;
-    public static final int RIGHT = 68;
-    public static final int UP = 87;
-    public static final int DOWN = 83;
+
+    public enum Input {
+        LEFT, RIGHT, UP, DOWN
+    }
+
+    private static final int VIBRATE_DURATION = 100;
 
     // colors
     public static int activeEyeBlockColor = 0xff818CC7; // light blue
@@ -43,43 +60,78 @@ public class TetrisView extends View {
     public static int bgColor = 0xff101B52; // darker blue
 
     //int borderX = 200;
-    int[] row = {0, 0, 1, 1};
-    int[] col = {5, 4, 5, 4};
-    int levelwidth = 10;
-    int levelheight = 20;
-    int[] blockArray = new int[levelwidth * levelheight];
-    int time = 0;
-    int score = 0;
-    int updateSpeed = 20;
-    int level = 1;
-    int linesCleared = 0;
-    // block constants
-    int singleBlock = 0;
-    int squareBlock = 1;
-    int regularLBlock = 2;
-    int backwardsLBlock = 3;
-    int zigzagHighLeftBlock = 4;
-    int zigzagLowLeftBlock = 5;
-    int lineBlock = 6;
-    int tBlock = 7;
-    int currentBlockType = squareBlock;
-    int currentBlockRotation = 0;//0, 90, 180, 270
+    private int[] row = {0, 0, 1, 1};
+    private int[] col = {5, 4, 5, 4};
+    private int levelwidth = 10;
+    private int levelheight = 20;
+    private int[] blockArray = new int[levelwidth * levelheight];
+    private int time = 0;
+    private int score = 0;
+    private int updateSpeed = 20;
+    private int level = 1;
+    private int linesCleared = 0;
+
+    public enum Block {
+        /** Former Block constants **
+         private int singleBlock = 0;
+         private int squareBlock = 1;
+         private int regularLBlock = 2;
+         private int backwardsLBlock = 3;
+         private int zigzagHighLeftBlock = 4;
+         private int zigzagLowLeftBlock = 5;
+         private int lineBlock = 6;
+         private int tBlock = 7; **/
+
+        SINGLE, SQUARE, REGULAR_L, BACKWARDS_L,
+        ZIGZAG_HIGH_LEFT, ZIGZAG_HIGH_RIGHT, LINE, T;
+
+        public static Block getRandomBlock() {
+            int nextBlockType = (int)(Math.floor(Math.random()*7)+1);
+
+            switch(nextBlockType) {
+                case 0: return SINGLE;
+                case 1: return SQUARE;
+                case 2: return REGULAR_L;
+                case 3: return BACKWARDS_L;
+                case 4: return ZIGZAG_HIGH_LEFT;
+                case 5: return ZIGZAG_HIGH_RIGHT;
+                case 6: return LINE;
+                case 7: return T;
+                default: return SINGLE;
+            }
+        }
+    }
+
+    private Block currentBlockType = Block.SQUARE;
+    private int currentBlockRotation = 0;//0, 90, 180, 270
                                 //this is how many degrees
                                 //clockwise it is
-    int currentBlockColor = 0xffff0000;
-    int nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
-    int nextBlockType = (int)(Math.floor(Math.random()*7)+1);
+    private int currentBlockColor = 0xffff0000;
+    private int nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
+    private Block nextBlockType = Block.getRandomBlock();
 
-    boolean mainMenu = false;
-    boolean gameOver = false;
-    boolean paused = false;
-    int leftLag = 200;
-    int rightLag = 200;
-    long lastLeftPressTime = 0;
-    long lastRightPressTime = 0;
-    long lastUpPressTime = 0;
-    long lastPausePressTime = 0;
+    /** Game scenes **/
+    private boolean mainMenu = false;
+    private boolean gameOver = false;
+    private boolean paused = false;
 
+    /**  Input time constants
+     * Ensures that buttons aren't clicked too quickly on accident
+     **/
+    private int defaultLagTime = 200;
+    private int lagChange = 150; // used for holding a button
+    private int leftLag  = defaultLagTime; // aka at least .2 seconds between lefts
+    private int rightLag = defaultLagTime;
+    private int upLag    = defaultLagTime * 2;
+    private long lastLeftPressTime = 0;
+    private long lastRightPressTime = 0;
+    private long lastUpPressTime = 0;
+    private long lastPausePressTime = 0;
+
+    /**
+     * Resets all variables so that the
+     * game can start anew
+     */
     public void reset() {
         row = new int[]{0, 0, 1, 1};
         col = new int[]{5, 4, 5, 4};
@@ -89,54 +141,41 @@ public class TetrisView extends View {
         updateSpeed = 20;
         level = 1;
         linesCleared = 0;
-        currentBlockType = squareBlock;
+        currentBlockType = Block.SQUARE;
         currentBlockRotation = 0;
         currentBlockColor = 0xffff0000;
         nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
-        nextBlockType = (int)(Math.floor(Math.random()*7)+1);
+        nextBlockType = Block.getRandomBlock();
 
         mainMenu = false;
         gameOver = false;
         paused = false;
-        leftLag = 200;
-        rightLag = 200;
+        leftLag = defaultLagTime;
+        rightLag = defaultLagTime;
+        upLag = defaultLagTime *2;
         lastLeftPressTime = 0;
         lastRightPressTime = 0;
         lastUpPressTime = 0;
         lastPausePressTime = 0;
     }
-    
-    private int getX(int column) {
-        return column * blockSize;
-    }
 
-    private int getY(int roww) {
-        return roww * blockSize;
-    }
+    /** Turn row and column info into x and y values **/
+    private int getX(int column) { return column * blockSize; }
+    private int getY(int row)    { return row    * blockSize; }
 
-    private int getBlock(int column, int rowe) {
-        return blockArray[column + rowe * levelwidth];
-    }
+    /** blockArray getter and setter **/
+    private int getBlock(int column, int row)             { return blockArray[column + row * levelwidth];  }
+    private void setBlock(int column, int row, int value) { blockArray[column + row * levelwidth] = value; }
 
-    private void setBlock(int column, int rowe, int value) {
-        blockArray[column + rowe * levelwidth] = value;
-    }
-
-    // draws the block
+    /**
+     * Draws the blockArray onto the screen
+     */
     private void drawShapes() {
-        paint.setColor(0xffff00ff); // fill(255, 0, 0);
-        //stroke(0, 0, 0);
 
         // draw dormant blocks
         for(int r = 0; r < levelheight; r++) {
             for(int c = 0; c < levelwidth; c++) {
                 if(getBlock(c, r) != 0) {
-                    //int color = getBlock(c, r);
-                    //int blue = color % 255;
-                    //int green = ((color - blue)  % (255^2)) >> 8;
-                    //int red = (color - green - blue) >> 16;
-                    //paint.setColor(0xff00ff00);// fill(red, green, blue);
-                    //Log.d("Filler text", "block at l: " + getX(c) + " t: " + getY(r));
                     paint.setColor(dormantEyeBlockColor);
                     currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
@@ -160,21 +199,23 @@ public class TetrisView extends View {
         }
     }
 
-    // erases the block
+    /**
+     * Erases the screen
+     */
     private void eraseShapes() {
-        paint.setColor(bgColor);// fill(red, green, blue);
+        paint.setColor(bgColor);
         currCanvas.drawRect(xSideOffset, vertPadding, xSideOffset + blockSize*levelwidth, height - vertPadding, paint);
         currCanvas.drawRect(xSideOffset + width/2, vertPadding, xSideOffset + blockSize*levelwidth + width/2, height - vertPadding, paint);
     }
 
+    /**
+     * Checks whether the current shape will collide with something if it goes down one row
+     */
     private boolean bottomCollision() {
         for(int i = 0; i < 4; i++) {
 
             int btmCollisionCol = col[i];
             int btmCollisionRow = row[i] + 1;
-
-            //Log.d("FILLER TAG", "btmColCol = " + btmCollisionCol);
-            //Log.d("FILLER TAG", "btmColRow = " + btmCollisionRow);
 
             // if at the bottom, there's a bottom collision
             if(btmCollisionRow >= levelheight) {
@@ -204,6 +245,9 @@ public class TetrisView extends View {
         return false;
     }
 
+    /**
+     * Checks whether the current shape will collide with something if it goes left one row
+     */
     private boolean leftCollision() {
         for(int i = 0; i < 4; i++) {
             // if touching left, there's a left collision
@@ -227,6 +271,9 @@ public class TetrisView extends View {
         return false;
     }
 
+    /**
+     * Checks whether the current shape will collide with something if it goes right one row
+     */
     private boolean rightCollision() {
         for(int i = 0; i < 4; i++) {
             // if touching right, there's a right collision
@@ -250,6 +297,10 @@ public class TetrisView extends View {
         return false;
     }
 
+    /**
+     * Checks whether the current shape is currently colliding with something
+     * Used to test for game over
+     */
     private boolean collision() {
         for(int i = 0; i < 4; i++) {
             if(col[i] < 0 || col[i] >= levelwidth ||
@@ -264,6 +315,9 @@ public class TetrisView extends View {
         return false;
     }
 
+    /**
+     * Method to rotate the current block
+     */
     private void rotateBlock() {
 
         int oldBlockRotation = currentBlockRotation;
@@ -281,11 +335,11 @@ public class TetrisView extends View {
             oldcol[i] = col[i];
         }
 
-        if(currentBlockType == 1) { // square
+        if(currentBlockType == Block.SQUARE) { // square
             newrow = row;
             newcol = col;
         }
-        else if(currentBlockType == 2) { // normal l
+        else if(currentBlockType == Block.REGULAR_L) { // normal l
             if(currentBlockRotation == 0) {
                 // commented these arrays to help me understand
                 // how far each block should move
@@ -322,7 +376,7 @@ public class TetrisView extends View {
             }
 
         }
-        else if(currentBlockType == 3) { // backwards l
+        else if(currentBlockType == Block.BACKWARDS_L) { // backwards l
             if(currentBlockRotation == 0) {
                 //row = [0, 1, 2, 2};
                 //col = [5, 5, 5, 4};
@@ -356,7 +410,7 @@ public class TetrisView extends View {
                         col[2] + 1, col[3]};
             }
         }
-        else if(currentBlockType == 4) { // zigzag
+        else if(currentBlockType == Block.ZIGZAG_HIGH_LEFT) { // zigzag
             if(currentBlockRotation == 0) {
                 //row = [1, 1, 0, 0};
                 //col = [4, 5, 5, 6};
@@ -390,7 +444,7 @@ public class TetrisView extends View {
                         col[2] - 1, col[3]};
             }
         }
-        else if(currentBlockType == 5) { // backwards zigzag
+        else if(currentBlockType == Block.ZIGZAG_HIGH_RIGHT) { // backwards zigzag (low left/high right)
             if(currentBlockRotation == 0) {
                 //row = [1, 1, 2, 2};
                 //col = [4, 5, 5, 6};
@@ -424,7 +478,7 @@ public class TetrisView extends View {
                         col[2] + 1, col[3] + 2};
             }
         }
-        else if(currentBlockType == 6) { // line
+        else if(currentBlockType == Block.LINE) { // line
             if(currentBlockRotation == 0) {
                 //row = [0, 1, 2, 3};
                 //col = [5, 5, 5, 5};
@@ -458,7 +512,7 @@ public class TetrisView extends View {
                         col[2] - 1, col[3] - 2};
             }
         }
-        else if(currentBlockType == 7) { // T
+        else if(currentBlockType == Block.T) { // T
             if(currentBlockRotation == 0) {
                 //row = [0, 1, 1, 1};
                 //col = [5, 4, 5, 6};
@@ -501,89 +555,98 @@ public class TetrisView extends View {
         }
     }
 
-    // update block based on keypresses
-    public void keyPressed(int keyCode) {
-        for(int i = 0; i < 4; i++) {
+    /**
+     * update block based on keypresses
+     */
+    public void keyPressed(Input input) {
+        for(int i = 0; i < 4; i++)
             setBlock(col[i], row[i], 0);
-        }
 
-        if ((keyCode == LEFT || keyCode == 65) &&
-                !leftCollision() &&
-                System.currentTimeMillis() - lastLeftPressTime > leftLag){
+        if (input == Input.LEFT &&  !leftCollision() && System.currentTimeMillis() - lastLeftPressTime > leftLag){ // Left clicked, won't collide, and enough time passed
             lastLeftPressTime = System.currentTimeMillis();
-            leftLag -= 150;
-            rightLag = 200;
-            for(int i = 0; i < 4; i++) {
+            leftLag -= lagChange; // allows user to hold left to slide left
+            rightLag = defaultLagTime;
+            upLag = defaultLagTime;
+
+            for(int i = 0; i < 4; i++)
                 col[i]--;
-            }
+
+            vibrator.vibrate(VIBRATE_DURATION);
         }
-        if ((keyCode == RIGHT || keyCode == 68) &&
-                !rightCollision() &&
-                System.currentTimeMillis() - lastRightPressTime > rightLag) {
-            rightLag -= 150;
-            leftLag = 200;
+        if (input == Input.RIGHT && !rightCollision() && System.currentTimeMillis() - lastRightPressTime > rightLag) {
+            rightLag -= lagChange; // allows user to hold right to slide right
+            leftLag = defaultLagTime;
+            upLag = defaultLagTime;
             lastRightPressTime = System.currentTimeMillis();
-            for(int i = 0; i < 4; i++) {
+
+            for(int i = 0; i < 4; i++)
                 col[i]++;
-            }
+
+            vibrator.vibrate(VIBRATE_DURATION);
         }
-        if ((keyCode == UP || keyCode == 87 /*||
-                keyCode == CONTROL*/) &&
-                System.currentTimeMillis() - lastUpPressTime > 200) {
-            rightLag = 200;
-            leftLag = 200;
-            rotateBlock();
+        if (input == Input.UP && System.currentTimeMillis() - lastUpPressTime > upLag) {
+            upLag -= lagChange;
+            rightLag = defaultLagTime;
+            leftLag = defaultLagTime;
             lastUpPressTime = System.currentTimeMillis();
+
+            if(upLag < 100)
+                upLag = 100;
+
+            rotateBlock();
+
+            vibrator.vibrate(VIBRATE_DURATION);
         }
-        if ((keyCode == DOWN || keyCode == 83) &&
-                !bottomCollision()) {
-            rightLag = 200;
-            leftLag = 200;
-            for(int i = 0; i < 4; i++) {
+        if (input == Input.DOWN && !bottomCollision()) {
+            rightLag = defaultLagTime;
+            leftLag = defaultLagTime;
+            upLag = defaultLagTime;
+
+            for(int i = 0; i < 4; i++)
                 row[i]++;
-            }
+
+            vibrator.vibrate(VIBRATE_DURATION);
         }
 
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++)
             setBlock(col[i], row[i], currentBlockColor);
-        }
     }
 
-    // sets your current block to what was shown and makes a
-    // random next block
+    /** sets your current block to what was shown and makes a
+     * random next block
+     */
     private void nextBlock() {
 
         // swap colors, might help both eyes train
-        int temp = dormantEyeBlockColor;
+        int temp                 = dormantEyeBlockColor;
             dormantEyeBlockColor = activeEyeBlockColor;
-            activeEyeBlockColor = temp;
+            activeEyeBlockColor  = temp;
 
-
-        if(nextBlockType == 1) { // square
+        if(nextBlockType == Block.SQUARE) { // square
             row = new int[]{0, 0, 1, 1};
             col = new int[]{5, 4, 5, 4};
         }
-        else if(nextBlockType == 2) { // normal l
+        else if(nextBlockType == Block.REGULAR_L) { // normal l
             row = new int[]{0, 1, 2, 2};
             col = new int[]{4, 4, 4, 5};
         }
-        else if(nextBlockType == 3) { // backwards l
+        else if(nextBlockType == Block.BACKWARDS_L) { // backwards l
             row = new int[]{0, 1, 2, 2};
             col = new int[]{5, 5, 5, 4};
         }
-        else if(nextBlockType == 4) { // zigzag
+        else if(nextBlockType == Block.ZIGZAG_HIGH_LEFT) { // zigzag
             row = new int[]{1, 1, 0, 0};
             col = new int[]{4, 5, 5, 6};
         }
-        else if(nextBlockType == 5) { // backwards zigzag
+        else if(nextBlockType == Block.ZIGZAG_HIGH_RIGHT) { // backwards zigzag
             row = new int[]{0, 0, 1, 1};
             col = new int[]{4, 5, 5, 6};
         }
-        else if(nextBlockType == 6) { // line
+        else if(nextBlockType == Block.LINE) { // line
             row = new int[]{0, 1, 2, 3};
             col = new int[]{5, 5, 5, 5};
         }
-        else if(nextBlockType == 7) { // T
+        else if(nextBlockType == Block.T) { // T
             row = new int[]{0, 1, 1, 1};
             col = new int[]{5, 4, 5, 6};
         }
@@ -596,41 +659,69 @@ public class TetrisView extends View {
         currentBlockType = nextBlockType;
         currentBlockRotation = 0;
         nextBlockColor = (int) Math.floor(Math.random() * 255 + 255 * 255 * 255);
-        nextBlockType = (int) Math.floor(Math.random()*7)+1;
+        nextBlockType = Block.getRandomBlock();
     }
 
-    // move block down and check block under
-    // if block underneath, goes to next block
+    /** move block down and check block under
+     * if block underneath and no recent keypresses, goes to next block
+     */
     private void moveDown() {
-        if (!bottomCollision()) {
+        if (!bottomCollision()) { // move down
             for(int i = 0; i < 4; i++) {
                 setBlock(col[i], row[i], 0);
                 row[i]++;
             }
         }
-        else{
-            score += 15 + linesCleared;
-            nextBlock();
+        else { // go to next block if nothing recently done
+            boolean recentPress = System.currentTimeMillis() - lastLeftPressTime < defaultLagTime * 3 ||
+                                  System.currentTimeMillis() - lastRightPressTime < defaultLagTime * 3 ||
+                                  System.currentTimeMillis() - lastUpPressTime < defaultLagTime * 3;
+            if(!recentPress) {
+                score += 15 + linesCleared;
+                nextBlock();
+            }
         }
-        for(int i = 0; i < 4; i++) {
+
+        for(int i = 0; i < 4; i++)
             setBlock(col[i], row[i], currentBlockColor);
-        }
     }
 
-    // draw the sidebar
+    /**
+     * Method to make it easier to change the paint color
+     */
+    private void fill(int r, int g, int b) {
+        paint.setColor((256 << 12) + (r << 8) + (g << 4) + b);
+    }
+
+    /**
+     * Method to fill the screen with a color
+     */
+    private void background(int r, int g, int b) {
+        int origColor = paint.getColor();
+
+        fill(r, g, b);
+        currCanvas.drawRect(0, 0, width, height, paint);
+
+        paint.setColor(origColor);
+    }
+
+    /**
+     * Draws the sidebar
+     * Not yet added
+     */
     private void drawSide() {
-        paint.setTextSize(21); //textSize(21);
+        paint.setTextSize(21);
 
         // sidebar bg
-        paint.setColor((256 << 12) + (178 << 8) + (227 << 4) + 104); // fill(178, 227, 104);
-        currCanvas.drawRect(0, 0, 199, 399, paint); // rect(0, 0, 199, 399);
+        fill(178, 227, 104);
+        currCanvas.drawRect(0, 0, 199, 399, paint);
 
         // sidebar textbox
-        paint.setColor((256 << 12) + (245 << 8) + (228 << 4) + 245); // fill(245, 228, 245);
-        currCanvas.drawRect(15, 10, 15 + 166, 10 + 200, paint); // rect(15, 10, 166, 200);
+        fill(245, 228, 245);
+        currCanvas.drawRect(15, 10, 15 + 166, 10 + 200, paint);
 
         // text
-        paint.setColor(Color.BLACK); // fill(0, 0, 0);
+        paint.setColor(Color.BLACK);
         currCanvas.drawText("Time: " + time, 20, 30, paint);
         currCanvas.drawText("Score: " + score, 20, 59, paint);
         currCanvas.drawText("row: " + row, 20, 130, paint);
@@ -640,70 +731,71 @@ public class TetrisView extends View {
         currCanvas.drawText("block: " + currentBlockType, 20, 150, paint);
 
         // next block type box
-        paint.setColor((256 << 12) + (245 << 8) + (218 << 4) + 81);// fill(245, 218, 81);
-        currCanvas.drawRect(15, 210, 15 + 166, 210 + 120, paint);// rect(15, 210, 166, 120);
-        paint.setColor((256 << 12) + (26 << 8) + (18 << 4) + 26);// fill(26, 18, 26);
+        fill(245, 218, 81);
+        currCanvas.drawRect(15, 210, 15 + 166, 210 + 120, paint);
+        fill(26, 18, 26);
         currCanvas.drawText("Next: " + nextBlockType, 20, 230, paint);
 
         // next block
-        paint.setColor(Color.RED); // fill(255, 0, 0);
+        paint.setColor(Color.RED);
         currCanvas.drawRect(65, 260, 65 + 20, 260 + 20, paint);
         currCanvas.drawRect(65, 240, 65 + 20, 240 + 20, paint);
-        if(nextBlockType == squareBlock) {
+        if(nextBlockType == Block.SQUARE) {
             currCanvas.drawRect(85, 240, 85 + 20, 240 + 20, paint);
             currCanvas.drawRect(85, 260, 85 + 20, 260 + 20, paint);
         }
-        if(nextBlockType == regularLBlock) {
+        if(nextBlockType == Block.REGULAR_L) {
             currCanvas.drawRect(65, 280, 65 + 20, 280 + 20, paint);
             currCanvas.drawRect(85, 280, 85 + 20, 280 + 20, paint);
         }
-        if(nextBlockType == backwardsLBlock) {
+        if(nextBlockType == Block.BACKWARDS_L) {
             currCanvas.drawRect(65, 280, 65 + 20, 280 + 20, paint);
             currCanvas.drawRect(45, 280, 45 + 20, 280 + 20, paint);
         }
-        if(nextBlockType == zigzagHighLeftBlock) {
+        if(nextBlockType == Block.ZIGZAG_HIGH_LEFT) {
             currCanvas.drawRect(85, 240, 85 + 20, 240 + 20, paint);
             currCanvas.drawRect(45, 260, 45 + 20, 260 + 20, paint);
         }
-        if(nextBlockType == zigzagLowLeftBlock) {
+        if(nextBlockType == Block.ZIGZAG_HIGH_RIGHT) {
             currCanvas.drawRect(85, 260, 85 + 20, 260 + 20, paint);
             currCanvas.drawRect(45, 240, 45 + 20, 240 + 20, paint);
         }
-        if(nextBlockType == lineBlock) {
+        if(nextBlockType == Block.LINE) {
             currCanvas.drawRect(65, 280, 65 + 20, 280 + 20, paint);
             currCanvas.drawRect(65, 300, 65 + 20, 300 + 20, paint);
         }
-        if(nextBlockType == tBlock) {
+        if(nextBlockType == Block.T) {
             currCanvas.drawRect(45, 260, 45 + 20, 260 + 20, paint);
             currCanvas.drawRect(85, 260, 85 + 20, 260 + 20, paint);
         }
 
         // pause button
         if(paused == false) {
-            paint.setColor((256 << 12) + (86 << 8) + (245 << 4) + 96); // fill(86, 245, 96);
+            fill(86, 245, 96);
             currCanvas.drawRect(15, 335, 15 + 166, 335 + 25, paint);
-            paint.setColor((256 << 12) + (26 << 8) + (18 << 4) + 26); // fill(26, 18, 26);
+            fill(26, 18, 26);
             currCanvas.drawText("Pause", 66, 355, paint);
         }
         else {
-            paint.setColor(Color.RED); // fill(255, 0, 0);
+            paint.setColor(Color.RED);
             currCanvas.drawRect(15, 335, 15 + 166, 335 + 25, paint);
-            paint.setColor(Color.WHITE); // fill(255, 255, 255);
+            paint.setColor(Color.WHITE);
             currCanvas.drawText("Continue", 55, 355, paint);
         }
 
         // name
-        paint.setColor((256 << 12) + (26 << 8) + (18 << 4) + 26); // fill(26, 18, 26);
+        fill(26, 18, 26);
         paint.setTextSize(17);
         currCanvas.drawText("By Raphael and Tristan", 72, 394, paint);
     }
 
-    // draw GAME OVER on the screen
+    /**
+     * Draw GAME OVER on the screen
+     */
     private void drawGameOverScreen() {
-        paint.setColor(Color.WHITE);
-        currCanvas.drawRect(0, 0, width, height, paint);
+        background(255, 255, 255);
+
         paint.setColor(Color.BLACK);
-        // Log.d("FILLER TAG", "hi " + width);
         paint.setTextSize(40);
         currCanvas.drawText("  GAME OVER", width/6, height/6, paint);
         currCanvas.drawText("  GAME OVER", width/6 + width/2, height/6, paint);
@@ -715,17 +807,21 @@ public class TetrisView extends View {
         currCanvas.drawText(" Act to restart", width/6 + width/2, height/6 + height/4, paint);
     }
 
-// makes the game go faster after you clear a line
+    /**
+     * Makes the game go faster after you clear a line
+     */
     private void setDifficulty() {
         updateSpeed = 21 - linesCleared;
-        if(linesCleared >= 19) {
-            updateSpeed = 2;
+        if(linesCleared >= 18) {
+            updateSpeed = 3;
         }
     }
 
-// removes lines
-// if lines were removed, updates score and difficulty and
-// goes to the next block
+    /**
+     * Removes lines
+     * If lines were removed, updates score and difficulty and
+     * goes to the next block
+     */
     private void removeLines() {
         //from bottom to top, check if rows are filled
         boolean posReset = false;
@@ -770,32 +866,45 @@ public class TetrisView extends View {
         }
     }
 
+    /**
+     * Draws the main menu
+     * Not added yet
+     */
     private void drawMainMenu() {
-        // bg
-        paint.setColor((256 << 12) + (157 << 8) + (184 << 4) + 51); // fill(157, 184, 51);
-        currCanvas.drawRect(0, 0, width, height, paint); // rect(0, 0, 400, 400);
+        background(157, 184, 51);
 
         // "tetris"
         int tetrisR = (int) (255 * Math.sin(System.currentTimeMillis()/50) + 255);
         int tetrisG = (int) (255 * Math.cos(System.currentTimeMillis()/50) + 255);
         int tetrisB = (int) (100 + 100 * Math.cos(System.currentTimeMillis()/50));
-        paint.setColor((256 << 12) + (tetrisR << 8) + (tetrisG << 4) + tetrisB);
+        fill(tetrisR, tetrisG, tetrisB);
         paint.setTextSize(91); // textSize(91);
         currCanvas.drawText("tetris", 79/400*width/2, 92/400*height, paint);
         currCanvas.drawText("tetris", 79/400*width/2 + width/2, 92/400*height, paint);
 
         // Regular mode
-        paint.setColor((256 << 12) + (255 << 8) + (213 << 4) + 0); // fill(255, 213, 0);
+        fill(255, 213, 0);
         currCanvas.drawRect(114/400*width/2, 167/400*height, (114 + 182)/400*width/2, (167 + 41)/400*height, paint);
         currCanvas.drawRect(114/400*width/2+width/2, 167/400*height, (114 + 182)/400*width/2+width/2, (167 + 41)/400*height, paint);
         paint.setTextSize(37); // textSize(37);
-        paint.setColor(Color.BLACK); // fill(0, 0, 0);
+        paint.setColor(Color.BLACK);
         currCanvas.drawText("Begin", 142/400*width/2, 200/400*height, paint);
         currCanvas.drawText("Begin", 142/400*width/2+width/2, 200/400*height, paint);
     }
 
-    // main loop
-    private void draw() {
+
+    /**
+     * Main loop
+     * Gets called every cycle
+     * Updates things and draws them
+     *
+     * @param canvas, required for drawing to the screen
+     */
+    protected void onDraw(Canvas canvas) {
+        // so canvas doesn't have to be passed as a parameter
+        currCanvas = canvas;
+
+        // actual draw and update function
         /* // pause if focus lost
         if(focused == false) {
             //paused = true;
@@ -853,16 +962,79 @@ public class TetrisView extends View {
             }
             */
         }
+
+        drawMotion();
+
+        // force redraw
+        super.postInvalidate();
     }
 
+    /**
+     * Onscreen acceleration debugging:
+     * Draws the x, y, and z velocities
+     */
+    public void drawMotion() {
+        paint.setColor(0xffff0000);
+        paint.setTextSize(40);
+
+        currCanvas.drawText("x: " + motionSensor.getVelocities()[0], 79/400*width/2, height/6, paint);
+        currCanvas.drawText("y: " + motionSensor.getVelocities()[1], 79/400*width/2, height/6 + height/10, paint);
+        currCanvas.drawText("z: " + motionSensor.getVelocities()[2], 79 / 400 * width / 2, height / 6 + height / 5, paint);
+    }
+
+    /**
+     * Called when a key is released
+     * Not added yet
+     * This is where the pause button pausing would be called
+     */
     private void keyReleased() {
         //if(keyCode == 80) {
         //    paused = !paused;
         //}
     }
 
-    public TetrisView(Context context) {
+    /**
+     * Called when the "action button" is pressed
+     * Action button = Cardboard magnet, screen touch, or tilting phone up
+     *
+     * Rotates block in-game
+     */
+    public void actionButton() {
+        if(!mainMenu) { // in-game
+            if(!paused) {
+                if(!gameOver) {
+                    // Always give user feedback
+                    vibrator.vibrate(100);
+                    keyPressed(Input.UP);
+                }
+                else { // if game over
+                    // Always give user feedback
+                    vibrator.vibrate(100);
+                    reset();
+                }
+            }
+            else { // if paused
+                // unpause
+            }
+        } else { // in Main Menu
+            // start
+        }
+    }
+
+    /**
+     * Constructor
+     * Instantiates variables
+     *
+     * @param context Activity, required of all views
+     * @param motionSensorModule accelerometer
+     * @param vibrator for vibrating
+     */
+    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator) {
         super(context);
+
+        // accelerometer for detecting movement of the device
+        motionSensor = motionSensorModule;
+        this.vibrator = vibrator;
 
         // get screen width and height
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -872,10 +1044,10 @@ public class TetrisView extends View {
         width = size.x;
         height = size.y;
 
+        // variables reliant on screen width and height
         vertPadding = height/4;
         blockSize = (height - 2*vertPadding) / 20;
         xSideOffset = width/4 - blockSize*levelwidth/2;
-
 
         for(int r = 0; r < levelwidth; r++) {
             for(int c = 0; c < levelheight; c++) {
@@ -883,16 +1055,4 @@ public class TetrisView extends View {
             }
         }
     }
-
-    protected void onDraw(Canvas canvas) {
-        // so canvas doesn't have to be passed as a parameter
-        currCanvas = canvas;
-
-        // actual draw and update function
-        draw();
-
-        // forces redraw
-        super.postInvalidate();
-    }
-
 }
