@@ -176,7 +176,7 @@ public class TetrisDrawer {
         }
 
         // pause button
-        if(tm.paused == false) {
+        if(tm.gameState == TetrisModel.GameState.IN_GAME) {
             fill(86, 245, 96);
             currCanvas.drawRect(15, 335, 15 + 166, 335 + 25, paint);
             fill(26, 18, 26);
@@ -201,18 +201,18 @@ public class TetrisDrawer {
      * Draw GAME OVER on the screen
      */
     public void drawGameOverScreen() {
-        background(255, 255, 255);
+        // background(255, 255, 255);
 
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(40);
-        currCanvas.drawText("  GAME OVER", width/6, height/6, paint);
-        currCanvas.drawText("  GAME OVER", width/6 + width/2, height/6, paint);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(32);
+        currCanvas.drawText("  GAME OVER", width/6, height/6  + height/8, paint);
+        currCanvas.drawText("  GAME OVER", width/6 + width/2, height/6  + height/8, paint);
 
-        currCanvas.drawText("SCORE: " + tm.score, width/6, height/6 + height/8, paint);
-        currCanvas.drawText("SCORE: " + tm.score, width/6 + width/2, height/6 + height/8, paint);
+        currCanvas.drawText("SCORE: " + tm.score, width/6, height/6 + 2*height/8, paint);
+        currCanvas.drawText("SCORE: " + tm.score, width/6 + width/2, height/6 + 2*height/8, paint);
 
-        currCanvas.drawText(" Act to restart", width/6, height/6 + height/4, paint);
-        currCanvas.drawText(" Act to restart", width/6 + width/2, height/6 + height/4, paint);
+        currCanvas.drawText(" Act to restart", width/6, height/6 + 3*height/8, paint);
+        currCanvas.drawText(" Act to restart", width/6 + width/2, height/6 + 3*height/8, paint);
     }
 
 

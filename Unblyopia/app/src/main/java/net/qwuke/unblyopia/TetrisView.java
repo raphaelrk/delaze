@@ -63,6 +63,32 @@ public class TetrisView extends View {
     }
     */
 
+        if(tm.gameState == TetrisModel.GameState.IN_GAME) {
+            td.eraseShapes();
+            td.drawShapes();
+            //drawSide();
+
+            tm.motionSensorMove();
+
+            if(tm.bottomCollision()) {
+                tm.removeLines();
+            }
+
+            if(tm.time % tm.updateSpeed == 0) {
+                tm.moveDown();
+            }
+
+            tm.time++;
+        } else if(tm.gameState == TetrisModel.GameState.GAME_OVER) {
+            td.drawGameOverScreen();
+        } else if(tm.gameState == TetrisModel.GameState.PAUSED) {
+
+        } else if(tm.gameState == TetrisModel.GameState.MAIN_MENU) {
+            Log.d("TAG", "main menu");
+            td.drawMainMenu();
+        }
+
+        /*
         if(!tm.mainMenu) { // in-game
             if(!tm.paused) {
                 if(!tm.gameOver) {
@@ -89,7 +115,7 @@ public class TetrisView extends View {
             }
         } else { // in Main Menu
             td.drawMainMenu();
-        /*
+
         if(mouseIsPressed) {
             if(mouseX > 114 && mouseX < 296) {
                 // regular
@@ -100,13 +126,13 @@ public class TetrisView extends View {
                 }
             }
         }
-        */
-        }
+
+        }*/
 
         // td.drawMotion();
-        // Log.d(MainActivity.TAG, "Vx: " + tm.motionSensor.getVelocities()[0]);
-        // Log.d(MainActivity.TAG, "Vy: " + tm.motionSensor.getVelocities()[1]);
-        // Log.d(MainActivity.TAG, "Vz: " + tm.motionSensor.getVelocities()[2]);
+        //Log.d(MainActivity.TAG, "Vx: " + tm.motionSensor.getVelocities()[0]);
+        //Log.d(MainActivity.TAG, "Vy: " + tm.motionSensor.getVelocities()[1]);
+        //Log.d(MainActivity.TAG, "Vz: " + tm.motionSensor.getVelocities()[2]);
 
         // force redraw
         super.postInvalidate();

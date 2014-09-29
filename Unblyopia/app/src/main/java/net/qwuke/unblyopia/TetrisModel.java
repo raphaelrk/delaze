@@ -2,6 +2,7 @@ package net.qwuke.unblyopia;
 
 import android.graphics.Canvas;
 import android.os.Vibrator;
+import android.util.Log;
 
 /**
     * Holds the 'logic' and 'data' of the game
@@ -27,7 +28,7 @@ public class TetrisModel {
         LEFT, RIGHT, UP, DOWN
     }
 
-    private static final int VIBRATE_DURATION = 100;
+    private static final int LR_VIBRATE_DURATION = 10; // duration of vibration in ms for left/right movement
 
     //int borderX = 200;
     public int[] row = {0, 0, 1, 1};
@@ -80,10 +81,17 @@ public class TetrisModel {
     public int nextBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
     public Block nextBlockType = Block.getRandomBlock();
 
-    /** Game scenes **/
-    public boolean mainMenu = false;
-    public boolean gameOver = false;
-    public boolean paused = false;
+    /** Game state **/
+    public enum GameState {
+        MAIN_MENU, MAIN_MENU_INSTRUCTIONS, MAIN_MENU_ABOUT, MAIN_MENU_SETTINGS,
+        IN_GAME, PAUSED,
+        GAME_OVER
+    }
+    public GameState gameState = GameState.IN_GAME;
+
+    // public boolean mainMenu = false;
+    // public boolean gameOver = false;
+    // public boolean paused = false;
 
     /**  Input time constants
      * Ensures that buttons aren't clicked too quickly on accident
@@ -117,9 +125,10 @@ public class TetrisModel {
         nextBlockColor = 0x000000 + (int)(Math.random() * 255 + 255 * 255) + 1;
         nextBlockType = Block.getRandomBlock();
 
-        mainMenu = false;
-        gameOver = false;
-        paused = false;
+        gameState = GameState.IN_GAME;
+        // mainMenu = false;
+        // gameOver = false;
+        // paused = false;
         leftLag = defaultLagTime;
         rightLag = defaultLagTime;
         upLag = defaultLagTime *2;
@@ -496,7 +505,7 @@ public class TetrisModel {
             for(int i = 0; i < 4; i++)
                 col[i]--;
 
-            vibrator.vibrate(VIBRATE_DURATION);
+            vibrator.vibrate(LR_VIBRATE_DURATION);
         }
         if (input == Input.RIGHT && !rightCollision() && System.currentTimeMillis() - lastRightPressTime > rightLag) {
             rightLag -= lagChange; // allows user to hold right to slide right
@@ -507,7 +516,7 @@ public class TetrisModel {
             for(int i = 0; i < 4; i++)
                 col[i]++;
 
-            vibrator.vibrate(VIBRATE_DURATION);
+            vibrator.vibrate(LR_VIBRATE_DURATION);
         }
         if (input == Input.UP && System.currentTimeMillis() - lastUpPressTime > upLag) {
             upLag -= lagChange;
@@ -520,7 +529,7 @@ public class TetrisModel {
 
             rotateBlock();
 
-            vibrator.vibrate(VIBRATE_DURATION);
+            vibrator.vibrate(LR_VIBRATE_DURATION);
         }
         if (input == Input.DOWN && !bottomCollision()) {
             rightLag = defaultLagTime;
@@ -530,12 +539,49 @@ public class TetrisModel {
             for(int i = 0; i < 4; i++)
                 row[i]++;
 
-            vibrator.vibrate(VIBRATE_DURATION);
+            vibrator.vibrate(LR_VIBRATE_DURATION);
         }
 
         for(int i = 0; i < 4; i++)
             setBlock(col[i], row[i], currentBlockColor);
     }
+
+    /**
+     * update block based on accelerometer data
+     */
+    public void motionSensorMove() {
+        int leftCol = levelwidth;
+        int rightCol = -1;
+        for(int i = 0; i < col.length; i++) {
+            if(col[i] < leftCol) leftCol = col[i];
+            if(col[i] > rightCol) rightCol = col[i];
+        }
+        int blockwidth = rightCol - leftCol + 1;
+
+        int currentCol = leftCol;
+        int expectedCol = (int) map(motionSensor.getVelocities()[1], motionSensor.minYV/2, motionSensor.maxYV/2, 0, levelwidth - blockwidth);
+
+        if(expectedCol < currentCol) {
+            keyPressed(Input.LEFT);
+        } else if(expectedCol > currentCol) {
+            keyPressed(Input.RIGHT);
+        }
+    }
+
+    /**
+     * From processing.js source
+     * Re-maps a number from one range to another.
+     * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+     *
+     * @param {float} value        The incoming value to be converted
+     * @param {float} istart       Lower bound of the value's current range
+     * @param {float} istop        Upper bound of the value's current range
+     * @param {float} ostart       Lower bound of the value's target range
+     * @param {float} ostop        Upper bound of the value's target range
+     */
+    public double map(double value, double istart, double istop, double ostart, double ostop) {
+        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+    };
 
     /** sets your current block to what was shown and makes a
      * random next block
@@ -576,7 +622,8 @@ public class TetrisModel {
         }
 
         if(collision()) {
-            gameOver = true;
+            Log.d(MainActivity.TAG, "game over");
+            gameState = GameState.GAME_OVER; // gameOver = true;
         }
 
         currentBlockColor = nextBlockColor;
@@ -687,12 +734,26 @@ public class TetrisModel {
      * Rotates block in-game
      */
     public void actionButton() {
-        if(!mainMenu) { // in-game
+        if(gameState == GameState.IN_GAME) {
+            // Always give user feedback
+            vibrator.vibrate(100);
+            keyPressed(Input.UP);
+        } else if(gameState == GameState.GAME_OVER) {
+            vibrator.vibrate(100);
+            reset();
+        } else if(gameState == GameState.PAUSED) {
+            // un pause
+        } else if(gameState == GameState.MAIN_MENU) {
+            // perform selected action
+        } else if(gameState == GameState.MAIN_MENU_SETTINGS) {
+            // perform selected action - turn off music or calibrate accelerometer
+        }
+
+        /*
+        if(!gameState === GameState.MAIN_MENU) { // in-game
             if(!paused) {
                 if(!gameOver) {
-                    // Always give user feedback
-                    vibrator.vibrate(100);
-                    keyPressed(Input.UP);
+
                 }
                 else { // if game over
                     // Always give user feedback
@@ -705,7 +766,7 @@ public class TetrisModel {
             }
         } else { // in Main Menu
             // start
-        }
+        }*/
     }
 
     /**

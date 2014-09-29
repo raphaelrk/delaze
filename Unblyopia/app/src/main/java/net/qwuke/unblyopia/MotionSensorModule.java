@@ -36,6 +36,8 @@ public class MotionSensorModule implements SensorEventListener {
     private static float[] gravity = {0, 0, 0}; // "gravity" really means average acceleration
     private static float[] velocityAverage = {0, 0, 0};
 
+    public float minYV = 0, maxYV = 0;
+
     // used as the 't' in 'Vf = Vo * at'
     private Date lastUpdate;
 
@@ -110,6 +112,16 @@ public class MotionSensorModule implements SensorEventListener {
             velocityAverage[0] = velAlpha * velocity[0] + (1 - velAlpha) * mValues[0]; // velAlpha * grav[0] could work better
             velocityAverage[1] = velAlpha * velocity[1] + (1 - velAlpha) * mValues[1];
             velocityAverage[2] = velAlpha * velocity[2] + (1 - velAlpha) * mValues[2];
+        }
+
+        // update y velocity range
+        if(Math.abs(velocity[2]) < 40) {
+            if (velocity[1] < minYV) {
+                minYV = velocity[1];
+            }
+            if (velocity[1] > maxYV) {
+                maxYV = velocity[1];
+            }
         }
     }
 
