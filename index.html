@@ -10,12 +10,15 @@
     <meta name="author" content="">
 
     <title>DeLaze - Treating lazy eye in adults and children</title>
-
+	
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+	<!-- jQuery Version 1.11.0 -->
+    <script src="js/jquery-1.11.0.js"></script>
+	<script src="js/jquery.oLoader.js"></script>
     <!-- Custom CSS -->
     <link href="css/agency.css" rel="stylesheet">
+	<!-- Shamefully using preLoader -->
 
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,11 +33,22 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
-
 <body id="page-top" class="index">
-
+<script type='text/javascript'>
+$('body').oLoader({
+	wholeWindow: true, //makes the loader fit the window size
+	lockOverflow: true, //disable scrollbar on body
+	backgroundColor: '#000000',
+	imageBgColor: '#fff',
+	fadeInTime: 0,
+	style:4,
+	fadeLevel: 1,
+	effect:'slide',
+	image: 'img/285.gif',  
+	hideAfter: 2000
+});
+</script>
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -83,7 +97,7 @@
     <header>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-lead-in">Using Games and Google Cardboard</div>
+                <div class="intro-lead-in">Using video games and Google Cardboard</div>
                 <div class="intro-heading">to treat lazy eye in adults and children</div>
                 <a href="#howto" class="page-scroll btn btn-xl">Show Me How</a>
             </div>
@@ -174,7 +188,7 @@
 				</div>
 				<div class="text-center col-md-2">
 					<a class="thumbnail" href="https://github.com/raphaelrk/delaze">
-					<img alt="FORK US!" class="img-centered img-responsive" src="img/about/DeLazeLogo.png"/>
+					<img alt="FORK US!" class="img-centered img-responsive" src="img/about/DelazeLogo.png"/>
 					</a>
 				</div>
 			</div>
@@ -193,19 +207,23 @@
             <div class="row">
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: What is Google Cardboard? How can I get it?</h4>
-					<h5 class="text-justify">A: <a href="http://cardboard.withgoogle.com">Google Cardboard</a> is a DIY virtual reality(VR) headset that utilizes Android smartphones to create a low cost VR experience. To get google Cardboard you can either make it yourself and order the parts separately, or you can get a pre-assembled headset or kit for under $10.</h5>
+					<h5 class="text-justify">A: <a href="http://cardboard.withgoogle.com">Google Cardboard</a> is a DIY virtual reality(VR) headset that utilizes Android smartphones to create a low cost VR experience. To get google Cardboard you can either order the parts separately and make it yourself, or you can get a pre-assembled headset or kit for under $10.</h5>
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: I'm completely blind in on eye/one of my eyes is more closed than the other/my eye surgery failed, can this app help me?</h4>
-					<h5 class="text-justify">A: Delaze only treats amblyopia, also known as 'Lazy Eye', and if you are unsure if you have amblyopia you should see your doctor before using this app. Delaze is not a miracle cure for every eye problem, and we don't want you to waste your time on the app if you don't need to.</h5>
+					<h5 class="text-justify">A: Delaze is only effective in treating amblyopia, also known as 'Lazy Eye', and if you are unsure if you have amblyopia, then you should see your doctor before using this app. Delaze is not a miracle cure for every eye problem, and we don't want you to waste your time on the app if you don't need to.</h5>
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: How often and how long should I use your app?</h4>
-					<h5 class="text-justify">A: For the treatment to be effective you will need to use Delaze for 15 minutes to an hour everyday. For the quickest results, and especially for adults, the time spent on the app should be closer to the upper-end of that range.</h5>
+					<h5 class="text-justify">A: You will need to use Delaze for 15 minutes to an hour everyday in order for the treatment to be effective. For the quickest results, and especially for adults, the time spent on the app should be closer to the upper-end of that range.</h5>
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: Is my phone compatible with Google Cardboard? Can it run your app?</h4>
 					<h5 class="text-justify">A: Right now delaze only supports phones that run Android 4.1+. You can see a list of phones that are compatible with the Cardboard headset on the official website. If your phone is listed as incompatible with Cardboard, there's a fair chance our app does work on your phone but can't use the magnetic inputs. If that is the case, then you can buy a Cardboard headset that uses the touchscreen instead of the magnetometer from DODOcase.</h5>
+				</div>
+				<div class="col-lg-10 col-lg-offset-1 text-center">
+					<h4 class="text-center text-muted">Q: Hasn't lazyeyetetris.wordpress.com been around for a while?</h4>
+					<h5 class="text-justify">A: Lazyeyetris.wordpress.com is a scam. There have been no studies that have shown 3D Anaglyph can be used to treat amblyopia this way, and the scientists I have talked to have also said that the website essentially pushes snake-oil. This scammer charges about $5 per app and none of them do anything for lazy eye, so don't waste your money.</h5>
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: I'm having trouble moving the blocks left and right, what do I do?</h4>
@@ -213,15 +231,15 @@
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: Will DeLaze ever work on my iPhone?</h4>
-					<h5 class="text-justify">A: Probably, but not right now. Much of our app can easily be ported to iOS, and given that there are cardboard headsets that are compatible with iphone, we can say with confidence that it's not too far away.</h5>
+					<h5 class="text-justify">A: Probably, but not just yet. Much of our app can easily be ported to iOS, and given that there are cardboard headsets that are compatible with iphone, we can say with confidence that it's not too far away.</h5>
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: Are there going to be more games?</h4>
-					<h5 class="text-justify">A: Maybe. Hypothetically any 2D game that would force you to use binocular vision could be a treatment, but we aren't 100% sure and would prefer to ask scientists about it before we add any more games.</h5>
+					<h5 class="text-justify">A: Maybe. Any 2D game that would force the use of binocular vision could be a treatment in theory, but we aren't 100% sure and would prefer to ask scientists about it before we add any more games.</h5>
 				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: Is there any way I can contribute?</h4>
-					<h5 class="text-justify">A: Yes! If you know someone who would benefit from this treatment, then tell them about it because they aren't going to hear it from their doctor. If you think you can contribute code, then stop by our GitHub, we need any help we can get!</h5>
+					<h5 class="text-justify">A: Yes! If you know someone who would benefit from this treatment, then tell them about it because they aren't going to hear it from their doctor. If you think you can contribute code, then please stop by our GitHub, we need any help we can get!</h5>
 				</div>
             </div>
         </div>
@@ -270,7 +288,7 @@
                     <p class="large text-muted" style="color: #fff;">Anything we didn't cover in the FAQ? Found a bug? Want to give us feedback? Praise? Curious how to help out?</p>
                 </div>
 				<div class="col-lg-8 col-lg-offset-2 text-center">
-                    <p class="large text-muted" style="color: #fff;">Then hit us up</p>
+                    <p class="large text-muted" style="color: #fff;"><a href="http://scr.im/delaze">Then hit us up</a></p>
                 </div>
             </div>
         </div>
