@@ -38,7 +38,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1573" max-vertical-offset="2958">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2958">
               <caret line="124" column="52" selection-start-line="124" selection-start-column="52" selection-end-line="124" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -49,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TetrisView.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TetrisView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80100334" vertical-offset="1357" max-vertical-offset="2329">
-              <caret line="108" column="77" selection-start-line="108" selection-start-column="77" selection-end-line="108" selection-end-column="77" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1606" max-vertical-offset="2329">
+              <caret line="128" column="38" selection-start-line="128" selection-start-column="38" selection-end-line="128" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -64,32 +64,29 @@
       <file leaf-file-name="TetrisModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="273" max-vertical-offset="5372">
-              <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+            <state vertical-scroll-proportion="-149.03572" vertical-offset="281" max-vertical-offset="7089">
+              <caret line="580" column="0" selection-start-line="580" selection-start-column="0" selection-end-line="580" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="class#Block#0;class#TetrisModel#0" expanded="false" />
-                <element signature="method#reset#0;class#TetrisModel#0" expanded="false" />
-                <element signature="method#bottomCollision#0;class#TetrisModel#0" expanded="false" />
                 <element signature="method#leftCollision#0;class#TetrisModel#0" expanded="false" />
                 <element signature="method#rightCollision#0;class#TetrisModel#0" expanded="false" />
                 <element signature="method#collision#0;class#TetrisModel#0" expanded="false" />
                 <element signature="method#rotateBlock#0;class#TetrisModel#0" expanded="false" />
-                <element signature="method#keyPressed#0;class#TetrisModel#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TetrisDrawer.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TetrisDrawer.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisDrawer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3655" max-vertical-offset="4658">
-              <caret line="243" column="61" selection-start-line="243" selection-start-column="61" selection-end-line="243" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.54884547" vertical-offset="813" max-vertical-offset="4862">
+              <caret line="66" column="159" selection-start-line="66" selection-start-column="159" selection-end-line="66" selection-end-column="159" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#9558#9559#0" expanded="true" />
-                <element signature="e#9588#9589#0" expanded="true" />
+                <element signature="e#10235#10236#0" expanded="true" />
+                <element signature="e#10265#10266#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -109,10 +106,10 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/MotionSensorModule.java" />
-        <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisModel.java" />
         <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/MainActivity.java" />
-        <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisDrawer.java" />
+        <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisModel.java" />
         <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisView.java" />
+        <option value="$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisDrawer.java" />
       </list>
     </option>
   </component>
@@ -444,14 +441,14 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329718" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3991323" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32104123" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22451194" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32104123" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3286334" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -484,7 +481,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -508,18 +505,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1573" max-vertical-offset="2958">
-          <caret line="124" column="52" selection-start-line="124" selection-start-column="52" selection-end-line="124" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2821#2822#0" expanded="true" />
-            <element signature="e#2866#2867#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/MotionSensorModule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.1839464" vertical-offset="1731" max-vertical-offset="2329">
@@ -530,42 +515,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisModel.java">
+    <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="273" max-vertical-offset="5372">
-          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2958">
+          <caret line="124" column="52" selection-start-line="124" selection-start-column="52" selection-end-line="124" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#Block#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#reset#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#bottomCollision#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#leftCollision#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#rightCollision#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#collision#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#rotateBlock#0;class#TetrisModel#0" expanded="false" />
-            <element signature="method#keyPressed#0;class#TetrisModel#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisDrawer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3655" max-vertical-offset="4658">
-          <caret line="243" column="61" selection-start-line="243" selection-start-column="61" selection-end-line="243" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9558#9559#0" expanded="true" />
-            <element signature="e#9588#9589#0" expanded="true" />
+            <element signature="e#2821#2822#0" expanded="true" />
+            <element signature="e#2866#2867#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80100334" vertical-offset="1357" max-vertical-offset="2329">
-          <caret line="108" column="77" selection-start-line="108" selection-start-column="77" selection-end-line="108" selection-end-column="77" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1606" max-vertical-offset="2329">
+          <caret line="128" column="38" selection-start-line="128" selection-start-column="38" selection-end-line="128" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-149.03572" vertical-offset="281" max-vertical-offset="7089">
+          <caret line="580" column="0" selection-start-line="580" selection-start-column="0" selection-end-line="580" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#Block#0;class#TetrisModel#0" expanded="false" />
+            <element signature="method#leftCollision#0;class#TetrisModel#0" expanded="false" />
+            <element signature="method#rightCollision#0;class#TetrisModel#0" expanded="false" />
+            <element signature="method#collision#0;class#TetrisModel#0" expanded="false" />
+            <element signature="method#rotateBlock#0;class#TetrisModel#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unblyopia/app/src/main/java/net/qwuke/unblyopia/TetrisDrawer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.54884547" vertical-offset="813" max-vertical-offset="4862">
+          <caret line="66" column="159" selection-start-line="66" selection-start-column="159" selection-end-line="66" selection-end-column="159" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10235#10236#0" expanded="true" />
+            <element signature="e#10265#10266#0" expanded="true" />
           </folding>
         </state>
       </provider>

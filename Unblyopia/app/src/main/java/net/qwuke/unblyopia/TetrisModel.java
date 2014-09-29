@@ -1,17 +1,9 @@
 package net.qwuke.unblyopia;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Vibrator;
-import android.view.Display;
-import android.view.View;
-import android.view.WindowManager;
 
-    /**
+/**
     * Holds the 'logic' and 'data' of the game
     * This class is intended to not have to worry about
     * user events (TetrisController) or drawing (TetrisDrawer)
@@ -26,8 +18,8 @@ public class TetrisModel {
     private Vibrator vibrator;
 
     // colors
-    public static int activeEyeBlockColor = 0xff818CC7; // light blue
-    public static int dormantEyeBlockColor = 0xff182461; // dark blue
+    public static int activeEyeBlockColor = 0xff000000; //0xff818CC7; // light blue
+    public static int rightEyeBlockColor = 0x11000000; //0xff182461; // dark blue
     public static int bgColor = 0xff101B52; // darker blue
 
     // used in keyPress method
@@ -84,8 +76,8 @@ public class TetrisModel {
     private int currentBlockRotation = 0;//0, 90, 180, 270
     //this is how many degrees
     //clockwise it is
-    public int currentBlockColor = 0xffff0000;
-    public int nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
+    public int currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
+    public int nextBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
     public Block nextBlockType = Block.getRandomBlock();
 
     /** Game scenes **/
@@ -121,8 +113,8 @@ public class TetrisModel {
         linesCleared = 0;
         currentBlockType = Block.SQUARE;
         currentBlockRotation = 0;
-        currentBlockColor = 0xffff0000;
-        nextBlockColor = 0xff000000 + (int)(Math.random() * 255 + 255 * 255 * 255);
+        currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
+        nextBlockColor = 0x000000 + (int)(Math.random() * 255 + 255 * 255) + 1;
         nextBlockType = Block.getRandomBlock();
 
         mainMenu = false;
@@ -550,8 +542,8 @@ public class TetrisModel {
      */
     private void nextBlock() {
         // swap colors, might help both eyes train
-        int temp                 = dormantEyeBlockColor;
-        dormantEyeBlockColor = activeEyeBlockColor;
+        int temp                 = rightEyeBlockColor;
+        rightEyeBlockColor = activeEyeBlockColor;
         activeEyeBlockColor  = temp;
 
         if(nextBlockType == Block.SQUARE) { // square
@@ -590,7 +582,7 @@ public class TetrisModel {
         currentBlockColor = nextBlockColor;
         currentBlockType = nextBlockType;
         currentBlockRotation = 0;
-        nextBlockColor = (int) Math.floor(Math.random() * 255 + 255 * 255 * 255);
+        nextBlockColor = (int) Math.floor(Math.random() * 255 + 255 * 255) + 1;
         nextBlockType = Block.getRandomBlock();
     }
 

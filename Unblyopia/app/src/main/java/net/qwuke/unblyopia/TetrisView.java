@@ -104,9 +104,9 @@ public class TetrisView extends View {
         }
 
         // td.drawMotion();
-        Log.d(MainActivity.TAG, "Vx: " + tm.motionSensor.getVelocities()[0]);
-        Log.d(MainActivity.TAG, "Vy: " + tm.motionSensor.getVelocities()[1]);
-        Log.d(MainActivity.TAG, "Vz: " + tm.motionSensor.getVelocities()[2]);
+        // Log.d(MainActivity.TAG, "Vx: " + tm.motionSensor.getVelocities()[0]);
+        // Log.d(MainActivity.TAG, "Vy: " + tm.motionSensor.getVelocities()[1]);
+        // Log.d(MainActivity.TAG, "Vz: " + tm.motionSensor.getVelocities()[2]);
 
         // force redraw
         super.postInvalidate();

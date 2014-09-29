@@ -1,11 +1,11 @@
 package net.qwuke.unblyopia;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import net.qwuke.unblyopia.TetrisModel.Block;
@@ -38,28 +38,40 @@ public class TetrisDrawer {
      */
     public void drawShapes() {
 
-        // draw dormant blocks
+        // draw fallen blocks
         for(int r = 0; r < tm.levelheight; r++) {
             for(int c = 0; c < tm.levelwidth; c++) {
-                if(tm.getBlock(c, r) != 0) {
-                    paint.setColor(tm.dormantEyeBlockColor);
+                int color = tm.getBlock(c, r);
+                if(color != 0) {
+                    paint.setColor(tm.rightEyeBlockColor + color);
                     currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
-                    paint.setColor(tm.activeEyeBlockColor);
+                    paint.setColor(tm.activeEyeBlockColor + color);
                     currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
                 }
             }
         }
 
-        // draw active eye block colors
+        // draw active blocks
         for(int i = 0; i < tm.row.length; i++) {
             int r = tm.row[i];
             int c = tm.col[i];
-            if(tm.getBlock(c, r) != 0) {
-                paint.setColor(tm.activeEyeBlockColor);
+            int color = tm.getBlock(c, r);
+            if(color != 0) {
+                // clear active left block
+                paint.setColor(tm.bgColor);
                 currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
-                paint.setColor(tm.dormantEyeBlockColor);
+                // draw active left block
+                paint.setColor(tm.activeEyeBlockColor + color);
+                currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
+
+                // clear active right block
+                paint.setColor(tm.bgColor);
+                currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
+
+                // draw active left block
+                paint.setColor(tm.rightEyeBlockColor + color);
                 currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
             }
         }
