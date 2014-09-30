@@ -8,6 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    
+    <!-- Facebook OopenGraph tags -->
+    <meta property="og:title" content="Delaze: Treating lazy eye in adults and children"/>
+    <meta property="og:image" content="http://delaze.me/img/about/DelazeLogo.png"/>
+    <meta property="og:url" content="http://delaze.me"/>
+    <link rel="canonical" href="http://delaze.me" />
+    <meta property="og:site_name" content="The Delaze Lazy Eye Treatment"/>
+    <meta property="fb:app_id" content="1524906451087829" />
+    <meta property="article:author" content="https://www.facebook.com/delazeme" />
+    <meta property="og:description" content="Delaze is a Virtual Reality app to help treat lazy eye in children and adults, standing on the shoulders of a large body of research, and utilizing google cardboard technology to make it cost-effective."/>
+
 
     <title>DeLaze - Treating lazy eye in adults and children</title>
 	
@@ -48,6 +59,24 @@ $('body').oLoader({
 	image: 'img/285.GIF',  
 	hideAfter: 2000
 });
+</script>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1524906451087829',
+      xfbml      : true,
+      version    : 'v2.1'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 </script>
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
