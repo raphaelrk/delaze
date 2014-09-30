@@ -28,6 +28,7 @@
 	<!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
 	<script src="js/jquery.oLoader.js"></script>
+	<script src="js/jquery.videoBG.js"></script>
     <!-- Custom CSS -->
     <link href="css/agency.css" rel="stylesheet">
 	<!-- Shamefully using preLoader -->
@@ -139,6 +140,7 @@ $('body').oLoader({
     </nav>
 
     <!-- Header -->
+	
     <header>
         <div class="container">
             <div class="intro-text">
@@ -151,6 +153,17 @@ $('body').oLoader({
 	    </div>
         </div>
     </header>
+	<!--<script>
+	
+	$('header').videoBG({
+	mp4:'img/vid/DelazeBackgroundVideo.mp4',
+	ogv:'img/vid/DelazeBackgroundVideo.oggtheora.ogv',
+	webm:'img/vid/DelazeBackgroundVideo.webmhd.webm',
+	poster:'img/header-bg.jpg',
+	scale:true,
+	zIndex:3,
+	});
+	</script> -->
 
     <!-- HOW TO DELAZE -->
     <section id="howto">
@@ -172,7 +185,7 @@ $('body').oLoader({
 				   <br>
 				   <br>
 				   <h3><span class="label label-primary">Step 2</span></h3>
-				   <a class="thumbnail" href="http://www.cardboard.withgoogle.com" style="max-width:700px; margin:auto;">
+				   <a class="thumbnail" data-toggle="modal" data-target="#myModal" style="max-width:700px; margin:auto;">
 					<img alt="DeLaze Mockups!" class="img-centered img-responsive" src="img/howto/DelazePhones2.png"  />
 					</a>
 				   <h4 class="section-subheading text-muted">Download the app</h4>
@@ -180,7 +193,7 @@ $('body').oLoader({
 				   <br>
 				   <br>
 				   <h3><span class="label label-primary">Step 3</span></h3>
-				   <a class="thumbnail" href="http://www.cardboard.withgoogle.com" style="max-width:700px; margin:auto;">
+				   <a class="thumbnail" data-toggle="modal" data-target="#myModal" style="max-width:700px; margin:auto;">
 					<img alt="He's having SO MUCH FUN" class="img-centered img-responsive" src="img/howto/CensoredDemo.png"  />
 					</a>
 				   <h4 class="section-subheading text-muted">Start playing</h4>
@@ -253,6 +266,10 @@ $('body').oLoader({
                 </div>
             </div>
             <div class="row">
+				<div class="col-lg-10 col-lg-offset-1 text-center">
+					<h4 class="text-center text-muted">Q: I can't download your app!</h4>
+					<h5 class="text-justify">A: DeLaze Beta is planning on being released on October 1st until then, you can like us on Facebook or follow us on Twitter to hear about the developments.</h5>
+				</div>
 				<div class="col-lg-10 col-lg-offset-1 text-center">
 					<h4 class="text-center text-muted">Q: What is Google Cardboard? How can I get it?</h4>
 					<h5 class="text-justify">A: <a href="http://cardboard.withgoogle.com">Google Cardboard</a> is a DIY virtual reality(VR) headset that utilizes Android smartphones to create a low cost VR experience. To get google Cardboard you can either order the parts separately and make it yourself, or you can get a pre-assembled headset or kit for under $10.</h5>
@@ -404,10 +421,27 @@ $('body').oLoader({
             </div>
         </div>
     </footer>
-
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Sorry, DeLaze Beta hasn't been released yet</h4>
+      </div>
+      <div class="modal-body">
+        We have a tentative release date for October 1st. Until then, you can like us on Facebook or follow us on Twitter to see the developments.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+	</div>
+	</div>
+	
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
-
+	<script src="js/jquery.videoBG.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
