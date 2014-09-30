@@ -45,21 +45,9 @@
     <![endif]-->
 </head>
 <body id="page-top" class="index">
-<script type='text/javascript'>
-$('body').oLoader({
-	wholeWindow: true, //makes the loader fit the window size
-	lockOverflow: true, //disable scrollbar on body
-	backgroundColor: '#000000',
-	imageBgColor: '#fff',
-	fadeInTime: 0,
-	style:4,
-	fadeLevel: 1,
-	effect:'slide',
-	image: 'img/285.GIF',  
-	hideAfter: 2000
-});
-</script>
 
+<!-- FACEBOOK -->
+<div id="fb-root"></div>
 <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -77,6 +65,23 @@ $('body').oLoader({
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 </script>
+
+<!-- LOADING GIF -->
+<script type='text/javascript'>
+$('body').oLoader({
+	wholeWindow: true, //makes the loader fit the window size
+	lockOverflow: true, //disable scrollbar on body
+	backgroundColor: '#000000',
+	imageBgColor: '#fff',
+	fadeInTime: 0,
+	style:4,
+	fadeLevel: 1,
+	effect:'slide',
+	image: 'img/285.GIF',  
+	hideAfter: 2000
+});
+</script>
+
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -129,6 +134,9 @@ $('body').oLoader({
                 <div class="intro-heading">to treat lazy eye in adults and children</div>
                 <a href="#howto" class="page-scroll btn btn-xl">Show Me How</a>
             </div>
+            <div class="pull-right" style="position:relative; top:-20px;">
+	        <div class="fb-share-button" data-href="http://delaze.me"></div>
+	    </div>
         </div>
     </header>
 
