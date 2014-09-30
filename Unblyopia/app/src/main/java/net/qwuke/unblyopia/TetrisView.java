@@ -45,24 +45,6 @@ public class TetrisView extends View {
     protected void onDraw(Canvas canvas) {
         td.setCanvas(canvas);
 
-        // actual draw and update function
-    /* // pause if focus lost
-    if(focused == false) {
-        //paused = true;
-    }
-    */
-
-    /* // pause when pause button pressed
-    if(mouseIsPressed &&
-            System.currentTimeMillis() - lastPausePressTime > 500 &&
-            mouseX > 15 && mouseX < 181 &&
-            mouseY > 335 && mouseY < 360)
-    {
-        paused = !paused;
-        lastPausePressTime = System.currentTimeMillis();
-    }
-    */
-
         if(tm.gameState == TetrisModel.GameState.IN_GAME) {
             td.eraseShapes();
             td.drawShapes();
@@ -84,50 +66,8 @@ public class TetrisView extends View {
         } else if(tm.gameState == TetrisModel.GameState.PAUSED) {
 
         } else if(tm.gameState == TetrisModel.GameState.MAIN_MENU) {
-            Log.d("TAG", "main menu");
             td.drawMainMenu();
         }
-
-        /*
-        if(!tm.mainMenu) { // in-game
-            if(!tm.paused) {
-                if(!tm.gameOver) {
-                    td.eraseShapes();
-                    td.drawShapes();
-                    //drawSide();
-
-                    if(tm.bottomCollision()) {
-                        tm.removeLines();
-                    }
-
-                    if(tm.time % tm.updateSpeed == 0) {
-                        tm.moveDown();
-                    }
-
-                    tm.time++;
-                }
-                else { // if game over
-                    td.drawGameOverScreen();
-                }
-            }
-            else { // if paused
-                // drawSide();
-            }
-        } else { // in Main Menu
-            td.drawMainMenu();
-
-        if(mouseIsPressed) {
-            if(mouseX > 114 && mouseX < 296) {
-                // regular
-                if(mouseY > 167 && mouseY < 208) {
-                    rect(114, 167, 182, 41);
-                    mainMenu = false;
-                    paused = false;
-                }
-            }
-        }
-
-        }*/
 
         // td.drawMotion();
         //Log.d(MainActivity.TAG, "Vx: " + tm.motionSensor.getVelocities()[0]);

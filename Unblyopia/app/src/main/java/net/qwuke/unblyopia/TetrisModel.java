@@ -87,7 +87,8 @@ public class TetrisModel {
         IN_GAME, PAUSED,
         GAME_OVER
     }
-    public GameState gameState = GameState.IN_GAME;
+
+    public GameState gameState = GameState.MAIN_MENU;
 
     // public boolean mainMenu = false;
     // public boolean gameOver = false;
@@ -745,28 +746,11 @@ public class TetrisModel {
             // un pause
         } else if(gameState == GameState.MAIN_MENU) {
             // perform selected action
+
+            gameState = GameState.IN_GAME;
         } else if(gameState == GameState.MAIN_MENU_SETTINGS) {
             // perform selected action - turn off music or calibrate accelerometer
         }
-
-        /*
-        if(!gameState === GameState.MAIN_MENU) { // in-game
-            if(!paused) {
-                if(!gameOver) {
-
-                }
-                else { // if game over
-                    // Always give user feedback
-                    vibrator.vibrate(100);
-                    reset();
-                }
-            }
-            else { // if paused
-                // unpause
-            }
-        } else { // in Main Menu
-            // start
-        }*/
     }
 
     /**

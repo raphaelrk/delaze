@@ -204,43 +204,47 @@ public class TetrisDrawer {
         // background(255, 255, 255);
 
         paint.setColor(Color.WHITE);
-        paint.setTextSize(32);
-        currCanvas.drawText("  GAME OVER", width/6, height/6  + height/8, paint);
-        currCanvas.drawText("  GAME OVER", width/6 + width/2, height/6  + height/8, paint);
+        paint.setTextSize(24);
+        currCanvas.drawText("GAME OVER", width/6, height/6  + height/8, paint);
+        currCanvas.drawText("GAME OVER", width/6 + width/2, height/6  + height/8, paint);
 
         currCanvas.drawText("SCORE: " + tm.score, width/6, height/6 + 2*height/8, paint);
         currCanvas.drawText("SCORE: " + tm.score, width/6 + width/2, height/6 + 2*height/8, paint);
 
-        currCanvas.drawText(" Act to restart", width/6, height/6 + 3*height/8, paint);
-        currCanvas.drawText(" Act to restart", width/6 + width/2, height/6 + 3*height/8, paint);
+        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, width/6, height/6 + 2*height/8, paint);
+        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, width/6 + width/2, height/6 + 2*height/8, paint);
+
+        currCanvas.drawText("Act to restart", width/6, height/6 + 3*height/8, paint);
+        currCanvas.drawText("Act to restart", width/6 + width/2, height/6 + 3*height/8, paint);
     }
 
 
 
     /**
      * Draws the main menu
-     * Not added yet
      */
     public void drawMainMenu() {
         background(157, 184, 51);
 
         // "tetris"
-        int tetrisR = (int) (255 * Math.sin(System.currentTimeMillis()/50) + 255);
-        int tetrisG = (int) (255 * Math.cos(System.currentTimeMillis()/50) + 255);
-        int tetrisB = (int) (100 + 100 * Math.cos(System.currentTimeMillis()/50));
+        int tetrisR = (int) (255.0 * Math.sin(System.currentTimeMillis()/50.0) + 255);
+        int tetrisG = (int) (255.0 * Math.cos(System.currentTimeMillis()/50.0) + 255);
+        int tetrisB = (int) (100 + 100.0 * Math.cos(System.currentTimeMillis()/50));
         fill(tetrisR, tetrisG, tetrisB);
-        paint.setTextSize(91); // textSize(91);
-        currCanvas.drawText("tetris", 79/400*width/2, 92/400*height, paint);
-        currCanvas.drawText("tetris", 79/400*width/2 + width/2, 92/400*height, paint);
+
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(36);
+        currCanvas.drawText("Delaze", 135.0f/400*width/2, 180.0f/400*height, paint);
+        currCanvas.drawText("Delaze", 135.0f/400*width/2 + width/2.0f, 180.0f/400*height, paint);
 
         // Regular mode
         fill(255, 213, 0);
-        currCanvas.drawRect(114/400*width/2, 167/400*height, (114 + 182)/400*width/2, (167 + 41)/400*height, paint);
-        currCanvas.drawRect(114/400*width/2+width/2, 167/400*height, (114 + 182)/400*width/2+width/2, (167 + 41)/400*height, paint);
-        paint.setTextSize(37); // textSize(37);
-        paint.setColor(Color.BLACK);
-        currCanvas.drawText("Begin", 142/400*width/2, 200/400*height, paint);
-        currCanvas.drawText("Begin", 142/400*width/2+width/2, 200/400*height, paint);
+        currCanvas.drawRect(114.0f/400*width/2, 167.0f/400*height, (114 + 182)/400.0f*width/2, (167 + 41)/400.0f*height, paint);
+        currCanvas.drawRect(114.0f/400*width/2+width/2.0f, 167/400*height, (114 + 182)/400.0f*width/2+width/2.0f, (167 + 41)/400.0f*height, paint);
+        paint.setTextSize(24);
+        paint.setColor(Color.CYAN);
+        currCanvas.drawText("Click to begin", 127.0f/400*width/2, 220.0f/400*height, paint);
+        currCanvas.drawText("Click to begin", 127.0f/400*width/2+width/2.0f, 220.0f/400*height, paint);
     }
 
 
