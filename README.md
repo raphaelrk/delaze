@@ -4,7 +4,7 @@ Delaze
 ![Logo](http://delaze.me/img/about/DelazeLogo.png) 
 
 [Visit our site](http://delaze.me "delaze.me") • 
-[Follow our twitter](https://www.facebook.com/delazeme "@delazeMe") • 
+[Follow our twitter](https://twitter.com/delazeme "@delazeMe") • 
 [Like us on Facebook](https://www.facebook.com/delazeme "DeLaze page")
 
 
