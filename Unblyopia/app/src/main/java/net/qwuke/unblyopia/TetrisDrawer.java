@@ -204,18 +204,31 @@ public class TetrisDrawer {
         // background(255, 255, 255);
 
         paint.setColor(Color.WHITE);
-        paint.setTextSize(24);
-        currCanvas.drawText("GAME OVER", width/6, height/6  + height/8, paint);
-        currCanvas.drawText("GAME OVER", width/6 + width/2, height/6  + height/8, paint);
+        // paint.setTextSize(24);
+        // currCanvas.drawText("GAME OVER", width/6, height/6  + height/8, paint);
+        // currCanvas.drawText("GAME OVER", width/6 + width/2, height/6  + height/8, paint);
+//
+        // currCanvas.drawText("SCORE: " + tm.score, width/6, height/6 + 2*height/8, paint);
+        // currCanvas.drawText("SCORE: " + tm.score, width/6 + width/2, height/6 + 2*height/8, paint);
+//
+        // currCanvas.drawText("Lines Cleared: " + tm.linesCleared, width/6, height/6 + 2*height/8, paint);
+        // currCanvas.drawText("Lines Cleared: " + tm.linesCleared, width/6 + width/2, height/6 + 2*height/8, paint);
+//
+        // currCanvas.drawText("Act to restart", width/6, height/6 + 3*height/8, paint);
+        // currCanvas.drawText("Act to restart", width/6 + width/2, height/6 + 3*height/8, paint);
 
-        currCanvas.drawText("SCORE: " + tm.score, width/6, height/6 + 2*height/8, paint);
-        currCanvas.drawText("SCORE: " + tm.score, width/6 + width/2, height/6 + 2*height/8, paint);
+        paint.setTextSize(blockSize);
+        currCanvas.drawText("GAME OVER", xSideOffset + width/48, vertPadding + height/16, paint);
+        currCanvas.drawText("GAME OVER", xSideOffset + width/48 + width/2, vertPadding + height/16, paint);
 
-        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, width/6, height/6 + 2*height/8, paint);
-        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, width/6 + width/2, height/6 + 2*height/8, paint);
+        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48, vertPadding + height/16*2, paint);
+        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2, vertPadding + height/16*2, paint);
 
-        currCanvas.drawText("Act to restart", width/6, height/6 + 3*height/8, paint);
-        currCanvas.drawText("Act to restart", width/6 + width/2, height/6 + 3*height/8, paint);
+        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, xSideOffset + width/48, vertPadding + height/16*3, paint);
+        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, xSideOffset + width/48 + width/2, vertPadding + height/16*3, paint);
+
+        currCanvas.drawText("Act to restart", xSideOffset + width/48, vertPadding + height/16*4, paint);
+        currCanvas.drawText("Act to restart", xSideOffset + width/48 + width/2, vertPadding + height/16*4, paint);
     }
 
 
