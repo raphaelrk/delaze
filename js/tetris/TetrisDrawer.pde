@@ -231,7 +231,13 @@ public class TetrisDrawer {
 
         // variables reliant on screen width and height
         vertPadding = height/4;
-        blockSize = (height - 2*vertPadding) / 20;
+        blockSize = (height - 2*vertPadding) / tm.levelheight;
+        
+        if(blockSize * tm.levelwidth * 2 > width) {
+          blockSize = width/2/tm.levelwidth;
+          vertPadding = (height - blockSize * tm.levelheight)/4.0;
+        }
+        
         xSideOffset = width/8 - blockSize*tm.levelwidth/2;
         xRightSideOffset = width - width/8 - blockSize*tm.levelwidth/2;
         
