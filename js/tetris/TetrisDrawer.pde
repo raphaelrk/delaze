@@ -28,9 +28,11 @@ public class TetrisDrawer {
                 int colour = tm.getBlock(c, r);
                 if(colour != 0) {
                     fill(tm.rightEyeBlockColor + colour);
+                    fill(red(colour), green(colour), blue(colour), alpha(tm.rightEyeBlockColor));
                     rect(xSideOffset + getX(c), getY(r) + vertPadding, blockSize, blockSize); 
 
                     fill(tm.activeEyeBlockColor + colour);
+                    fill(red(colour), green(colour), blue(colour), alpha(tm.activeEyeBlockColor));
                     rect(xRightSideOffset + getX(c), getY(r) + vertPadding, blockSize, blockSize);
                 }
             }
@@ -49,6 +51,7 @@ public class TetrisDrawer {
 
                 // draw active left Block
                 fill(tm.activeEyeBlockColor + colour);
+                fill(red(colour), green(colour), blue(colour), alpha(tm.activeEyeBlockColor));
                 rect(xSideOffset + getX(c), getY(r) + vertPadding, blockSize, blockSize);
 
                 // clear active right Block
@@ -57,6 +60,7 @@ public class TetrisDrawer {
 
                 // draw active left Block
                 fill(tm.rightEyeBlockColor + colour);
+                fill(red(colour), green(colour), blue(colour), alpha(tm.rightEyeBlockColor));
                 rect(xRightSideOffset + getX(c), getY(r) + vertPadding, blockSize, blockSize);
             }
         }
@@ -70,7 +74,9 @@ public class TetrisDrawer {
     public void eraseShapes() {
         // background(255, 255, 255);
         background(0, 0, 0, 0); // transparent
-        fill(tm.bgColor);
+        // fill(tm.bgColor);
+        noFill();
+        stroke(tm.bgColor);
         rect(xSideOffset, vertPadding, blockSize * tm.levelwidth, blockSize * tm.levelheight);
         rect(xRightSideOffset, vertPadding, blockSize * tm.levelwidth, blockSize * tm.levelheight);
     }
@@ -245,6 +251,7 @@ public class TetrisDrawer {
         
         if(xSideOffset < 0) xSideOffset = 0;
         if(xRightSideOffset > width-blockSize*tm.levelwidth) xRightSideOffset = width-blockSize*tm.levelwidth;
+        
     }
 }
 

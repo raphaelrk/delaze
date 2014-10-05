@@ -9,9 +9,9 @@ public class TetrisModel {
     private long lastTimeMillis = 0;
 
     // colors
-    public int activeEyeBlockColor = color(0); // 0xff000000; //0xff818CC7; // light blue
+    public int activeEyeBlockColor = color(0, 0, 0, 230); // 0xff000000; //0xff818CC7; // light blue
     public int rightEyeBlockColor = color(0, 0, 0, 16); // 0x11000000; //0xff182461; // dark blue
-    public int bgColor = color(16, 27, 82); // 0xff101B52; // darker blue
+    public int bgColor = color(255, 255, 255, 255); // color(16, 27, 82, 20); // 0xff101B52; // darker blue
 
     //int borderX = 200;
     public int[] row = {0, 0, 1, 1};
@@ -29,8 +29,8 @@ public class TetrisModel {
     private int currentBlockRotation = 0;//0, 90, 180, 270
     //this is how many degrees
     //clockwise it is
-    public int currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
-    public int nextBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
+    public int currentBlockColor = color(0, random(0, 255), random(0, 255)); // (int)(Math.random() * 255 + 255 * 255) + 1;
+    public int nextBlockColor = color(0, random(0, 255), random(0, 255)); // (int)(Math.random() * 255 + 255 * 255) + 1;
     public int nextBlockType = Block.getRandomBlock();
 
     /** Game state **/
@@ -64,8 +64,8 @@ public class TetrisModel {
         linesCleared = 0;
         currentBlockType = Block.SQUARE;
         currentBlockRotation = 0;
-        currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
-        nextBlockColor = 0x000000 + (int)(Math.random() * 255 + 255 * 255) + 1;
+        currentBlockColor = color(0, random(0, 255), random(0, 255)); // (int)(Math.random() * 255 + 255 * 255) + 1;
+        nextBlockColor = color(0, random(0, 255), random(0, 255)); // 0x000000 + (int)(Math.random() * 255 + 255 * 255) + 1;
         nextBlockType = Block.getRandomBlock();
 
         gameState = GameState.IN_GAME;
