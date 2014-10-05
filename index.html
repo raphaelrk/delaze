@@ -11,7 +11,7 @@
     <meta name="keywords" content="delaze, lazy, eye, google, cardboard, app, virtual, reality">
     <meta name="author" content="Tristan Mortimer and Raphael Rouvinov">
     
-    <!-- Facebook OopenGraph tags -->
+    <!-- Facebook OopenGraphael tags -->
     <meta property="og:title" content="Delaze: Treating lazy eye in adults and children"/>
     <meta property="og:image" content="http://delaze.me/img/about/DelazeLogo.png"/>
     <meta property="og:url" content="http://delaze.me"/>
@@ -22,6 +22,7 @@
 
 
     <title>DeLaze - Treating lazy eye in adults and children</title>
+    <!-- Looking for pet rocks to beta-test it, too, hit us up-->
 	
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -45,7 +46,19 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- handle resizing for tetris -->
+    <script type="text/javascript">
+        // http://littlesvr.ca/grumble/2012/06/02/scalable-html-canvas-processing-js-sketch/
+        function resizeCanvas()
+        {
+            Processing.getInstanceById("tetris").size(window.innerWidth, window.innerHeight);
+            Processing.getInstanceById("tetris").scale(1, 1);
+        }
+    </script>
+
 	<style>
+    /* Do in-line styles hurt SEO? Because they should */
 	.fbshare {
 		position:relative; 
 		top:-20px; 
@@ -53,46 +66,58 @@
 		background-color: #f0ffff; 
 		border-radius: 2px;
 	}
+
+    #tetris_div {
+        position:fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height:100%;
+        z-index: -1;
+    }
 	</style>
 
 </head>
-<body id="page-top" class="index">
+<body id="page-top" class="index" onload="resizeCanvas();" onresize="resizeCanvas();">
 
-<!-- FACEBOOK -->
-<div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '1524906451087829',
-      xfbml      : true,
-      version    : 'v2.1'
+    <!-- FACEBOOK -->
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1524906451087829',
+          xfbml      : true,
+          version    : 'v2.1'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <!-- LOADING GIF -->
+    <script type='text/javascript'>
+    $('body').oLoader({
+    	wholeWindow: true, //makes the loader fit the window size
+    	lockOverflow: true, //disable scrollbar on body
+    	backgroundColor: '#000000',
+    	imageBgColor: '#fff',
+    	fadeInTime: 0,
+    	style:4,
+    	fadeLevel: 1,
+    	effect:'slide',
+    	image: 'img/285.GIF',  
+    	hideAfter: 2000
     });
-  };
+    </script>
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
-
-<!-- LOADING GIF -->
-<script type='text/javascript'>
-$('body').oLoader({
-	wholeWindow: true, //makes the loader fit the window size
-	lockOverflow: true, //disable scrollbar on body
-	backgroundColor: '#000000',
-	imageBgColor: '#fff',
-	fadeInTime: 0,
-	style:4,
-	fadeLevel: 1,
-	effect:'slide',
-	image: 'img/285.GIF',  
-	hideAfter: 2000
-});
-</script>
+    <!-- div whose background is tetris -->
+    <div id="tetris_div"></div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -299,6 +324,11 @@ $('body').oLoader({
 					<h4 class="text-center text-muted">Q: Is there any way I can contribute?</h4>
 					<h5 class="text-justify">A: Yes! If you know someone with lazy eye who could use this treatment, let them know about it because they aren't going to hear it from their physician. If you think you can contribute code, then please stop by our GitHub, we definitely appreciate the help.</h5>
 				</div>
+                <!-- Q: Will this work on my pet rock? -->
+                <!-- A: We're doing clinical trials on that right now. Contact us if you're interested in being a part of that -->
+
+                <!-- Q: Will this treat my overall laziness? -->
+                <!-- A: We'll get back with an answer tomorrow  -->
             </div>
         </div>
     </section>
@@ -391,6 +421,7 @@ $('body').oLoader({
             <div class="row">
                 <div class="col-md-4">
                     <span class="copyright">Made with ♥ in Detroit and Chicagoland</span>
+                    <!-- And Ann Arbor, since we started working on this at MHacks -->
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
@@ -460,6 +491,43 @@ $('body').oLoader({
     <!-- Custom Theme JavaScript -->
     <script src="js/agency.js"></script>
 
+    <!-- processing.js -->
+    <script src="js/processing-1.1.0.min.js"></script>
+
+    <!-- Canvas for tetris -->
+    <canvas style="display:none" id="tetris" class="processingcanvas" data-processing-sources="js/tetris/tetris.pde js/tetris/TetrisModel.pde js/tetris/TetrisDrawer.pde js/tetris/Block.pde js/tetris/Gamestate.pde js/tetris/Key.pde"></canvas>
+
+    <!-- script for canvas: handles redraw and mouse clicking/movement -->
+    <script type="text/javascript">
+            var canvas = document.getElementById('tetris');
+            var frame_rate = 30;
+            var mouse_x = 0;
+            (function() {
+                window.onmousemove = handleMouseMove;
+                function handleMouseMove(event) {
+                    event = event || window.event; // IE-ism
+                    mouse_x = event.clientX;
+                    // event.clientX and event.clientY contain the mouse position
+                }
+            })();
+
+            (function() {
+                window.onmouseup = handleMouseUp;
+                function handleMouseUp(event) {
+                    event = event || window.event; // IE-ism
+                    tet = Processing.getInstanceById('tetris');
+                    tet.mouseReleased();
+                    // event.clientX and event.clientY contain the mouse position
+                }
+            })();
+
+
+            setInterval(function(){
+              $('#tetris_div').css({
+                'background-image' : 'url(' + canvas.toDataURL("image/png") + ')'
+              });
+            },1000/frame_rate);
+        </script>
 </body>
 
 </html>
