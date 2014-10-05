@@ -87,6 +87,15 @@ public class TetrisDrawer {
         int x = map(c, 0, tm.levelwidth, width/4.0, width * 3.0/4);
         line(x, 0, x, height);
       }
+      
+      stroke(0, 0, 0, 20);
+      line(width/2, vertPadding, width/2, vertPadding + blockSize*tm.levelheight);
+      
+      for(int c = 1; c < tm.levelwidth; c++) {
+        int x = map(c, 0, tm.levelwidth, width/4.0, width * 3.0/4);
+        line(x - 1, vertPadding, x + 1, vertPadding);
+        line(x - 1, vertPadding + blockSize*tm.levelheight, x + 1, vertPadding + blockSize*tm.levelheight);
+      }
     }
 
 
