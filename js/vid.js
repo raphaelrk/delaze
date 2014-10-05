@@ -4,7 +4,7 @@ var $player = $('#player');
 			var $win = $(window);
 			var resizeTimeout = null;
 			var shouldResize = true;
-			var shouldPosition = false;
+			var shouldPosition = true;
 			var videoRatio = 16 / 9;
 
 			player.volume = 0; // mute
