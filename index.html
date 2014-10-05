@@ -534,7 +534,7 @@
             })();
 
             
-            setInterval(function(){
+            var drawInterval = setInterval(function(){
                 if(window.innerWidth > 1440) {
                     $('#tetris_div').css({
                         'background-image' : 'url(' + canvas.toDataURL("image/png") + ')',
