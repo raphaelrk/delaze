@@ -49,11 +49,18 @@
 
     <!-- handle resizing for tetris -->
     <script type="text/javascript">
+        var wideBrowserWidth = 1440;
         // http://littlesvr.ca/grumble/2012/06/02/scalable-html-canvas-processing-js-sketch/
         function resizeCanvas()
         {
-            Processing.getInstanceById("tetris").size(window.innerWidth, window.innerHeight);
-            Processing.getInstanceById("tetris").scale(1, 1);
+            if(window.innerWidth > wideBrowserWidth) {
+                Processing.getInstanceById("tetris").size(window.innerWidth, window.innerHeight);
+                Processing.getInstanceById("tetris").scale(1, 1);
+            } else {
+                Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
+                Processing.getInstanceById("tetris").scale(1, 1);
+            }
+            
         }
     </script>
 
@@ -546,7 +553,7 @@
 
             
             var drawInterval = setInterval(function(){
-                if(window.innerWidth > 1440) {
+                if(window.innerWidth > wideBrowserWidth) {
                     $('#tetris_div').css({
                         'background-image' : 'url(' + canvas.toDataURL("image/png") + ')',
                         'position': 'fixed',
