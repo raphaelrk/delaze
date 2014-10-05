@@ -31,6 +31,7 @@ void draw() {
     
     if(tm.gameState == GameState.IN_GAME) {
         td.eraseShapes();
+        td.drawGridLines();
         td.drawShapes();
         //drawSide();
 

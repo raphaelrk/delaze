@@ -80,6 +80,14 @@ public class TetrisDrawer {
         rect(xSideOffset, vertPadding, blockSize * tm.levelwidth, blockSize * tm.levelheight);
         rect(xRightSideOffset, vertPadding, blockSize * tm.levelwidth, blockSize * tm.levelheight);
     }
+    
+    public void drawGridLines() {
+      stroke(0, 0, 0, 10);
+      for(int c = 1; c < tm.levelwidth; c++) {
+        int x = map(c, 0, tm.levelwidth, width/4.0, width * 3.0/4);
+        line(x, 0, x, height);
+      }
+    }
 
 
     /**
