@@ -5,6 +5,8 @@
  * Tetris implementation for Processing / processing.js
  * Embedded in http://www.delaze.me
  */
+ 
+/* @pjs transparent="true"; */
 
 TetrisModel tm;
 TetrisDrawer td;
@@ -14,6 +16,7 @@ public void setup() {
   frameRate(frame_rate);
   tm = new TetrisModel();
   td = new TetrisDrawer(tm);
+  background(0, 0, 0, 0);
 }
 
 /**

@@ -68,7 +68,8 @@ public class TetrisDrawer {
      * Erases the screen
      */
     public void eraseShapes() {
-        background(255, 255, 255);
+        // background(255, 255, 255);
+        background(0, 0, 0, 0); // transparent
         fill(tm.bgColor);
         rect(xSideOffset, vertPadding, blockSize * tm.levelwidth, blockSize * tm.levelheight);
         rect(xRightSideOffset, vertPadding, blockSize * tm.levelwidth, blockSize * tm.levelheight);
@@ -188,7 +189,8 @@ public class TetrisDrawer {
      * Draws the main menu
      */
     public void drawMainMenu() {
-        background(157, 184, 51);
+        // background(157, 184, 51);
+        eraseShapes();
 
         // "tetris"
         int tetrisR = (int) (255.0 * Math.sin(millis()/50.0) + 255);
