@@ -505,14 +505,19 @@
     <!-- processing.js -->
     <script src="js/processing-1.1.0.min.js"></script>
 
+    <!-- script 1 for canvas: declares variables necessary in sketch -->
+    <script type="text/javascript">
+        var mouse_x = 0;
+        var frame_rate = 30;
+    </script>
+
     <!-- Canvas for tetris -->
     <canvas style="display:none" id="tetris" class="processingcanvas" data-processing-sources="js/tetris/tetris.pde js/tetris/TetrisModel.pde js/tetris/TetrisDrawer.pde js/tetris/Block.pde js/tetris/GameState.pde js/tetris/Key.pde"></canvas>
 
-    <!-- script for canvas: handles redraw and mouse clicking/movement -->
+    <!-- script 2 for canvas: handles redraw and mouse clicking/movement -->
     <script type="text/javascript">
             var canvas = document.getElementById('tetris');
-            var frame_rate = 30;
-            var mouse_x = 0;
+            
             (function() {
                 window.onmousemove = handleMouseMove;
                 function handleMouseMove(event) {
