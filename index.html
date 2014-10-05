@@ -28,7 +28,7 @@
 	<!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
 	<script src="js/jquery.oLoader.js"></script>
-	<script src="js/jquery.videoBG.js"></script>
+	<script src="js/vid.js"></script>
     <!-- Custom CSS -->
     <link href="css/agency.css" rel="stylesheet">
 
@@ -140,37 +140,25 @@ $('body').oLoader({
 
     <!-- Header -->
 
-    <header style="max-height:800px;">
-		<div class="container" style="position:absolute;z-index=2;width:100%;">
-            <div class="intro-text" style="position:relative;margin:auto;max-width:90%">
-				<br>
-				<br>
-				<br>
+    <header style="max-height:110vh;overflow:hidden;">
+		<div class="container" style="position:absolute;z-index=2;width:100%;height:110vh;background-color:#000;opacity:.8;">
+	    </div>
+		<div class="container" style="position:absolute;z-index=4;width:100%;">
+            <div class="intro-text" style="position:relative;margin:auto;">
                 <div class="intro-lead-in">Using video games and Google Cardboard</div>
                 <div class="intro-heading">to treat lazy eye at any age</div>
-				<br>
-				<br>
-                <a href="#howto" class="page-scroll btn btn-xl">Show Me How</a>
+				<div style="height:25vh;"></div>
+                <a href="#howto" class="page-scroll btn btn-xl" style="position:relative;bottom:0;">Show Me How</a>
             </div>
 	    </div>
-		<video autoplay preload="auto" loop muted="muted" poster="img/header-bg.jpg" style="z-index:1;min-width=100%;object-fit:cover;">
+		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" id="player" style="width=100%;height=100%;">
 			<source src="img/vid/DelazeBackgroundVideo.mp4" type="video/mp4">
-			<source src="/videos/index.ogv" type="video/ogg">
+			<source src="img/vid/DelazeBackgroundVideo.oggtheora.ogv" type="video/ogg">
+			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
 		</video>
     </header>
-
-	<!-- <script>
-	$('#blam').videoBG({
-	mp4:'img/vid/DelazeBackgroundVideo.mp4',
-	ogv:'img/vid/DelazeBackgroundVideo.oggtheora.ogv',
-	webm:'img/vid/DelazeBackgroundVideo.webmhd.webm',
-	poster:'img/header-bg.jpg',
-	scale:true,
-	zIndex:4,
-	});
-	</script> -->
     <!-- HOW TO DELAZE -->
-    <section id="howto" style="z-index:2">
+    <section id="howto" style="z-index:3;background-color:#FFFFFF;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -205,6 +193,7 @@ $('body').oLoader({
                 </div>
             </div>
         </div>
+		
     </section>
     <!-- Our Gritty Origin Story -->
     <section id="about" class="bg-light-gray">
@@ -357,7 +346,7 @@ $('body').oLoader({
                     <p class="large text-muted" style="color: #fff;">Anything we didn't cover in the FAQ? Found a bug? Want to give us feedback? Praise? Curious how to help out?</p>
                 </div>
 				<div class="col-lg-8 col-lg-offset-2 text-center">
-                    <p class="large text-muted" style="color: #fff;"><a href="http://scr.im/delaze">Then hit us up</a></p>
+				<a href="http://scr.im/delaze" class="page-scroll btn btn-xl" style="position:relative;bottom:0;">Then hit us up</a>
                 </div>
             </div>
         </div>

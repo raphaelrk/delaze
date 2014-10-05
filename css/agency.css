@@ -864,3 +864,16 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #00E6E6;
 }
+/* CSS Transforms */
+
+.transform {
+	transform: scale(1);
+	-webkit-transform: scale(1);
+}
+
+/* CSS Transform-Origin */
+
+.transform-origin {
+	transform-origin: 20% 50%;
+	-webkit-transform-origin: 20% 50%;
+}
