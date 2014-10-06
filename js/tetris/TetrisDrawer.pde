@@ -207,7 +207,7 @@ public class TetrisDrawer {
         textSize(blockSize);
         drawGameOverText();
         
-        var outlineDisplacement = blockSize * 0.05;
+        var outlineDisplacement = blockSize * 0.1;
         
         // outline text
         for(var x = -outlineDisplacement; x <= outlineDisplacement; x++) {
