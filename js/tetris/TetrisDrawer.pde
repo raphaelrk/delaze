@@ -183,16 +183,7 @@ public class TetrisDrawer {
         text("By Raphael and Tristan", 72, 394);
     }
 
-
-
-    /**
-     * Draw GAME OVER on the screen
-     */
-    public void drawGameOverScreen() {
-        // background(255, 255, 255);
-
-        fill(255);
-        textSize(blockSize);
+    private void drawGameOverText() {
         text("GAME OVER", xSideOffset + width/48, vertPadding + height/16);
         text("GAME OVER", xRightSideOffset + width/48, vertPadding + height/16);
 
@@ -204,6 +195,29 @@ public class TetrisDrawer {
 
         text("Act to restart", xSideOffset + width/48, vertPadding + height/16*4);
         text("Act to restart", xRightSideOffset + width/48, vertPadding + height/16*4);
+    }
+
+    /**
+     * Draw GAME OVER on the screen
+     */
+    public void drawGameOverScreen() {
+        // background(255, 255, 255);
+
+        fill(0);
+        textSize(blockSize);
+        drawGameOverText();
+        
+        // outline text
+        for(var x = -blockSize*1.05; x <= blockSize*1.05; x++) {
+            for(var y = -blockSize*1.05; y <= blockSize*1.05; y++) {
+                translate(x, y);
+                drawGameOverText();
+                resetMatrix();
+            }
+        }
+        
+        fill(255);
+        drawGameOverText();
     }
 
 
