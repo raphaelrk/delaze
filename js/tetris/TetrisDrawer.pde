@@ -207,9 +207,11 @@ public class TetrisDrawer {
         textSize(blockSize);
         drawGameOverText();
         
+        var outlineDisplacement = blockSize * 0.05;
+        
         // outline text
-        for(var x = -blockSize*1.05; x <= blockSize*1.05; x++) {
-            for(var y = -blockSize*1.05; y <= blockSize*1.05; y++) {
+        for(var x = -outlineDisplacement; x <= outlineDisplacement; x++) {
+            for(var y = -outlineDisplacement; y <= outlineDisplacement; y++) {
                 translate(x, y);
                 drawGameOverText();
                 resetMatrix();
