@@ -181,23 +181,24 @@
 
     <!-- Header -->
 
-    <header style="max-height:110vh;overflow:hidden;">
-		<div class="container" style="position:absolute;z-index=2;width:100%;height:110vh;background-color:#000;opacity:.8;">
+    <header style="height:110vh;overflow:hidden;">
+		<div style="position:absolute;z-index=2;width:200%;min-height:200%;background-color:#000;opacity:.8;overflow:hidden;">
 	    </div>
-		<div class="container" style="position:absolute;z-index=5;width:100%;">
-            <div class="intro-text" style="position:relative;margin:auto;">
+		<div class="container" style="position:absolute;z-index=5;width:100%;height:100%">
+            <div class="intro-text" style="position:relative;margin:auto;top:50%;transform: translate(0,-50%);">
                 <div class="intro-lead-in">Using video games and Google Cardboard</div>
                 <div class="intro-heading">to treat lazy eye at any age</div>
-				<div style="height:25vh;"></div>
-                <a href="#howto" class="page-scroll btn btn-xl" style="position:relative;bottom:0;">Show Me How</a>
+                <a href="#howto" class="page-scroll btn btn-xl" >Show Me How</a>
             </div>
 	    </div>
-		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" id="player" style="width=100%;height=100%;">
-			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
-			<source src="img/vid/DelazeBackgroundVideo.mp4" type="video/mp4">
+		<div>
+
+		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" id="player"  style="z-index:-1;min-width:110vw;min-height:110vh;position:absolute;top: 55%;left: 50%;transform:translate(-50%, -50%);">
+			<source src="img/vid/DelazeBackgroundVideo2.m4v" type="video/mp4">
 			<source src="img/vid/DelazeBackgroundVideo.oggtheora.ogv" type="video/ogg">
-			You dont appear to have HTML5 video compatibility 
+			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
 		</video>
+		</div>
     </header>
     <!-- HOW TO DELAZE -->
     <section id="howto" class="below_tetris" style="background-color:#FFFFFF;">
@@ -292,16 +293,16 @@
     </section>
 
     <!-- div whose background is tetris -->
-    <section id="tetris_div">
+    <!-- <section id="tetris_div">
         <div class="container hidden-lg">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                                <!-- Canvas for tetris -->
+                                Canvas for tetris 
                     <canvas id="tetris" width="100%" height="100%" class="processingcanvas" data-processing-sources="js/tetris/tetris.pde js/tetris/TetrisModel.pde js/tetris/TetrisDrawer.pde js/tetris/Block.pde js/tetris/GameState.pde js/tetris/Key.pde"></canvas>
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- There is no such thing as a stupid question, unless it is in the FAQ -->
     <section id="FAQ" class="below_tetris">
@@ -451,6 +452,7 @@
                 <div class="col-md-4">
                     <span class="copyright">Made with ♥ in Detroit and Chicagoland</span>
                     <!-- And Ann Arbor, since we started working on this at MHacks -->
+					<!-- Shhhhhh -->
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
@@ -504,7 +506,6 @@
 	
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
-	<script src="js/jquery.videoBG.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
@@ -526,7 +527,7 @@
     <!-- script 1 for canvas: declares variables necessary in sketch -->
     <script type="text/javascript">
         var mouse_x = 0;
-        var frame_rate = 30;
+        var frame_rate = 10;
     </script>
 
     <!-- script 2 for canvas: handles redraw and mouse clicking/movement -->
@@ -556,7 +557,7 @@
                 if(window.innerWidth > wideBrowserWidth) {
                     $('#tetris_div').css({
                         'background-image' : 'url(' + canvas.toDataURL("image/png") + ')',
-                        'position': 'fixed',
+                        'position': 'absolute',
                         'top': '0px',
                         'left': '0px',
                         'width': '100%',
