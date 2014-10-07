@@ -63,9 +63,21 @@
             
         }
     </script>
-
+	<script type="text/javascript">
+	function scaleToFill(videoTag) {
+    var $video = $(videoTag),
+        videoRatio = videoTag.videoWidth / videoTag.videoHeight,
+        tagRatio = $video.width() / $video.height();
+    if (videoRatio < tagRatio) {
+            $video.css('-webkit-transform','scaleX(' + tagRatio / videoRatio  + ')')
+    } else if (tagRatio < videoRatio) {
+            $video.css('-webkit-transform','scaleY(' + videoRatio / tagRatio  + ')')
+    }
+	}
+	</script>
 	<style>
     /* Do in-line styles hurt SEO? Because they should */
+	/* They do. I'm finna put all the in-line styles and scripts in agency.css and agency.js. Also SEO: we should do that seriously at some point. */
 	.fbshare {
 		position:relative; 
 		top:-20px; 
@@ -181,8 +193,8 @@
 
     <!-- Header -->
 
-    <header style="height:110vh;overflow:hidden;">
-		<div style="position:absolute;z-index=2;width:200%;min-height:200%;background-color:#000;opacity:.8;overflow:hidden;">
+    <header style="height:110vh;width:100%;overflow:hidden;">
+		<div style="position:absolute;z-index=2;width:100%;min-height:110vh;background-color:#000;opacity:.8;overflow:hidden;">
 	    </div>
 		<div class="container" style="position:absolute;z-index=5;width:100%;height:100%">
             <div class="intro-text" style="position:relative;margin:auto;top:50%;transform: translate(0,-50%);">
@@ -191,9 +203,9 @@
                 <a href="#howto" class="page-scroll btn btn-xl" >Show Me How</a>
             </div>
 	    </div>
-		<div>
+		<div style="overflow:hidden;">
 
-		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" id="player"  style="z-index:-1;min-width:110vw;min-height:110vh;position:absolute;top: 55%;left: 50%;transform:translate(-50%, -50%);">
+		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" id="player"  style="z-index:-1;width:100%;min-height:110vh;position:absolute;top: 55%;left: 50%;transform:translate(-50%, -50%);overflow:hidden;">
 			<source src="img/vid/DelazeBackgroundVideo2.m4v" type="video/mp4">
 			<source src="img/vid/DelazeBackgroundVideo.oggtheora.ogv" type="video/ogg">
 			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
