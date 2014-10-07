@@ -291,6 +291,13 @@ this.ResizeVideo = function(_VideoElement)
     <header style="height:110vh;width:100%;overflow:hidden;">
 		<div style="position:absolute;z-index=2;width:100%;height:110vh;background-color:#000;opacity:.8;overflow:hidden;" id="headbg">
 	    </div>
+		<div style="position:absolute;height:110vh;width:100%;overflow:hidden;z-index:-1;">
+		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" class="StretchtoFit"  style="z-index:-1;width:100%;position:absolute;overflow:hidden;top:0;left:0;">
+			<source src="img/vid/DelazeBackgroundVideo2.m4v" type="video/mp4">
+			<source src="img/vid/DelazeBackgroundVideo.oggtheora.ogv" type="video/ogg">
+			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
+		</video>
+		</div>
 		<div class="container" style="position:absolute;z-index=5;width:100%;height:100%">
             <div class="intro-text" style="position:relative;margin:auto;top:50%;transform: translate(0,-50%);">
                 <div class="intro-lead-in">Using video games and Google Cardboard</div>
@@ -298,13 +305,6 @@ this.ResizeVideo = function(_VideoElement)
                 <a href="#howto" class="page-scroll btn btn-xl" >Show Me How</a>
             </div>
 	    </div>
-		<div style="position:absolute;height:110vh;width:100%;overflow:hidden;">
-		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" class="StretchtoFit"  style="z-index:-1;width:100%;position:absolute;overflow:hidden;top:0;left:0;">
-			<source src="img/vid/DelazeBackgroundVideo2.m4v" type="video/mp4">
-			<source src="img/vid/DelazeBackgroundVideo.oggtheora.ogv" type="video/ogg">
-			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
-		</video>
-		</div>
     </header>
     <!-- HOW TO DELAZE -->
     <section id="howto" class="below_tetris" style="background-color:#FFFFFF;">
