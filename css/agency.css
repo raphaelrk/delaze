@@ -9,7 +9,8 @@ body {
     font-family: "Roboto Slab","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 @media screen and (max-device-width: 800px) {
-header { background: url(../img/Header.png) #000 no-repeat center center fixed; }
+header { background-image: url(../img/Header.png); 
+background-color: #000000;}
 #player { display:none;}
 }
 .text-muted {

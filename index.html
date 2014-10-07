@@ -64,15 +64,110 @@
         }
     </script>
 	<script type="text/javascript">
-	function scaleToFill(videoTag) {
-    var $video = $(videoTag),
-        videoRatio = videoTag.videoWidth / videoTag.videoHeight,
-        tagRatio = $video.width() / $video.height();
-    if (videoRatio < tagRatio) {
-            $video.css('-webkit-transform','scaleX(' + tagRatio / videoRatio  + ')')
-    } else if (tagRatio < videoRatio) {
-            $video.css('-webkit-transform','scaleY(' + videoRatio / tagRatio  + ')')
-    }
+	$(window).load(function()
+{
+	var $bodyElement = $('body');
+
+	if(InitialiseDomScripts())
+	{
+		console.log('Initialised Dom Scripts Successfully');
+	}
+	else
+	{
+		console.log('Failed to Initialise Dom Scripts');
+	}
+
+});
+
+
+//Wait for the Videos to load To add Event listeners
+$(document).ready(function()
+{
+	if(InitialiseDocReadyScripts())
+	{
+		console.log('Initialised Document Ready Scripts Successfully');
+	}
+	else
+	{
+		console.log('Failed to Initialise Document Ready Scripts');
+	}
+});
+
+
+
+//Initialise Dom Scripts here
+this.InitialiseDomScripts = function()
+{
+	AddDomReadyListeners();
+	return true; //return true for Initialisation
+}
+
+this.InitialiseDocReadyScripts = function()
+{
+	AddDocReadyListeners();
+	OnResize();
+
+	return true;
+}
+
+this.AddDomReadyListeners = function()
+{
+	//Add a window listener, see when the window is resized
+	$(window).resize(OnResize);
+}
+
+this.AddDocReadyListeners = function()
+{
+	//Add a listeners to videos to see when the meta data has loaded
+	$('video').bind("loadeddata",function(_VideoEvent)
+	{
+		OnLoadedVideoData(_VideoEvent);
+	});
+}
+
+this.OnLoadedVideoData = function(_VideoEvent)
+{
+	var loadedVideoElement = _VideoEvent.target;
+	if($(loadedVideoElement).hasClass('StretchtoFit'))
+	{
+		ResizeVideo(loadedVideoElement);
+	}
+
+}
+
+this.OnResize = function()
+{
+	//Loop through all of the videos that are marked as stretch to fit
+	$('.StretchtoFit').each(function()
+	{
+		var CurrentChild = this;
+		ResizeVideo(CurrentChild);
+	});
+}
+
+this.ResizeVideo = function(_VideoElement)
+{
+	$VideoElement = $(_VideoElement); //Cache Jquery reference of this
+	var iOriginalVideoHeight =  _VideoElement.videoHeight;
+	var iCurrentVideoHeight = $VideoElement.height();
+	var iVideoContainerHeight = $VideoElement.parent().height();
+	var iCurrentScale = iOriginalVideoHeight/iCurrentVideoHeight;
+	var iScaleY = (iVideoContainerHeight / iOriginalVideoHeight)*iCurrentScale;
+
+
+	//Important to note: Set the origin to the top left corner (0% 0%), or else the position of the video goes astray
+	 $VideoElement.css({
+	 	"transform-origin": "0% 0%",
+		"transform":"scaleY(" + iScaleY +")",
+		"-ms-transform-origin" : "0% 0% ", /* IE 9 */
+		"-ms-transform":"scaleY(" + iScaleY +")", /* IE 9 */
+		"-moz-transform-origin" : "0% 0%", /* Firefox */
+		"-moz-transform":"scaleY(" + iScaleY +")", /* Firefox */
+		"-webkit-transform-origin": "0% 0%", /* Safari and Chrome */
+		"-webkit-transform":"scaleY(" + iScaleY +")", /* Safari and Chrome */
+		"-o-transform-origin":"0% 0%", /* Opera */
+		"-o-transform":"scaleY(" + iScaleY +")" /* Opera */
+	 }); 
 	}
 	</script>
 	<style>
@@ -194,7 +289,7 @@
     <!-- Header -->
 
     <header style="height:110vh;width:100%;overflow:hidden;">
-		<div style="position:absolute;z-index=2;width:100%;min-height:110vh;background-color:#000;opacity:.8;overflow:hidden;">
+		<div style="position:absolute;z-index=2;width:100%;height:110vh;background-color:#000;opacity:.8;overflow:hidden;" id="headbg">
 	    </div>
 		<div class="container" style="position:absolute;z-index=5;width:100%;height:100%">
             <div class="intro-text" style="position:relative;margin:auto;top:50%;transform: translate(0,-50%);">
@@ -203,9 +298,8 @@
                 <a href="#howto" class="page-scroll btn btn-xl" >Show Me How</a>
             </div>
 	    </div>
-		<div style="overflow:hidden;">
-
-		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" id="player"  style="z-index:-1;width:100%;min-height:110vh;position:absolute;top: 55%;left: 50%;transform:translate(-50%, -50%);overflow:hidden;">
+		<div style="position:absolute;height:110vh;width:100%;overflow:hidden;">
+		<video autoplay preload="auto" loop muted="muted" poster="img/Header.png" class="StretchtoFit"  style="z-index:-1;width:100%;position:absolute;overflow:hidden;top:0;left:0;">
 			<source src="img/vid/DelazeBackgroundVideo2.m4v" type="video/mp4">
 			<source src="img/vid/DelazeBackgroundVideo.oggtheora.ogv" type="video/ogg">
 			<source src="img/vid/DelazeBackgroundVideo.webmhd.webm" type="video/webm">
