@@ -52,122 +52,122 @@
         var wideBrowserWidth = 1440;
         // http://littlesvr.ca/grumble/2012/06/02/scalable-html-canvas-processing-js-sketch/
         function resizeCanvas()
-        {
+        {/*
             if(window.innerWidth > wideBrowserWidth) {
                 Processing.getInstanceById("tetris").size(window.innerWidth, window.innerHeight);
                 Processing.getInstanceById("tetris").scale(1, 1);
             } else {
-                Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
+                //Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
                 Processing.getInstanceById("tetris").scale(1, 1);
             }
-            
+            */
         }
     </script>
 	<script type="text/javascript">
 	$(window).load(function()
-{
-	var $bodyElement = $('body');
-
-	if(InitialiseDomScripts())
 	{
-		console.log('Initialised Dom Scripts Successfully');
-	}
-	else
-	{
-		console.log('Failed to Initialise Dom Scripts');
-	}
-
-});
-
-
-//Wait for the Videos to load To add Event listeners
-$(document).ready(function()
-{
-	if(InitialiseDocReadyScripts())
-	{
-		console.log('Initialised Document Ready Scripts Successfully');
-	}
-	else
-	{
-		console.log('Failed to Initialise Document Ready Scripts');
-	}
-});
-
-
-
-//Initialise Dom Scripts here
-this.InitialiseDomScripts = function()
-{
-	AddDomReadyListeners();
-	return true; //return true for Initialisation
-}
-
-this.InitialiseDocReadyScripts = function()
-{
-	AddDocReadyListeners();
-	OnResize();
-
-	return true;
-}
-
-this.AddDomReadyListeners = function()
-{
-	//Add a window listener, see when the window is resized
-	$(window).resize(OnResize);
-}
-
-this.AddDocReadyListeners = function()
-{
-	//Add a listeners to videos to see when the meta data has loaded
-	$('video').bind("loadeddata",function(_VideoEvent)
-	{
-		OnLoadedVideoData(_VideoEvent);
+		var $bodyElement = $('body');
+	
+		if(InitialiseDomScripts())
+		{
+			console.log('Initialised Dom Scripts Successfully');
+		}
+		else
+		{
+			console.log('Failed to Initialise Dom Scripts');
+		}
+	
 	});
-}
-
-this.OnLoadedVideoData = function(_VideoEvent)
-{
-	var loadedVideoElement = _VideoEvent.target;
-	if($(loadedVideoElement).hasClass('StretchtoFit'))
+	
+	
+	//Wait for the Videos to load To add Event listeners
+	$(document).ready(function()
 	{
-		ResizeVideo(loadedVideoElement);
-	}
-
-}
-
-this.OnResize = function()
-{
-	//Loop through all of the videos that are marked as stretch to fit
-	$('.StretchtoFit').each(function()
-	{
-		var CurrentChild = this;
-		ResizeVideo(CurrentChild);
+		if(InitialiseDocReadyScripts())
+		{
+			console.log('Initialised Document Ready Scripts Successfully');
+		}
+		else
+		{
+			console.log('Failed to Initialise Document Ready Scripts');
+		}
 	});
-}
-
-this.ResizeVideo = function(_VideoElement)
-{
-	$VideoElement = $(_VideoElement); //Cache Jquery reference of this
-	var iOriginalVideoHeight =  _VideoElement.videoHeight;
-	var iCurrentVideoHeight = $VideoElement.height();
-	var iVideoContainerHeight = $VideoElement.parent().height();
-	var iCurrentScale = iOriginalVideoHeight/iCurrentVideoHeight;
-	var iScaleY = (iVideoContainerHeight / iOriginalVideoHeight)*iCurrentScale;
-
-
-	//Important to note: Set the origin to the top left corner (0% 0%), or else the position of the video goes astray
-	 $VideoElement.css({
-	 	"transform-origin": "0% 0%",
-		"transform":"scaleY(" + iScaleY +")",
-		"-ms-transform-origin" : "0% 0% ", /* IE 9 */
-		"-ms-transform":"scaleY(" + iScaleY +")", /* IE 9 */
-		"-moz-transform-origin" : "0% 0%", /* Firefox */
-		"-moz-transform":"scaleY(" + iScaleY +")", /* Firefox */
-		"-webkit-transform-origin": "0% 0%", /* Safari and Chrome */
-		"-webkit-transform":"scaleY(" + iScaleY +")", /* Safari and Chrome */
-		"-o-transform-origin":"0% 0%", /* Opera */
-		"-o-transform":"scaleY(" + iScaleY +")" /* Opera */
-	 }); 
+	
+	
+	
+	//Initialise Dom Scripts here
+	this.InitialiseDomScripts = function()
+	{
+		AddDomReadyListeners();
+		return true; //return true for Initialisation
+	}
+	
+	this.InitialiseDocReadyScripts = function()
+	{
+		AddDocReadyListeners();
+		OnResize();
+	
+		return true;
+	}
+	
+	this.AddDomReadyListeners = function()
+	{
+		//Add a window listener, see when the window is resized
+		$(window).resize(OnResize);
+	}
+	
+	this.AddDocReadyListeners = function()
+	{
+		//Add a listeners to videos to see when the meta data has loaded
+		$('video').bind("loadeddata",function(_VideoEvent)
+		{
+			OnLoadedVideoData(_VideoEvent);
+		});
+	}
+	
+	this.OnLoadedVideoData = function(_VideoEvent)
+	{
+		var loadedVideoElement = _VideoEvent.target;
+		if($(loadedVideoElement).hasClass('StretchtoFit'))
+		{
+			ResizeVideo(loadedVideoElement);
+		}
+	
+	}
+	
+	this.OnResize = function()
+	{
+		//Loop through all of the videos that are marked as stretch to fit
+		$('.StretchtoFit').each(function()
+		{
+			var CurrentChild = this;
+			ResizeVideo(CurrentChild);
+		});
+	}
+	
+	this.ResizeVideo = function(_VideoElement)
+	{
+		$VideoElement = $(_VideoElement); //Cache Jquery reference of this
+		var iOriginalVideoHeight =  _VideoElement.videoHeight;
+		var iCurrentVideoHeight = $VideoElement.height();
+		var iVideoContainerHeight = $VideoElement.parent().height();
+		var iCurrentScale = iOriginalVideoHeight/iCurrentVideoHeight;
+		var iScaleY = (iVideoContainerHeight / iOriginalVideoHeight)*iCurrentScale;
+	
+	
+		//Important to note: Set the origin to the top left corner (0% 0%), or else the position of the video goes astray
+		 $VideoElement.css({
+		 	"transform-origin": "0% 0%",
+			"transform":"scaleY(" + iScaleY +")",
+			"-ms-transform-origin" : "0% 0% ", /* IE 9 */
+			"-ms-transform":"scaleY(" + iScaleY +")", /* IE 9 */
+			"-moz-transform-origin" : "0% 0%", /* Firefox */
+			"-moz-transform":"scaleY(" + iScaleY +")", /* Firefox */
+			"-webkit-transform-origin": "0% 0%", /* Safari and Chrome */
+			"-webkit-transform":"scaleY(" + iScaleY +")", /* Safari and Chrome */
+			"-o-transform-origin":"0% 0%", /* Opera */
+			"-o-transform":"scaleY(" + iScaleY +")" /* Opera */
+		 }); 
 	}
 	</script>
 	<style>
@@ -639,6 +639,7 @@ this.ResizeVideo = function(_VideoElement)
 
     <!-- script 2 for canvas: handles redraw and mouse clicking/movement -->
     <script type="text/javascript">
+    		/*
             var canvas = document.getElementById('tetris');
             
             (function() {
@@ -681,7 +682,7 @@ this.ResizeVideo = function(_VideoElement)
                         'z-index': '100'
                     });
                 }
-            },1000/frame_rate);
+            },1000/frame_rate);*/
         </script>
 </body>
 
