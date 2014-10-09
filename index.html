@@ -62,6 +62,10 @@
             }
             */
         }
+
+        // variables necessary in sketch
+        var mouse_x = 0;
+        var frame_rate = 10;
     </script>
 	<script type="text/javascript">
 	$(window).load(function()
@@ -631,13 +635,7 @@
     <!-- processing.js -->
     <script src="js/processing-1.1.0.min.js"></script>
 
-    <!-- script 1 for canvas: declares variables necessary in sketch -->
-    <script type="text/javascript">
-        var mouse_x = 0;
-        var frame_rate = 10;
-    </script>
-
-    <!-- script 2 for canvas: handles redraw and mouse clicking/movement -->
+    <!-- script for canvas: handles redraw and mouse clicking/movement -->
     <script type="text/javascript">
     		/*
             var canvas = document.getElementById('tetris');
