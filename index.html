@@ -52,15 +52,18 @@
         var wideBrowserWidth = 1440;
         // http://littlesvr.ca/grumble/2012/06/02/scalable-html-canvas-processing-js-sketch/
         function resizeCanvas()
-        {/*
-            if(window.innerWidth > wideBrowserWidth) {
+        {
+            /*if(window.innerWidth > wideBrowserWidth) {
                 Processing.getInstanceById("tetris").size(window.innerWidth, window.innerHeight);
-                Processing.getInstanceById("tetris").scale(1, 1);
             } else {
-                //Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
-                Processing.getInstanceById("tetris").scale(1, 1);
-            }
-            */
+                Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
+            }*/
+
+            // Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
+            var tet_div = $('.tetris_div')[0];
+            Processing.getInstanceById("tetris").size(tet_div.clientWidth, tet_div.clientHeight);
+
+            Processing.getInstanceById("tetris").scale(1, 1);
         }
 
         // variables necessary in sketch
@@ -185,14 +188,14 @@
 		border-radius: 2px;
 	}
 
-    #tetris_div {
+    .tetris_div {
         background-image : none;
         position: absolute;
         left: 0;
         top: 0;
         height: 100%;
         width: 100%;
-        z-index: 4;
+        z-index: 100;
     }
 
     .below_tetris {
@@ -333,7 +336,7 @@
 				   <h3><span class="label label-primary">Step 2</span></h3>
 				   <a class="thumbnail" data-toggle="modal" data-target="#myModal" style="max-width:700px; margin:auto;">
 					<img alt="DeLaze Mockups!" class="img-centered img-responsive" src="img/howto/DelazePhones2.png"  />
-					</a>
+				    </a>
 				   <h4 class="section-subheading text-muted">Download the app</h4>
 				   <p>You can get DeLaze for free on the Play Store. We won't try to profit from you seeking treatment, but you can thank us by rating or sharing our app.</p>
 				   <br>
@@ -343,7 +346,7 @@
 					<img alt="He's having SO MUCH FUN" class="img-centered img-responsive" src="img/howto/CensoredDemo.png"  />
 					</a>
 				   <h4 class="section-subheading text-muted">Start playing</h4>
-				   <p>That's it! Now all you need to do to treat your lazy eye is spend at least 15 minutes a day beating your high score.</p>
+				   <p>That's it! Now all you need to do to treat your lazy eye is spend at least 15 minutes a day beating your high score<a class="thumbnail" data-toggle="modal" data-target="#myTetrisModal">.</a></p>
                 </div>
             </div>
         </div>
@@ -599,21 +602,44 @@
     </footer>
 	
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Sorry, DeLaze Beta hasn't been released yet</h4>
-      </div>
-      <div class="modal-body">
-        But will released for Android in a very soon! Until then, you can like us on <a href="https://www.facebook.com/delazeme">Facebook</a> or follow us on <a href="https://twitter.com/DeLazeMe">Twitter</a> to see the developments.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+    	<div class="modal-dialog">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Sorry, DeLaze Beta hasn't been released yet</h4>
+              </div>
+              <div class="modal-body">
+                But will released for Android in a very soon! Until then, you can like us on <a href="https://www.facebook.com/delazeme">Facebook</a> or follow us on <a href="https://twitter.com/DeLazeMe">Twitter</a> to see the developments.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+
+            </div>
+    	</div>
+	</div>
+
+    <div class="modal fade" id="myTetrisModal" tabindex="-1" role="dialog" aria-labelledby="myTetrisModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">DeLaze Demo</h4>
+              </div>
+              <div class="modal-body tetris_div">
+                
+                <canvas id="tetris" width="100%" height="100%" class="processingcanvas" data-processing-sources="js/tetris/tetris.pde js/tetris/TetrisModel.pde js/tetris/TetrisDrawer.pde js/tetris/Block.pde js/tetris/GameState.pde js/tetris/Key.pde"></canvas>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+              
+            </div>
+        </div>
     </div>
-	</div>
-	</div>
 	
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
@@ -681,6 +707,27 @@
                     });
                 }
             },1000/frame_rate);*/
+
+            var canvas = document.getElementById('tetris');
+            
+            (function() {
+                window.onmousemove = handleMouseMove;
+                function handleMouseMove(event) {
+                    event = event || window.event; // IE-ism
+                    mouse_x = event.clientX;
+                    // event.clientX and event.clientY contain the mouse position
+                }
+            })();
+
+            (function() {
+                window.onmouseup = handleMouseUp;
+                function handleMouseUp(event) {
+                    event = event || window.event; // IE-ism
+                    tet = Processing.getInstanceById('tetris');
+                    tet.mouseReleased();
+                    // event.clientX and event.clientY contain the mouse position
+                }
+            })();
         </script>
 </body>
 
