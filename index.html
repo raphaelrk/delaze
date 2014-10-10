@@ -728,6 +728,10 @@
                     // event.clientX and event.clientY contain the mouse position
                 }
             })();
+
+            var resizeInterval = setInterval(function(){
+                resizeCanvas();
+            },1000);
         </script>
 </body>
 
