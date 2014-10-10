@@ -346,7 +346,7 @@
 					<img alt="He's having SO MUCH FUN" class="img-centered img-responsive" src="img/howto/CensoredDemo.png"  />
 					</a>
 				   <h4 class="section-subheading text-muted">Start playing</h4>
-				   <p>That's it! Now all you need to do to treat your lazy eye is spend at least 15 minutes a day beating your high score<a class="thumbnail" data-toggle="modal" data-target="#myTetrisModal">.</a></p>
+				   <p>That's it! Now all you need to do to treat your lazy eye is spend at least 15 minutes a day beating your high score.<a class="thumbnail" data-toggle="modal" data-target="#myTetrisModal" onclick="resizeCanvas();">Try a small online demo.</a></p>
                 </div>
             </div>
         </div>
@@ -621,14 +621,14 @@
 	</div>
 
     <div class="modal fade" id="myTetrisModal" tabindex="-1" role="dialog" aria-labelledby="myTetrisModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog" style="height: 90%; width: 90%;">
+            <div class="modal-content" style="height: 100%; width: 100%;">
 
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">DeLaze Demo</h4>
               </div>
-              <div class="modal-body tetris_div">
+              <div class="modal-body tetris_div" style="height: 100%; width: 90%;">
                 
                 <canvas id="tetris" width="100%" height="100%" class="processingcanvas" data-processing-sources="js/tetris/tetris.pde js/tetris/TetrisModel.pde js/tetris/TetrisDrawer.pde js/tetris/Block.pde js/tetris/GameState.pde js/tetris/Key.pde"></canvas>
 
