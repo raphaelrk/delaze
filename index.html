@@ -61,9 +61,13 @@
 
             // Processing.getInstanceById("tetris").size(window.innerWidth * 3/4, window.innerHeight);
             var tet_div = $('.tetris_div')[0];
-            Processing.getInstanceById("tetris").size(tet_div.clientWidth, tet_div.clientHeight);
 
-            Processing.getInstanceById("tetris").scale(1, 1);
+            if(Processing.getInstanceById("tetris").width !== tet_div.clientWidth || Processing.getInstanceById("tetris").height !== tet_div.clientHeight) {
+
+                Processing.getInstanceById("tetris").size(tet_div.clientWidth, tet_div.clientHeight);
+
+                Processing.getInstanceById("tetris").scale(1, 1);
+            }
         }
 
         // variables necessary in sketch
@@ -327,7 +331,7 @@
                 <div class="text-center col-md-12">
                    <h3 ><span class="label label-primary">Step 1</span></h3>
 					<a class="thumbnail" href="http://www.cardboard.withgoogle.com" style="max-width:700px; margin:auto;">
-					<img alt="It's Virtual Reality for under $10" class="img-centered img-responsive" src="img/howto/CHS.jpg"/> 
+					<img alt="Google Cardboard. It's Virtual Reality for under $10" class="img-centered img-responsive" src="img/howto/CHS.jpg"/> 
 					</a>
                    <h4 class="section-subheading text-muted">Get Google Cardboard</h4>
 				   <p>DeLaze uses Google Cardboard: a DIY virtual reality headset for smartphones. You can <a href="https://cardboard.withgoogle.com/#hardware">make it yourself</a> or <a href="https://www.unofficialcardboard.com/products/parts-hardware/just-add-cardboard-kit/">order everything</a> <a href="http://www.dodocase.com/products/google-cardboard-vr-goggle-toolkit">pre-assembled.</a></p>
@@ -386,7 +390,7 @@
 				<div class="text-center col-md-1"></div>
 				<div class="text-center col-md-2">
 					<a class="thumbnail" href="http://mhacks.org" >
-					<img alt="HELL YEAH" class="img-centered img-responsive" src="img/about/hellyeah.png"/>
+					<img alt="HELL YEAH MHacks logo" class="img-centered img-responsive" src="img/about/hellyeah.png"/>
 					</a>
 				</div>
 				<div class="text-center col-md-2">
@@ -399,7 +403,7 @@
 				</div>
 				<div class="text-center col-md-2">
 					<a class="thumbnail" href="https://github.com/raphaelrk/delaze">
-					<img alt="FORK US!" class="img-centered img-responsive" src="img/about/DelazeLogo.png"/>
+					<img alt="Delaze logo. FORK US!" class="img-centered img-responsive" src="img/about/DelazeLogo.png"/>
 					</a>
 				</div>
 			</div>
@@ -593,7 +597,7 @@
 				<div class="col-md-4"></div>
 				<div class="col-md-4">
 					<a href="http://namecheap.com">
-					<img width="40px" class="img-responsive pull-left" src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/144859-66934a375076fc2584e4d601ad112fa9-medium_jpg.jpg">
+					<img width="40px" class="img-responsive pull-left" src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/144859-66934a375076fc2584e4d601ad112fa9-medium_jpg.jpg" alt="namecheap is the bomb.com">
 					</a>
 					Shoutout to Namecheap for the domain name.
 				</div> -->
