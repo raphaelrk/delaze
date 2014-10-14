@@ -7,6 +7,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.ViewParent;
 
+import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
+
 import java.util.Date;
 
 /**
@@ -17,12 +19,14 @@ import java.util.Date;
 public class MotionSensorModule implements SensorEventListener {
 
     private final SensorManager mSensorManager;
+    private final HeadTracker mHeadTracker;
     private final Sensor mSensor;
 
     /**
      * floats are used because the sensor returns a float[]
      */
     private float[] mValues;
+    private float[] mHeadMatrix;
 
     // these values control how receptive acceleration/velocity averages are to change
     private final float gravAlpha = 0.8f; // how much old gravity values stay
@@ -41,10 +45,12 @@ public class MotionSensorModule implements SensorEventListener {
     // used as the 't' in 'Vf = Vo * at'
     private Date lastUpdate;
 
-    public MotionSensorModule(SensorManager sm, Activity mainActivity) {
+    public MotionSensorModule(SensorManager sm, HeadTracker ht, Activity mainActivity) {
         mSensorManager = sm;
+        mHeadTracker = ht;
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mValues = new float[3];
+        mHeadMatrix = new float[16];
         register();
 
         lastUpdate = new Date(System.currentTimeMillis());

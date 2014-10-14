@@ -18,6 +18,7 @@ import android.os.Vibrator;
 import android.view.MotionEvent;
 
 import com.google.vrtoolkit.cardboard.*;
+import com.google.vrtoolkit.cardboard.sensors.*;
 
 
 public class MainActivity extends CardboardActivity {
@@ -30,7 +31,7 @@ public class MainActivity extends CardboardActivity {
     private Vibrator mVibrator;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
-
+    private HeadTracker mHeadTracker;
     private MotionSensorModule mMotionSensorModule;
 
     private double[] velocity = new double[3];
@@ -72,10 +73,10 @@ public class MainActivity extends CardboardActivity {
 
         mBackgroundSound = new BackgroundSound();
         mBackgroundSound.doInBackground();
-
+        mHeadTracker.startTracking();
         mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mMotionSensorModule = new MotionSensorModule(mSensorManager, this);
+        mMotionSensorModule = new MotionSensorModule(mSensorManager, mHeadTracker, this);
 
         mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator);
         mTetrisView.setBackgroundColor(Color.BLACK);
@@ -85,6 +86,7 @@ public class MainActivity extends CardboardActivity {
     @Override
     public void onPause() {
         super.onPause();
+        mHeadTracker.stopTracking();
         mBackgroundSound.pause();
         mMotionSensorModule.unregister();
     }
@@ -156,7 +158,7 @@ public class MainActivity extends CardboardActivity {
     public void onStart() { super.onStart(); }
     public void onStop() { super.onStop(); }
     public void onDestroy() { super.onDestroy(); }
-    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mHeadTracker = new HeadTracker(this);}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

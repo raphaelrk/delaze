@@ -269,7 +269,6 @@ public class TetrisDrawer {
     public void drawMotion() {
         fill(255, 0, 0);
         paint.setTextSize(40);
-
         currCanvas.drawText("x: " + tm.motionSensor.getVelocities()[0], 79/400*width/2, height/6, paint);
         currCanvas.drawText("y: " + tm.motionSensor.getVelocities()[1], 79/400*width/2, height/6 + height/10, paint);
         currCanvas.drawText("z: " + tm.motionSensor.getVelocities()[2], 79 / 400 * width / 2, height / 6 + height / 5, paint);
