@@ -67,6 +67,7 @@ public class TetrisView extends View {
 
         } else if(tm.gameState == TetrisModel.GameState.MAIN_MENU) {
             td.drawMainMenu();
+            td.drawMotion();
         }
 
         // td.drawMotion();
