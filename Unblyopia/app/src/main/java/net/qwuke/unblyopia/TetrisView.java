@@ -44,12 +44,12 @@ public class TetrisView extends View {
      */
     protected void onDraw(Canvas canvas) {
         td.setCanvas(canvas);
-
         if(tm.gameState == TetrisModel.GameState.IN_GAME) {
+
             td.eraseShapes();
             td.drawShapes();
             //drawSide();
-
+            tm.setInitAngle();
             tm.motionSensorMove();
 
             if(tm.bottomCollision()) {
@@ -67,7 +67,6 @@ public class TetrisView extends View {
 
         } else if(tm.gameState == TetrisModel.GameState.MAIN_MENU) {
             td.drawMainMenu();
-            td.drawMotion();
         }
 
         // td.drawMotion();

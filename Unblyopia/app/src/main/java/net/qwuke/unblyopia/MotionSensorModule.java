@@ -188,7 +188,7 @@ public class MotionSensorModule implements SensorEventListener {
         }
         float pitch = (float) Math.asin(headMatrix[6]);
         float roll;
-        float yaw;
+        float yaw; //YAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWSSSSSSSSSSSSSSSSSSSSSS
         if (FloatMath.sqrt(1.0F - headMatrix[6] * headMatrix[6]) >= 0.01F) {
             yaw = (float) Math.atan2(-headMatrix[2],
                     headMatrix[10]);
@@ -203,13 +203,18 @@ public class MotionSensorModule implements SensorEventListener {
     }
 
     private void updateVelocity() {
+        headValues = mHeadMatrix;
+        headAngles = mHeadAngles;
+        quatAngles = mQuatAngles;
+        /* Former velocity code
         // Calculate how long this acceleration has been applied.
         Date timeNow = new Date(System.currentTimeMillis());
         long timeDelta = timeNow.getTime() - lastUpdate.getTime();
         headValues = mHeadMatrix;
         headAngles = mHeadAngles;
         quatAngles = mQuatAngles;
-        lastUpdate.setTime(timeNow.getTime());
+
+        // lastUpdate.setTime(timeNow.getTime());
 
 
         // Calculate the change in velocity at the
@@ -240,7 +245,7 @@ public class MotionSensorModule implements SensorEventListener {
             if (velocity[1] > maxYV) {
                 maxYV = velocity[1];
             }
-        }
+        } */
     }
 
     public void register() {

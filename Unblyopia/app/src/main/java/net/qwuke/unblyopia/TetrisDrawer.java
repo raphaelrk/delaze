@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -266,14 +267,14 @@ public class TetrisDrawer {
      * Onscreen acceleration debugging:
      * Draws the x, y, and z velocities
      */
-    public void drawMotion() {
+    /* public void drawMotion() {
         fill(255, 0, 0);
         paint.setColor(Color.WHITE);
         paint.setTextSize(40);
         currCanvas.drawText("quat: " + tm.motionSensor.getQuatAngles()[1], 79/400*width/2, height/6, paint);
         currCanvas.drawText("euler: " + tm.motionSensor.getHeadAngles()[1], 79/400*width/2, height/6 + height/10, paint);
         currCanvas.drawText("z-velo: " + tm.motionSensor.getVelocities()[2], 79 / 400 * width / 2, height / 6 + height / 5, paint);
-    }
+    } */
 
     public TetrisDrawer(WindowManager wm, TetrisModel tm) {
         this.tm = tm;

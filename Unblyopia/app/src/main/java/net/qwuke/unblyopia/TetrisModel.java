@@ -19,6 +19,7 @@ public class TetrisModel {
     private Vibrator vibrator;
 
     // colors
+    public float initAngle;
     public static int activeEyeBlockColor = 0xff000000; //0xff818CC7; // light blue
     public static int rightEyeBlockColor = 0x11000000; //0xff182461; // dark blue
     public static int bgColor = 0xff101B52; // darker blue
@@ -546,7 +547,11 @@ public class TetrisModel {
         for(int i = 0; i < 4; i++)
             setBlock(col[i], row[i], currentBlockColor);
     }
-
+    boolean alreadyExecuted = false;
+    public void setInitAngle() {if(!alreadyExecuted) {
+        initAngle = motionSensor.getHeadAngles()[1];
+        alreadyExecuted = true;
+    }}
     /**
      * update block based on accelerometer data
      */
@@ -557,16 +562,49 @@ public class TetrisModel {
             if(col[i] < leftCol) leftCol = col[i];
             if(col[i] > rightCol) rightCol = col[i];
         }
+        /**
+         * track the yaw of your face based on cardboard sdk headtracker - this code is terrible and should be updated
+         */
+        float pi = 2 *(float) Math.PI;
+        float dAngleLim = pi/20;
+        float currAngle =  motionSensor.getHeadAngles()[1];
+        if(currAngle<0 == initAngle>0){//behavior when you reach 0 and pi or -pi
+            if(Math.abs(initAngle) > dAngleLim ) {
+                if(initAngle>0 && pi-(initAngle + dAngleLim) > currAngle ) { //forgive me padre for I have sinned
+                    keyPressed(Input.LEFT);
+                    initAngle = currAngle;
+                } else if(initAngle<0 && (pi*-1) - (initAngle - dAngleLim) < currAngle) {
+                    keyPressed(Input.RIGHT);
+                    initAngle = currAngle;
+                }
+            } else {//behavior when you are passing through 0 to pi or -pi to 0
+                if(Math.abs(currAngle) + Math.abs(initAngle) >= dAngleLim){
+                    if(initAngle>0) {
+                        keyPressed(Input.RIGHT);
+                        initAngle = currAngle;
+                    } else if(initAngle<0) {
+                        keyPressed(Input.LEFT);
+                        initAngle = currAngle;
+                    }
+                }
+            }
+        } else if(currAngle - initAngle >= dAngleLim) {
+            keyPressed(Input.LEFT);
+            initAngle = currAngle;
+        } else if (currAngle - initAngle <= dAngleLim * -1 ) {
+            keyPressed(Input.RIGHT);
+            initAngle = currAngle;
+        }
+        /*
         int blockwidth = rightCol - leftCol + 1;
 
         int currentCol = leftCol;
         int expectedCol = (int) map(motionSensor.getVelocities()[1], motionSensor.minYV/2, motionSensor.maxYV/2, 0, levelwidth - blockwidth);
-
         if(expectedCol < currentCol) {
             keyPressed(Input.LEFT);
         } else if(expectedCol > currentCol) {
             keyPressed(Input.RIGHT);
-        }
+        } */
     }
 
     /**
@@ -763,6 +801,7 @@ public class TetrisModel {
     public TetrisModel(MotionSensorModule motionSensorModule, Vibrator vibrator) {
         // accelerometer for detecting movement of the device
         motionSensor = motionSensorModule;
+
         this.vibrator = vibrator;
 
         for(int r = 0; r < levelwidth; r++) {
