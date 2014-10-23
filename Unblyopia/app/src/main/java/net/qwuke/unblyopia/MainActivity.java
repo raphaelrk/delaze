@@ -30,13 +30,13 @@ public class MainActivity extends CardboardActivity {
     // Interfacing- sensors, buttons, etc.
     private Vibrator mVibrator;
     private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
+    //private Sensor mAccelerometer;
     private HeadTracker mHeadTracker;
     private MotionSensorModule mMotionSensorModule;
 
-    private double[] velocity = new double[3];
-    private double[] accel_offset = new double[3];
-    private boolean accel_offset_set = false;
+    //private double[] velocity = new double[3];
+    //private double[] accel_offset = new double[3];
+    //private boolean accel_offset_set = false;
 
     BackgroundSound mBackgroundSound;
 
