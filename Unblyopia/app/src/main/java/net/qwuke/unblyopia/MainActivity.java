@@ -147,28 +147,10 @@ public class MainActivity extends CardboardActivity {
 
     /******   UNCHANGED INTERFACE METHODS   ******/
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     @Override
     public void onStart() { super.onStart(); }
     public void onStop() { super.onStop(); }
     public void onDestroy() { super.onDestroy(); }
     protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mHeadTracker = new HeadTracker(this);}
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
