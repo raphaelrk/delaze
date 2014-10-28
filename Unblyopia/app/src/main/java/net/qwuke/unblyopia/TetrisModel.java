@@ -565,36 +565,40 @@ public class TetrisModel {
         /**
          * track the yaw of your face based on cardboard sdk headtracker - this code is terrible and should be updated
          */
-        float pi = 2 *(float) Math.PI;
-        float dAngleLim = pi/20;
-        float currAngle =  motionSensor.getHeadAngles()[1];
-        if(currAngle<0 == initAngle>0){//behavior when you reach 0 and pi or -pi
+        float pi = 2 *(float) Math.PI; //2*PI is set to pi - don't let that confuse you, it makes calculations simpler
+        float dAngleLim = pi/20;//How far you have to turn in order to move the block left or right. I made that pi/10 or 18 degrees in any direction
+        float currYaw =  motionSensor.getHeadAngles()[1];
+        /**
+         * track the yaw of your face based on cardboard sdk headtracker - this code is terrible and should be updated
+         */
+        if(currYaw<0 == initAngle>0){//behavior when you reach 0 and pi or -pi
             if(Math.abs(initAngle) > dAngleLim ) {
-                if(initAngle>0 && pi-(initAngle + dAngleLim) > currAngle ) { //forgive me padre for I have sinned
+                if(initAngle>0 && pi-(initAngle + dAngleLim) > currYaw ) { //forgive me padre for I have sinned
                     keyPressed(Input.LEFT);
-                    initAngle = currAngle;
-                } else if(initAngle<0 && (pi*-1) - (initAngle - dAngleLim) < currAngle) {
+                    initAngle = currYaw;
+                } else if(initAngle<0 && (pi*-1) - (initAngle - dAngleLim) < currYaw) {
                     keyPressed(Input.RIGHT);
-                    initAngle = currAngle;
+                    initAngle = currYaw;
                 }
             } else {//behavior when you are passing through 0 to pi or -pi to 0
-                if(Math.abs(currAngle) + Math.abs(initAngle) >= dAngleLim){
+                if(Math.abs(currYaw) + Math.abs(initAngle) >= dAngleLim){
                     if(initAngle>0) {
                         keyPressed(Input.RIGHT);
-                        initAngle = currAngle;
+                        initAngle = currYaw;
                     } else if(initAngle<0) {
                         keyPressed(Input.LEFT);
-                        initAngle = currAngle;
+                        initAngle = currYaw;
                     }
                 }
             }
-        } else if(currAngle - initAngle >= dAngleLim) {
+        } else if(currYaw - initAngle >= dAngleLim) {
             keyPressed(Input.LEFT);
-            initAngle = currAngle;
-        } else if (currAngle - initAngle <= dAngleLim * -1 ) {
+            initAngle = currYaw;
+        } else if (currYaw - initAngle <= dAngleLim * -1 ) {
             keyPressed(Input.RIGHT);
-            initAngle = currAngle;
+            initAngle = currYaw;
         }
+
         /*
         int blockwidth = rightCol - leftCol + 1;
 

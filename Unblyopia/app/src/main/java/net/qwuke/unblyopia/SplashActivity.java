@@ -3,8 +3,6 @@ package net.qwuke.unblyopia;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 
 
@@ -15,16 +13,11 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
-        setContentView(R.layout.splash);
+        setContentView(R.layout.activity_splash);
         Thread logoTimer = new Thread() {
             public void run(){
                 try{
-                    int logoTimer = 0;
-                    while(logoTimer < 1500){
-                        sleep(100);
-                        logoTimer = logoTimer +100;
-                    };
-                    startActivity(new Intent("android.intent.action.GAME"));
+                    sleep(1200);
                 }
 
                 catch (InterruptedException e) {
@@ -33,12 +26,18 @@ public class SplashActivity extends Activity {
                 }
 
                 finally{
-                    finish();
+                    startActivity(new Intent("android.intent.action.GAME"));
                 }
             }
         };
 
         logoTimer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish(); //closes the splash screen
     }
 
 }
