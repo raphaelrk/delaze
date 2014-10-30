@@ -1,8 +1,25 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Theme.MyTheme" parent="Theme.AppCompat.NoActionBar">
+    <!-- colorPrimary is used for the default action bar background -->
+
+
+    <!-- colorPrimaryDark is used for the status bar -->
+
+
+    <!-- colorAccent is used as the default value for colorControlActivated,
+         which is used to tint widgets -->
+    <item name="colorPrimary">#161616</item>
+    <item name="colorPrimaryDark">#000</item>
+    <item name="colorAccent">#00e6e6</item>
+    <item name="android:colorBackground">#535353</item>
+    <item name="colorControlNormal">#00e6e6</item>
+    <item name="colorControlActivated">#00c8c8</item>
+    <!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight, and colorSwitchThumbNormal. -->
+
     </style>
+
 
 </resources>
