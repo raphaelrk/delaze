@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Delaze</string>
+    <string name="title_name">&lt;b>Delaze&lt;/b></string>
+    &lt;b>
     <string name="hello_world">Whaddup dawg?</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
