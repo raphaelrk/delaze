@@ -88,8 +88,16 @@ public class TetrisDrawer {
         currCanvas.drawRect(xSideOffset, vertPadding, xSideOffset + blockSize*tm.levelwidth, height - vertPadding, paint);
         currCanvas.drawRect(xSideOffset + width/2, vertPadding, xSideOffset + blockSize*tm.levelwidth + width/2, height - vertPadding, paint);
     }
-
-
+    
+    /**
+     * Draws score counter
+     * */
+    public void drawHUD() {
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(blockSize/2);
+        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48, vertPadding, paint);
+        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2, vertPadding, paint);
+    }
 
     /**
      * Method to make it easier to change the paint color
