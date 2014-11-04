@@ -19,7 +19,8 @@ public class TetrisModel {
     private Vibrator vibrator;
 
     // colors
-    public float initAngle;
+    public float initYaw;
+    public float initPitch;
     public static int activeEyeBlockColor = 0xff000000; //0xff818CC7; // light blue
     public static int rightEyeBlockColor = 0x11000000; //0xff182461; // dark blue
     public static int bgColor = 0xff101B52; // darker blue
@@ -39,6 +40,8 @@ public class TetrisModel {
     public int[] blockArray = new int[levelwidth * levelheight];
     public int time = 0;
     public int score = 0;
+    public int inputSpeed = 0;
+    public int baseSpeed = 20;
     public int updateSpeed = 20;
     public int level = 1;
     public int linesCleared = 0;
@@ -118,6 +121,8 @@ public class TetrisModel {
         blockArray = new int[levelwidth * levelheight];
         time = 0;
         score = 0;
+        baseSpeed=20;
+        inputSpeed=0;
         updateSpeed = 20;
         level = 1;
         linesCleared = 0;
@@ -549,7 +554,8 @@ public class TetrisModel {
     }
     boolean alreadyExecuted = false;
     public void setInitAngle() {if(!alreadyExecuted) {
-        initAngle = motionSensor.getHeadAngles()[1];
+        initYaw = motionSensor.getHeadAngles()[1];
+        initPitch = motionSensor.getQuatAngles()[2];
         alreadyExecuted = true;
     }}
     /**
@@ -568,35 +574,43 @@ public class TetrisModel {
         float pi = 2 *(float) Math.PI; //2*PI is set to pi - don't let that confuse you, it makes calculations simpler
         float dAngleLim = pi/20;//How far you have to turn in order to move the block left or right. I made that pi/10 or 18 degrees in any direction
         float currYaw =  motionSensor.getHeadAngles()[1];
+        float currPitch = motionSensor.getQuatAngles()[2];
         /**
          * track the yaw of your face based on cardboard sdk headtracker - this code is terrible and should be updated
          */
-        if(currYaw<0 == initAngle>0){//behavior when you reach 0 and pi or -pi
-            if(Math.abs(initAngle) > dAngleLim ) {
-                if(initAngle>0 && pi-(initAngle + dAngleLim) > currYaw ) { //forgive me padre for I have sinned
+        if(currYaw<0 == initYaw>0){//behavior when you reach 0 and pi or -pi
+            if(Math.abs(initYaw) > dAngleLim ) {
+                if(initYaw>0 && pi-(initYaw + dAngleLim) > currYaw ) { //forgive me padre for I have sinned
                     keyPressed(Input.LEFT);
-                    initAngle = currYaw;
-                } else if(initAngle<0 && (pi*-1) - (initAngle - dAngleLim) < currYaw) {
+                    initYaw = currYaw;
+                } else if(initYaw<0 && (pi*-1) - (initYaw - dAngleLim) < currYaw) {
                     keyPressed(Input.RIGHT);
-                    initAngle = currYaw;
+                    initYaw = currYaw;
                 }
             } else {//behavior when you are passing through 0 to pi or -pi to 0
-                if(Math.abs(currYaw) + Math.abs(initAngle) >= dAngleLim){
-                    if(initAngle>0) {
+                if(Math.abs(currYaw) + Math.abs(initYaw) >= dAngleLim){
+                    if(initYaw>=0) {
                         keyPressed(Input.RIGHT);
-                        initAngle = currYaw;
-                    } else if(initAngle<0) {
+                        initYaw = currYaw;
+                    } else if(initYaw<0) {
                         keyPressed(Input.LEFT);
-                        initAngle = currYaw;
+                        initYaw = currYaw;
                     }
                 }
             }
-        } else if(currYaw - initAngle >= dAngleLim) {
+        } else if(currYaw - initYaw >= dAngleLim) {
             keyPressed(Input.LEFT);
-            initAngle = currYaw;
-        } else if (currYaw - initAngle <= dAngleLim * -1 ) {
+            initYaw = currYaw;
+        } else if (currYaw - initYaw <= dAngleLim * -1 ) {
             keyPressed(Input.RIGHT);
-            initAngle = currYaw;
+            initYaw = currYaw;
+        }
+        if(Math.abs(currPitch) - Math.abs(initPitch) < dAngleLim*-1.3){
+            inputSpeed = baseSpeed - 1;
+            setDifficulty();
+        } else {
+            inputSpeed = 0;
+            setDifficulty();
         }
 
         /*
@@ -704,10 +718,11 @@ public class TetrisModel {
      * Makes the game go faster after you clear a line
      */
     private void setDifficulty() {
-        updateSpeed = 21 - linesCleared;
-        if(linesCleared >= 18) {
-            updateSpeed = 3;
+        baseSpeed = 20 - linesCleared;
+        if(linesCleared >= 16) {
+            baseSpeed = 4;
         }
+        updateSpeed = baseSpeed - inputSpeed;
     }
 
     /**
@@ -776,6 +791,9 @@ public class TetrisModel {
      *
      * Rotates block in-game
      */
+    public void isOn() {
+
+    }
     public void actionButton() {
         if(gameState == GameState.IN_GAME) {
             // Always give user feedback

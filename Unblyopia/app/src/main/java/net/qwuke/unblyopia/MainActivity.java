@@ -99,6 +99,7 @@ public class MainActivity extends CardboardActivity {
     @Override
     public void onCardboardTrigger() {
         mTetrisView.tm.actionButton();
+        mTetrisView.tm.isOn();
     }
 
     /**

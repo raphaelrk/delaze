@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import net.qwuke.unblyopia.TetrisModel.Block;
 
 /**
- * Created by RAPHAEL on 9/22/2014.
+ * Created by RAPHAEL on 9/22/2014. Never forget.
  */
 public class TetrisDrawer {
 
@@ -94,9 +94,11 @@ public class TetrisDrawer {
      * */
     public void drawHUD() {
         paint.setColor(Color.WHITE);
-        paint.setTextSize(blockSize/2);
+        paint.setTextSize(blockSize);
         currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48, vertPadding, paint);
         currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2, vertPadding, paint);
+        currCanvas.drawText("SPEED: " + tm.updateSpeed, xSideOffset + width/48, height - vertPadding + blockSize, paint);
+        currCanvas.drawText("SPEED: " + tm.updateSpeed, xSideOffset + width/48 + width/2, height - vertPadding + blockSize, paint);
     }
 
     /**
@@ -136,7 +138,7 @@ public class TetrisDrawer {
         currCanvas.drawRect(15, 10, 15 + 166, 10 + 200, paint);
 
         // text
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.WHITE);
         currCanvas.drawText("Time: " + tm.time, 20, 30, paint);
         currCanvas.drawText("Score: " + tm.score, 20, 59, paint);
         currCanvas.drawText("row: " + tm.row, 20, 130, paint);
@@ -275,14 +277,16 @@ public class TetrisDrawer {
      * Onscreen acceleration debugging:
      * Draws the x, y, and z velocities
      */
-    /* public void drawMotion() {
+    /**
+     * public void drawMotion() {
         fill(255, 0, 0);
         paint.setColor(Color.WHITE);
         paint.setTextSize(40);
-        currCanvas.drawText("quat: " + tm.motionSensor.getQuatAngles()[1], 79/400*width/2, height/6, paint);
-        currCanvas.drawText("euler: " + tm.motionSensor.getHeadAngles()[1], 79/400*width/2, height/6 + height/10, paint);
+        currCanvas.drawText("quat3: " + tm.motionSensor.getQuatAngles()[2], 79/400*width/2, height/6, paint);
+        currCanvas.drawText("euler: " + tm.motionSensor.getHeadAngles()[3], 79/400*width/2, height/6 + height/10, paint);
         currCanvas.drawText("z-velo: " + tm.motionSensor.getVelocities()[2], 79 / 400 * width / 2, height / 6 + height / 5, paint);
-    } */
+    }
+     */
 
     public TetrisDrawer(WindowManager wm, TetrisModel tm) {
         this.tm = tm;
