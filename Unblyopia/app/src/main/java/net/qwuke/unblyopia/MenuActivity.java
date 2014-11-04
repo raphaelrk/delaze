@@ -1,6 +1,7 @@
 package net.qwuke.unblyopia;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -34,5 +35,29 @@ public class MenuActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        super.onOptionsItemSelected(item);
+        switch(item.getItemId()){
+            case R.id.settings:
+                settingsMenuItem();
+                break;
+            case R.id.about:
+                aboutMenuItem();
+                break;
+        }
+        return true;
+    }
+    private void settingsMenuItem(){
+
+    }
+    private void aboutMenuItem(){
+
+    }
 
 }

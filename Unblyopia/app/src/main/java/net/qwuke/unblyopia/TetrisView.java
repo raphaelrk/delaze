@@ -50,7 +50,7 @@ public class TetrisView extends View {
             td.drawShapes();
             //drawSide();
             td.drawHUD();
-            
+
             tm.setInitAngle();
             tm.motionSensorMove();
 
