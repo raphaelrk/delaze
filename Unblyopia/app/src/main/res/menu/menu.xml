@@ -4,13 +4,21 @@
     tools:context="net.qwuke.unblyopia.MenuActivity" >
     <item
         android:id="@+id/settings"
+        android:icon="@drawable/ic_settings_white_48dp"
         android:title="@string/action_settings"
-        android:orderInCategory="1"
-        unblyopia:showAsAction="never" />
+        android:orderInCategory="3"
+        unblyopia:showAsAction="always" />
     <item
         android:id="@+id/about"
         android:title="@string/action_about"
+        android:icon="@drawable/ic_info_outline_white_48dp"
         android:orderInCategory="2"
-        unblyopia:showAsAction="never" />
+        unblyopia:showAsAction="always" />
+    <item
+        android:id="@+id/music"
+        android:title="@string/action_volume"
+        android:icon="@drawable/ic_volume_off_white_48dp"
+        android:orderInCategory="1"
+        unblyopia:showAsAction="always" />
 
 </menu>

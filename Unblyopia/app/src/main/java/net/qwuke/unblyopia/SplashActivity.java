@@ -18,14 +18,10 @@ public class SplashActivity extends Activity {
             public void run(){
                 try{
                     sleep(1200);
-                }
-
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }
-
-                finally{
+                } finally {
                     startActivity(new Intent("android.intent.action.GAME"));
                 }
             }

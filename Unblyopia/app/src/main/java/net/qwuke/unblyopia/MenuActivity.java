@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -15,6 +16,7 @@ import android.widget.Button;
 
 public class MenuActivity extends ActionBarActivity {
     private Toolbar toolbar;
+    private boolean musicToggle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,8 @@ public class MenuActivity extends ActionBarActivity {
         CharSequence styledText = Html.fromHtml(text);
         toolbar.setTitle(styledText);
         setSupportActionBar(toolbar);
+        Intent svc=new Intent(this, MusicService.class);
+        startService(svc);
         final Button button = (Button) findViewById(R.id.button_tetris);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -50,9 +54,32 @@ public class MenuActivity extends ActionBarActivity {
             case R.id.about:
                 aboutMenuItem();
                 break;
+            case R.id.music:
+                musicMenuItem();
+                break;
         }
         return true;
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.music);
+        item.setIcon(getMenuItemIconResId());
+        return true;
+    }
+
+    private int getMenuItemIconResId() {
+        if (musicToggle) {
+            musicToggle = false;
+            return R.drawable.ic_volume_off_white_48dp;
+        } else {
+            musicToggle = true;
+            return R.drawable.ic_volume_up_white_48dp;
+        }
+    }
+
+
+
     private void settingsMenuItem(){
 
     }
@@ -60,4 +87,7 @@ public class MenuActivity extends ActionBarActivity {
 
     }
 
+    private void musicMenuItem(){
+        invalidateOptionsMenu();
+    }
 }

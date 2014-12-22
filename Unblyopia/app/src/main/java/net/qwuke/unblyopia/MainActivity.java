@@ -58,8 +58,11 @@ public class MainActivity extends CardboardActivity {
                 return null;
             }
         }
-
-        protected void pause() {
+        public void startPlayer() {
+            player.start();
+            player.setLooping(true);
+        }
+        public void pausePlayer() {
             player.pause();
         }
     }
@@ -87,7 +90,7 @@ public class MainActivity extends CardboardActivity {
     public void onPause() {
         super.onPause();
         mHeadTracker.stopTracking();
-        mBackgroundSound.pause();
+        mBackgroundSound.pausePlayer();
         mMotionSensorModule.unregister();
     }
 

@@ -14,7 +14,6 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-
         android:theme="@style/Theme.MyTheme" >
         <activity
             android:name=".MainActivity"
@@ -22,23 +21,30 @@
             android:screenOrientation="sensorLandscape" >
             <intent-filter>
                 <action android:name="android.intent.action.GAME" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MenuActivity"
             android:screenOrientation="portrait"
-
-            android:theme="@style/Theme.MyTheme">
+            android:theme="@style/Theme.MyTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".MusicService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
