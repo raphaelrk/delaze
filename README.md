@@ -1,7 +1,7 @@
 Delaze
 ======
 
-<img src="http://delaze.me/img/about/DelazeLogo.png" alt="logo" width="100px"> | [Visit our site](http://delaze.me "delaze.me") • [Follow our twitter](https://twitter.com/delazeme "@delazeMe") • [Like us on Facebook](https://www.facebook.com/delazeme "DeLaze page") |
+**SORRY THIS PROJECT IS DEAD. PLEASE SUBMIT A REQUEST IF YOU ARE INTERESTED IN DESIGNING NEW CONTROLS!@!!!!!**
 
 Delaze is a virtual reality app that treats amblyopia (lazy eye) by encouraging binocular vision.
 
