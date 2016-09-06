@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     tools:context="net.qwuke.unblyopia.MenuActivity"
     android:id="@+id/menu_activity"
-    style="@style/Theme.MyTheme"
+    style="@style/Theme.MyTheme">
      
-    android:orientation="horizontal"
-    android:weightSum="1">
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="1">-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
 

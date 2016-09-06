@@ -1,5 +1,6 @@
 package net.qwuke.unblyopia;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,6 +9,7 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +36,9 @@ public class MainActivity extends CardboardActivity {
     private HeadTracker mHeadTracker;
     private MotionSensorModule mMotionSensorModule;
 
+    Boolean isHeadTrackingEnabled, isBackgroundMusicEnabled;
+
+    SharedPreferences prefs;
     //private double[] velocity = new double[3];
     //private double[] accel_offset = new double[3];
     //private boolean accel_offset_set = false;
@@ -68,20 +73,37 @@ public class MainActivity extends CardboardActivity {
     }
 
     /******   OVERRIDDEN ACTIVITY METHODS   ******/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        prefs = getApplicationContext().getSharedPreferences(getPackageName(), MODE_PRIVATE);
+
+        isHeadTrackingEnabled = prefs.getBoolean("HeadTracking", true);
+        isBackgroundMusicEnabled = prefs.getBoolean("BackgroundMusic", true);
+
+        if(isHeadTrackingEnabled) {
+            mHeadTracker = new HeadTracker(this);
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         //setContentView(R.layout.activity_main);
 
-        mBackgroundSound = new BackgroundSound();
-        mBackgroundSound.doInBackground();
-        mHeadTracker.startTracking();
-        mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mMotionSensorModule = new MotionSensorModule(mSensorManager, mHeadTracker, this);
 
-        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator);
+        if(isBackgroundMusicEnabled) {
+            mBackgroundSound = new BackgroundSound();
+            mBackgroundSound.doInBackground();
+        }
+        if(isHeadTrackingEnabled) {
+            mHeadTracker.startTracking();
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mMotionSensorModule = new MotionSensorModule(mSensorManager, mHeadTracker, this);
+        }
+        mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
+
+        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator, isHeadTrackingEnabled);
         mTetrisView.setBackgroundColor(Color.BLACK);
         setContentView(mTetrisView);
     }
@@ -89,9 +111,14 @@ public class MainActivity extends CardboardActivity {
     @Override
     public void onPause() {
         super.onPause();
-        mHeadTracker.stopTracking();
-        mBackgroundSound.pausePlayer();
-        mMotionSensorModule.unregister();
+        if (mHeadTracker != null) {
+            mHeadTracker.stopTracking();
+            mMotionSensorModule.unregister();
+        }
+        if (mBackgroundSound != null) {
+            mBackgroundSound.pausePlayer();
+        }
+
     }
 
     /******   INTERFACING: Methods for triggers, buttons, sensors   ******/
@@ -149,12 +176,4 @@ public class MainActivity extends CardboardActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    /******   UNCHANGED INTERFACE METHODS   ******/
-
-
-    @Override
-    public void onStart() { super.onStart(); }
-    public void onStop() { super.onStop(); }
-    public void onDestroy() { super.onDestroy(); }
-    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mHeadTracker = new HeadTracker(this);}
 }

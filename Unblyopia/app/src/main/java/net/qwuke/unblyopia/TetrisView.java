@@ -1,5 +1,6 @@
 package net.qwuke.unblyopia;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import net.qwuke.unblyopia.TetrisModel.Block;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * I'd recommend looking at this class with all the methods minimized
@@ -35,6 +38,8 @@ public class TetrisView extends View {
     TetrisModel tm;
     TetrisDrawer td;
 
+    Boolean isHeadTrackingEnabled;
+
     /**
      * Main loop
      * Gets called every cycle
@@ -51,8 +56,10 @@ public class TetrisView extends View {
             //drawSide();
             td.drawHUD();
 
-            tm.setInitAngle();
-            tm.motionSensorMove();
+            if(isHeadTrackingEnabled) {
+                tm.setInitAngle();
+                tm.motionSensorMove();
+            }
 
             if(tm.bottomCollision()) {
                 tm.removeLines();
@@ -88,8 +95,10 @@ public class TetrisView extends View {
      * @param motionSensorModule accelerometer
      * @param vibrator for vibrating
      */
-    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator) {
+    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator, Boolean headTracking) {
         super(context);
+
+        isHeadTrackingEnabled = headTracking;
 
         tm = new TetrisModel(motionSensorModule, vibrator);
 
