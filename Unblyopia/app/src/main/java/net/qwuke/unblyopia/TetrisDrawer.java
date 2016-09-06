@@ -44,10 +44,10 @@ public class TetrisDrawer {
             for(int c = 0; c < tm.levelwidth; c++) {
                 int color = tm.getBlock(c, r);
                 if(color != 0) {
-                    paint.setColor(tm.rightEyeBlockColor + color);
+                    paint.setColor(TetrisModel.rightEyeBlockColor + color);
                     currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
-                    paint.setColor(tm.activeEyeBlockColor + color);
+                    paint.setColor(TetrisModel.activeEyeBlockColor + color);
                     currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
                 }
             }
@@ -60,19 +60,19 @@ public class TetrisDrawer {
             int color = tm.getBlock(c, r);
             if(color != 0) {
                 // clear active left block
-                paint.setColor(tm.bgColor);
+                paint.setColor(TetrisModel.bgColor);
                 currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
                 // draw active left block
-                paint.setColor(tm.activeEyeBlockColor + color);
+                paint.setColor(TetrisModel.activeEyeBlockColor + color);
                 currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
                 // clear active right block
-                paint.setColor(tm.bgColor);
+                paint.setColor(TetrisModel.bgColor);
                 currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
 
                 // draw active left block
-                paint.setColor(tm.rightEyeBlockColor + color);
+                paint.setColor(TetrisModel.rightEyeBlockColor + color);
                 currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
             }
         }
@@ -84,7 +84,7 @@ public class TetrisDrawer {
      * Erases the screen
      */
     public void eraseShapes() {
-        paint.setColor(tm.bgColor);
+        paint.setColor(TetrisModel.bgColor);
         currCanvas.drawRect(xSideOffset, vertPadding, xSideOffset + blockSize*tm.levelwidth, height - vertPadding, paint);
         currCanvas.drawRect(xSideOffset + width/2, vertPadding, xSideOffset + blockSize*tm.levelwidth + width/2, height - vertPadding, paint);
     }

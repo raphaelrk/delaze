@@ -17,6 +17,7 @@ import java.util.Date;
  *
  * Created by RAPHAEL on 9/21/2014.
  */
+
 public class MotionSensorModule implements SensorEventListener {
 
     private final SensorManager mSensorManager;
@@ -117,7 +118,7 @@ public class MotionSensorModule implements SensorEventListener {
         float w;
         float s;
         if (t >= 0.0F) {
-            s = FloatMath.sqrt(t + 1.0F);
+            s = (float) Math.sqrt(t + 1.0F);
             w = 0.5F * s;
             s = 0.5F / s;
             x = (m[9] - m[6]) * s;
@@ -125,7 +126,7 @@ public class MotionSensorModule implements SensorEventListener {
             z = (m[4] - m[1]) * s;
         } else {
             if ((m[0] > m[5]) && (m[0] > m[10])) {
-                s = FloatMath.sqrt(1.0F + m[0] - m[5] - m[10]);
+                s = (float) Math.sqrt(1.0F + m[0] - m[5] - m[10]);
                 x = s * 0.5F;
                 s = 0.5F / s;
                 y = (m[4] + m[1]) * s;
@@ -133,14 +134,14 @@ public class MotionSensorModule implements SensorEventListener {
                 w = (m[9] - m[6]) * s;
             } else {
                 if (m[5] > m[10]) {
-                    s = FloatMath.sqrt(1.0F + m[5] - m[0] - m[10]);
+                    s = (float) Math.sqrt(1.0F + m[5] - m[0] - m[10]);
                     y = s * 0.5F;
                     s = 0.5F / s;
                     x = (m[4] + m[1]) * s;
                     z = (m[9] + m[6]) * s;
                     w = (m[2] - m[8]) * s;
                 } else {
-                    s = FloatMath.sqrt(1.0F + m[10] - m[0] - m[5]);
+                    s = (float) Math.sqrt(1.0F + m[10] - m[0] - m[5]);
                     z = s * 0.5F;
                     s = 0.5F / s;
                     x = (m[2] + m[8]) * s;
@@ -189,7 +190,7 @@ public class MotionSensorModule implements SensorEventListener {
         float pitch = (float) Math.asin(headMatrix[6]);
         float roll;
         float yaw; //YAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWSSSSSSSSSSSSSSSSSSSSSS
-        if (FloatMath.sqrt(1.0F - headMatrix[6] * headMatrix[6]) >= 0.01F) {
+        if ((float) Math.sqrt(1.0F - headMatrix[6] * headMatrix[6]) >= 0.01F) {
             yaw = (float) Math.atan2(-headMatrix[2],
                     headMatrix[10]);
             roll = (float) Math.atan2(-headMatrix[4], headMatrix[5]);

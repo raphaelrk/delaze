@@ -178,7 +178,7 @@ public class TetrisModel {
                         break;
                     }
                 }
-                if(selfcollision == false) {
+                if(!selfcollision) {
                     return true;
                 }
             }
@@ -204,7 +204,7 @@ public class TetrisModel {
                         selfcollision = true;
                     }
                 }
-                if(selfcollision == false) {
+                if(!selfcollision) {
                     return true;
                 }
             }
@@ -230,7 +230,7 @@ public class TetrisModel {
                         selfcollision = true;
                     }
                 }
-                if(selfcollision == false) {
+                if(!selfcollision) {
                     return true;
                 }
             }
@@ -638,7 +638,7 @@ public class TetrisModel {
      */
     public double map(double value, double istart, double istop, double ostart, double ostop) {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-    };
+    }
 
     /** sets your current block to what was shown and makes a
      * random next block
