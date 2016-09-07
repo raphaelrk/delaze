@@ -101,8 +101,8 @@ public class TetrisModel {
     /**  Input time constants
      * Ensures that buttons aren't clicked too quickly on accident
      **/
-    private int defaultLagTime = 200;
-    private int lagChange = 150; // used for holding a button
+    private int defaultLagTime = 300;
+    private int lagChange = 250; // used for holding a button
     private int leftLag  = defaultLagTime; // aka at least .2 seconds between lefts
     private int rightLag = defaultLagTime;
     private int upLag    = defaultLagTime * 2;

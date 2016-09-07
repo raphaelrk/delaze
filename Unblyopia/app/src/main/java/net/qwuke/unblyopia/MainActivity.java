@@ -91,7 +91,6 @@ public class MainActivity extends CardboardActivity {
         super.onResume();
         //setContentView(R.layout.activity_main);
 
-
         if(isBackgroundMusicEnabled) {
             mBackgroundSound = new BackgroundSound();
             mBackgroundSound.doInBackground();

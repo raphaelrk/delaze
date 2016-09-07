@@ -24,20 +24,23 @@ import android.widget.TextView;
 
 public class MenuActivity extends ActionBarActivity {
     private Toolbar toolbar;
-    private boolean musicToggle = false;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        prefs = getApplicationContext().getSharedPreferences(getPackageName(),MODE_PRIVATE );
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         Resources res = getResources();
         String text = res.getString(R.string.title_name);
         CharSequence styledText = Html.fromHtml(text);
         toolbar.setTitle(styledText);
         setSupportActionBar(toolbar);
-        Intent svc=new Intent(this, MusicService.class);
-        startService(svc);
+        if(prefs.getBoolean("BackgroundMusic", true)) {
+            Intent svc = new Intent(this, MusicService.class);
+            startService(svc);
+        }
         final Button button = (Button) findViewById(R.id.button_tetris);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -62,32 +65,13 @@ public class MenuActivity extends ActionBarActivity {
             case R.id.about:
                 showAboutDialog();
                 break;
-//            case R.id.music:
-//                musicMenuItem();
-//                break;
         }
         return true;
     }
 
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        MenuItem item = menu.findItem(R.id.music);
-//        item.setIcon(getMenuItemIconResId());
-//        return true;
-//    }
-//
-//    private int getMenuItemIconResId() {
-//        if (musicToggle) {
-//            musicToggle = false;
-//            return R.drawable.ic_volume_off_white_48dp;
-//        } else {
-//            musicToggle = true;
-//            return R.drawable.ic_volume_up_white_48dp;
-//        }
-//    }
 
     private void showSettingsDialog(){
-        final SharedPreferences prefs = getApplicationContext().getSharedPreferences(getPackageName(),MODE_PRIVATE );
+
         final SharedPreferences.Editor editor = prefs.edit();
 
         AlertDialog.Builder bldr = new AlertDialog.Builder(this);
@@ -113,10 +97,6 @@ public class MenuActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(!headTrackSwitch.isChecked()){
-                    //TODO Disable headtracking
-                }
-
                 if(!musicSwitch.isChecked()){
                     stopService(new Intent(MenuActivity.this, MusicService.class));
                 }
@@ -130,7 +110,7 @@ public class MenuActivity extends ActionBarActivity {
         bldr.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Do nothing
+                //Just close the dialog
             }
         });
 
