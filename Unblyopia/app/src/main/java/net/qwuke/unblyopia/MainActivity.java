@@ -130,6 +130,18 @@ public class MainActivity extends CardboardActivity {
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     mTetrisView.tm.keyPressed(TetrisModel.Input.RIGHT);
                     return true;
+                case KeyEvent.KEYCODE_DPAD_UP:
+                    mTetrisView.tm.keyPressed(TetrisModel.Input.UP);
+                    return true;
+                case KeyEvent.KEYCODE_DPAD_DOWN:
+                    mTetrisView.tm.keyPressed(TetrisModel.Input.DOWN);
+                    return true;
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    mTetrisView.tm.keyPressed(TetrisModel.Input.LEFT);
+                    return true;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    mTetrisView.tm.keyPressed(TetrisModel.Input.RIGHT);
+                    return true;
                 default:
                     return super.dispatchKeyEvent(event);
             }
@@ -143,7 +155,7 @@ public class MainActivity extends CardboardActivity {
      */
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+        if ((keyCode == KeyEvent.KEYCODE_DPAD_UP) || (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) || (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) || (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) || (keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             return true;
         }
         return super.onKeyUp(keyCode, event);
