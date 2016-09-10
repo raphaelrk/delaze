@@ -1,0 +1,102 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:2:1-50:12
+	package
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:3:5-34
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+uses-sdk
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:5:5-44
+MERGED from [com.android.support:appcompat-v7:21.0.0] C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.0\AndroidManifest.xml:15:5-42
+MERGED from [com.android.support:support-v4:21.0.0] C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\AndroidManifest.xml:15:5-42
+MERGED from [com.android.support:support-v4:21.0.0] C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\AndroidManifest.xml:15:5-42
+	android:targetSdkVersion
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:5:15-41
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml
+uses-feature#0x00020000
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:7:5-9:35
+	android:glEsVersion
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:8:9-41
+	android:required
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:9:9-32
+uses-permission#android.permission.NFC
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:11:5-62
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:11:22-59
+uses-permission#android.permission.VIBRATE
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:12:5-66
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:12:22-63
+application
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:14:5-48:19
+MERGED from [com.android.support:appcompat-v7:21.0.0] C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.0\AndroidManifest.xml:16:5-19
+MERGED from [com.android.support:support-v4:21.0.0] C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\AndroidManifest.xml:16:5-19
+MERGED from [com.android.support:support-v4:21.0.0] C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\AndroidManifest.xml:16:5-19
+	android:label
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:16:9-41
+	android:icon
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:15:9-45
+	android:theme
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:17:9-45
+activity#net.qwuke.unblyopia.MainActivity
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:18:9-27:20
+	android:screenOrientation
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:21:13-56
+	android:label
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:20:13-45
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:19:13-41
+intent-filter#android.intent.action.GAME+android.intent.category.DEFAULT
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:22:13-26:29
+action#android.intent.action.GAME
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:23:17-69
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:23:25-66
+category#android.intent.category.DEFAULT
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:25:17-76
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:25:27-73
+activity#net.qwuke.unblyopia.SplashActivity
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:28:9-31:20
+	android:screenOrientation
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:30:13-49
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:29:13-43
+activity#net.qwuke.unblyopia.MenuActivity
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:32:9-41:20
+	android:screenOrientation
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:34:13-49
+	android:theme
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:35:13-49
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:33:13-41
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:36:13-40:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:37:17-69
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:37:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:39:17-77
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:39:27-74
+service#net.qwuke.unblyopia.MusicService
+ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:43:9-47:19
+	android:enabled
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:45:13-35
+	android:exported
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:46:13-36
+	android:name
+		ADDED from C:\Users\Aliaksei\AndroidStudioProjects\delaze\Unblyopia\app\src\main\AndroidManifest.xml:44:13-41
