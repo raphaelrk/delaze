@@ -23,11 +23,6 @@ public class MusicService extends Service {
         mPlayer = new CarefulMediaPlayer(mediaPlayer, this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     // =========================
     // Player methods
     // =========================
@@ -47,7 +42,7 @@ public class MusicService extends Service {
      * Class for clients to access. Because we know this service always runs in
      * the same process as its clients, we don't need to deal with IPC.
      */
-    public class LocalBinder extends Binder {
+    private class LocalBinder extends Binder {
         MusicService getService() {
             return MusicService.this;
         }

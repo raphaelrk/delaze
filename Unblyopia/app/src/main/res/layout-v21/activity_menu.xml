@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.qwuke.unblyopia.MenuActivity"
+    style="@style/Theme.MyTheme">
+     
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="1">-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+         
+        android:transitionName="actionBar"/>
+    <Button
+        android:id="@+id/button_tetris"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         
+        android:text="@string/action_play"
+        android:onClick="playTetris"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="?android:attr/colorAccent"
+        android:elevation="10dp"/>
+</RelativeLayout>
+

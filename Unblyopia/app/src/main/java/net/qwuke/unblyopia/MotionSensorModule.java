@@ -5,8 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.FloatMath;
-import android.view.ViewParent;
 
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 
@@ -28,31 +26,26 @@ public class MotionSensorModule implements SensorEventListener {
      * floats are used because the sensor returns a float[]
      */
     private float[] mValues;
-    private float[] mHeadMatrix;
-    private float[] mHeadQuat;
-    private float[] mHeadAngles;
-    private float[] mQuatAngles;
-    // these values control how receptive acceleration/velocity averages are to change
-    private final float gravAlpha = 0.8f; // how much old gravity values stay
+    private final float[] mHeadMatrix;
+    private final float[] mHeadQuat;
+    private final float[] mHeadAngles;
+    private final float[] mQuatAngles;
     private final float velAlpha = 0.8f; // how much old velocity average values stay
 
     // these arrays store the current acceleration/velocity readings
-    private static float[] currentAcceleration = {0, 0, 0};
-    private static float[] velocity = {0, 0, 0};
+    private static final float[] currentAcceleration = {0, 0, 0};
+    private static final float[] velocity = {0, 0, 0};
     private static float[] headAngles = {0, 0, 0};
     private static float[] quatAngles = {0, 0, 0};
     private static float[] headValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     // these arrays store averages of the acceleration/velocity readings
-    private static float[] gravity = {0, 0, 0}; // "gravity" really means average acceleration
-    private static float[] velocityAverage = {0, 0, 0};
+    private static final float[] gravity = {0, 0, 0}; // "gravity" really means average acceleration
+    private static final float[] velocityAverage = {0, 0, 0};
 
     public float minYV = 0, maxYV = 0;
 
-    // used as the 't' in 'Vf = Vo * at'
-    private Date lastUpdate;
-
-    public MotionSensorModule(SensorManager sm, HeadTracker ht, Activity mainActivity) {
+    public MotionSensorModule(SensorManager sm, HeadTracker ht) {
         mSensorManager = sm;
         mHeadTracker = ht;
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -63,7 +56,7 @@ public class MotionSensorModule implements SensorEventListener {
         mQuatAngles = new float[3];
         register();
 
-        lastUpdate = new Date(System.currentTimeMillis());
+        Date lastUpdate = new Date(System.currentTimeMillis());
     }
 
     // called on its own every couple accelerometer readings (
@@ -71,9 +64,9 @@ public class MotionSensorModule implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         mValues = event.values;
         mHeadTracker.getLastHeadView(mHeadMatrix, 0);
-        getQuaternion(mHeadMatrix, mHeadQuat, 0);
+        getQuaternion(mHeadMatrix, mHeadQuat);
         setQuatAngles(mHeadQuat,mQuatAngles);
-        getEulerAngles(mHeadMatrix, mHeadAngles, 0);
+        getEulerAngles(mHeadMatrix, mHeadAngles);
         /*
         In this example, alpha is calculated as t / (t + dT),
         where t is the low-pass filter's time-constant and
@@ -84,6 +77,7 @@ public class MotionSensorModule implements SensorEventListener {
         // all this does is calculate the average acceleration and remove it
         // accelaverage.x = 0.8 * accelaverage.x + 0.2 * newaccel.x
         for(int i = 0; i < 10; i++) {
+            float gravAlpha = 0.8f;
             gravity[0] = gravAlpha * gravity[0] + (1 - gravAlpha) * mValues[0];
             gravity[1] = gravAlpha * gravity[1] + (1 - gravAlpha) * mValues[1];
             gravity[2] = gravAlpha * gravity[2] + (1 - gravAlpha) * mValues[2];
@@ -105,13 +99,12 @@ public class MotionSensorModule implements SensorEventListener {
         float b = (float) (Math.floor(Math.abs(a) * round)) / round;
         return b * Math.signum(a);
     }
-    public void getQuaternion(float[] headMatrix, float[] quaternion, int offset) {
-        if (offset + 4 > quaternion.length) {
+    private void getQuaternion(float[] headMatrix, float[] quaternion) {
+        if (4 > quaternion.length) {
             throw new IllegalArgumentException(
                     "Not enough space to write the result");
         }
-        float[] m = headMatrix;
-        float t = m[0] + m[5] + m[10];
+        float t = headMatrix[0] + headMatrix[5] + headMatrix[10];
         float x;
         float y;
         float z;
@@ -121,55 +114,51 @@ public class MotionSensorModule implements SensorEventListener {
             s = (float) Math.sqrt(t + 1.0F);
             w = 0.5F * s;
             s = 0.5F / s;
-            x = (m[9] - m[6]) * s;
-            y = (m[2] - m[8]) * s;
-            z = (m[4] - m[1]) * s;
+            x = (headMatrix[9] - headMatrix[6]) * s;
+            y = (headMatrix[2] - headMatrix[8]) * s;
+            z = (headMatrix[4] - headMatrix[1]) * s;
         } else {
-            if ((m[0] > m[5]) && (m[0] > m[10])) {
-                s = (float) Math.sqrt(1.0F + m[0] - m[5] - m[10]);
+            if ((headMatrix[0] > headMatrix[5]) && (headMatrix[0] > headMatrix[10])) {
+                s = (float) Math.sqrt(1.0F + headMatrix[0] - headMatrix[5] - headMatrix[10]);
                 x = s * 0.5F;
                 s = 0.5F / s;
-                y = (m[4] + m[1]) * s;
-                z = (m[2] + m[8]) * s;
-                w = (m[9] - m[6]) * s;
+                y = (headMatrix[4] + headMatrix[1]) * s;
+                z = (headMatrix[2] + headMatrix[8]) * s;
+                w = (headMatrix[9] - headMatrix[6]) * s;
             } else {
-                if (m[5] > m[10]) {
-                    s = (float) Math.sqrt(1.0F + m[5] - m[0] - m[10]);
+                if (headMatrix[5] > headMatrix[10]) {
+                    s = (float) Math.sqrt(1.0F + headMatrix[5] - headMatrix[0] - headMatrix[10]);
                     y = s * 0.5F;
                     s = 0.5F / s;
-                    x = (m[4] + m[1]) * s;
-                    z = (m[9] + m[6]) * s;
-                    w = (m[2] - m[8]) * s;
+                    x = (headMatrix[4] + headMatrix[1]) * s;
+                    z = (headMatrix[9] + headMatrix[6]) * s;
+                    w = (headMatrix[2] - headMatrix[8]) * s;
                 } else {
-                    s = (float) Math.sqrt(1.0F + m[10] - m[0] - m[5]);
+                    s = (float) Math.sqrt(1.0F + headMatrix[10] - headMatrix[0] - headMatrix[5]);
                     z = s * 0.5F;
                     s = 0.5F / s;
-                    x = (m[2] + m[8]) * s;
-                    y = (m[9] + m[6]) * s;
-                    w = (m[4] - m[1]) * s;
+                    x = (headMatrix[2] + headMatrix[8]) * s;
+                    y = (headMatrix[9] + headMatrix[6]) * s;
+                    w = (headMatrix[4] - headMatrix[1]) * s;
                 }
             }
         }
-        quaternion[(offset + 0)] = x;
-        quaternion[(offset + 1)] = y;
-        quaternion[(offset + 2)] = z;
-        quaternion[(offset + 3)] = w;
+        quaternion[(0)] = x;
+        quaternion[(1)] = y;
+        quaternion[(2)] = z;
+        quaternion[(3)] = w;
     }
-    public void setQuatAngles(float[] quaternion, float[] quatangles) {
+    private void setQuatAngles(float[] quaternion, float[] quatangles) {
         float yaw;
         float pitch;
         float roll;
         float test = quaternion[0]*quaternion[1] + quaternion[2]*quaternion[3];
         if (test > 0.499) { // singularity at north pole
             yaw = (float) (2 * Math.atan2(quaternion[0],quaternion[3]));
-            pitch = (float) (Math.PI/2);
-            roll = 0;
             return;
         }
         if (test < -0.499) { // singularity at south pole
             yaw = (float) (-2 * Math.atan2(quaternion[0],quaternion[3]));
-            pitch = (float) (- Math.PI/2);
-            roll = 0;
             return;
         }
         double sqx = quaternion[0]*quaternion[0];
@@ -182,8 +171,8 @@ public class MotionSensorModule implements SensorEventListener {
         quatangles[1] = yaw;
         quatangles[2] = roll;
     }
-    public void getEulerAngles(float[] headMatrix, float[] eulerAngles, int offset) {
-        if (offset + 3 > eulerAngles.length) {
+    private void getEulerAngles(float[] headMatrix, float[] eulerAngles) {
+        if (3 > eulerAngles.length) {
             throw new IllegalArgumentException(
                     "Not enough space to write the result");
         }
@@ -198,9 +187,9 @@ public class MotionSensorModule implements SensorEventListener {
             yaw = 0.0F;
             roll = (float) Math.atan2(headMatrix[1], headMatrix[0]);
         }
-        eulerAngles[(offset + 0)] = (-pitch);
-        eulerAngles[(offset + 1)] = (-yaw);
-        eulerAngles[(offset + 2)] = (-roll);
+        eulerAngles[(0)] = (-pitch);
+        eulerAngles[(1)] = (-yaw);
+        eulerAngles[(2)] = (-roll);
     }
 
     private void updateVelocity() {
@@ -249,7 +238,7 @@ public class MotionSensorModule implements SensorEventListener {
         } */
     }
 
-    public void register() {
+    private void register() {
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 

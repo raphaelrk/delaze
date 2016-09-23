@@ -1,19 +1,9 @@
 package net.qwuke.unblyopia;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Vibrator;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import net.qwuke.unblyopia.TetrisModel.Block;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * I'd recommend looking at this class with all the methods minimized
@@ -35,10 +25,10 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class TetrisView extends View {
 
-    TetrisModel tm;
-    TetrisDrawer td;
+    final TetrisModel tm;
+    private final TetrisDrawer td;
 
-    Boolean isHeadTrackingEnabled;
+    private final Boolean isHeadTrackingEnabled;
 
     /**
      * Main loop
@@ -94,13 +84,14 @@ public class TetrisView extends View {
      * @param context Activity, required of all views
      * @param motionSensorModule accelerometer
      * @param vibrator for vibrating
+     * @param headTracking whether head tracking is enabled
      */
-    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator, Boolean headTracking) {
+    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator, Boolean headTracking, int[] globalColours) {
         super(context);
 
         isHeadTrackingEnabled = headTracking;
 
-        tm = new TetrisModel(motionSensorModule, vibrator);
+        tm = new TetrisModel(motionSensorModule, vibrator, globalColours);
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         td = new TetrisDrawer(wm, tm);
