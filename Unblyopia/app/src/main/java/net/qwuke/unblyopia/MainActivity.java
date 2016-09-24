@@ -32,6 +32,8 @@ public class MainActivity extends CardboardActivity {
     private Boolean isHeadTrackingEnabled;
     private Boolean isBackgroundMusicEnabled;
 
+    private int interLensOffset;
+
     int[] globalColours = new int[3];
 
     //private double[] velocity = new double[3];
@@ -76,6 +78,8 @@ public class MainActivity extends CardboardActivity {
         isHeadTrackingEnabled = prefs.getBoolean("HeadTracking", true);
         isBackgroundMusicEnabled = prefs.getBoolean("BackgroundMusic", true);
 
+        interLensOffset = prefs.getInt("InterLensOffset", 0);
+
         globalColours[0] = prefs.getInt("activeEyeBlockColour", Color.CYAN);
         globalColours[1] = prefs.getInt("bgColour", Color.LTGRAY);
         globalColours[2] = prefs.getInt("fallenColour", Color.BLUE);
@@ -101,7 +105,7 @@ public class MainActivity extends CardboardActivity {
         }
         Vibrator mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
 
-        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator, isHeadTrackingEnabled, globalColours);
+        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator, isHeadTrackingEnabled, globalColours, interLensOffset);
         mTetrisView.setBackgroundColor(Color.BLACK);
         setContentView(mTetrisView);
     }

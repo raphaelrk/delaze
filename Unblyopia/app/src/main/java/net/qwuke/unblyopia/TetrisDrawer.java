@@ -26,6 +26,7 @@ class TetrisDrawer {
     private final int height;
     private final int blockSize;
     private final int xSideOffset;
+    private final int interLensOffset;
     private final int vertPadding;
 
 
@@ -48,7 +49,7 @@ class TetrisDrawer {
                     currCanvas.drawRect(xSideOffset + getX(c), getY(r) + vertPadding, xSideOffset + getX(c) + blockSize, getY(r) + blockSize + vertPadding, paint);
 
                     paint.setColor(TetrisModel.fallenColour);
-                    currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
+                    currCanvas.drawRect(xSideOffset + getX(c) + width/2 + interLensOffset, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2 + interLensOffset, getY(r) + blockSize + vertPadding, paint);
                 }
             }
         }
@@ -70,11 +71,11 @@ class TetrisDrawer {
 
                 // clear active right block
                 paint.setColor(TetrisModel.bgColor);
-                currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
+                currCanvas.drawRect(xSideOffset + getX(c) + width/2 + interLensOffset, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2 + interLensOffset, getY(r) + blockSize + vertPadding, paint);
 
                 // draw active right block
                 paint.setColor(blockColours[1]);
-                currCanvas.drawRect(xSideOffset + getX(c) + width/2, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2, getY(r) + blockSize + vertPadding, paint);
+                currCanvas.drawRect(xSideOffset + getX(c) + width/2 + interLensOffset, getY(r) + vertPadding, xSideOffset + getX(c) + blockSize + width/2 + interLensOffset, getY(r) + blockSize + vertPadding, paint);
             }
         }
     }
@@ -85,7 +86,7 @@ class TetrisDrawer {
     public void eraseShapes() {
         paint.setColor(TetrisModel.bgColor);
         currCanvas.drawRect(xSideOffset, vertPadding, xSideOffset + blockSize* TetrisModel.levelwidth, height - vertPadding, paint);
-        currCanvas.drawRect(xSideOffset + width/2, vertPadding, xSideOffset + blockSize* TetrisModel.levelwidth + width/2, height - vertPadding, paint);
+        currCanvas.drawRect(xSideOffset + width/2 + interLensOffset, vertPadding, xSideOffset + interLensOffset + blockSize* TetrisModel.levelwidth + width/2, height - vertPadding, paint);
     }
     
     /**
@@ -95,9 +96,9 @@ class TetrisDrawer {
         paint.setColor(Color.WHITE);
         paint.setTextSize(blockSize);
         currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48, vertPadding, paint);
-        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2, vertPadding, paint);
+        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2 + interLensOffset, vertPadding, paint);
         currCanvas.drawText("SPEED: " + tm.updateSpeed, xSideOffset + width/48, height - vertPadding + blockSize, paint);
-        currCanvas.drawText("SPEED: " + tm.updateSpeed, xSideOffset + width/48 + width/2, height - vertPadding + blockSize, paint);
+        currCanvas.drawText("SPEED: " + tm.updateSpeed, xSideOffset + width/48 + width/2 + interLensOffset, height - vertPadding + blockSize, paint);
     }
 
     /**
@@ -229,16 +230,16 @@ class TetrisDrawer {
 
         paint.setTextSize(blockSize);
         currCanvas.drawText("GAME OVER", xSideOffset + width/48, vertPadding + height/16, paint);
-        currCanvas.drawText("GAME OVER", xSideOffset + width/48 + width/2, vertPadding + height/16, paint);
+        currCanvas.drawText("GAME OVER", xSideOffset + width/48 + width/2 + interLensOffset, vertPadding + height/16, paint);
 
         currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48, vertPadding + height/16*2, paint);
-        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2, vertPadding + height/16*2, paint);
+        currCanvas.drawText("SCORE: " + tm.score, xSideOffset + width/48 + width/2 + interLensOffset, vertPadding + height/16*2, paint);
 
         currCanvas.drawText("Lines Cleared: " + tm.linesCleared, xSideOffset + width/48, vertPadding + height/16*3, paint);
-        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, xSideOffset + width/48 + width/2, vertPadding + height/16*3, paint);
+        currCanvas.drawText("Lines Cleared: " + tm.linesCleared, xSideOffset + width/48 + width/2 + interLensOffset, vertPadding + height/16*3, paint);
 
         currCanvas.drawText("Act to restart", xSideOffset + width/48, vertPadding + height/16*4, paint);
-        currCanvas.drawText("Act to restart", xSideOffset + width/48 + width/2, vertPadding + height/16*4, paint);
+        currCanvas.drawText("Act to restart", xSideOffset + width/48 + width/2 + interLensOffset, vertPadding + height/16*4, paint);
     }
 
 
@@ -258,16 +259,16 @@ class TetrisDrawer {
         paint.setColor(Color.WHITE);
         paint.setTextSize(36);
         currCanvas.drawText("Delaze", 135.0f/400*width/2, 180.0f/400*height, paint);
-        currCanvas.drawText("Delaze", 135.0f/400*width/2 + width/2.0f, 180.0f/400*height, paint);
+        currCanvas.drawText("Delaze", 135.0f/400*width/2 + width/2.0f + interLensOffset, 180.0f/400*height, paint);
 
         // Regular mode
         fill(255, 213, 0);
         currCanvas.drawRect(114.0f/400*width/2, 167.0f/400*height, (114 + 182)/400.0f*width/2, (167 + 41)/400.0f*height, paint);
-        currCanvas.drawRect(114.0f/400*width/2+width/2.0f, 0, (114 + 182)/400.0f*width/2+width/2.0f, (167 + 41)/400.0f*height, paint);
+        currCanvas.drawRect(114.0f/400*width/2+width/2.0f + interLensOffset, 0, (114 + 182)/400.0f*width/2+width/2.0f + interLensOffset, (167 + 41)/400.0f*height, paint);
         paint.setTextSize(24);
         paint.setColor(Color.CYAN);
         currCanvas.drawText("Click to begin", 127.0f/400*width/2, 220.0f/400*height, paint);
-        currCanvas.drawText("Click to begin", 127.0f/400*width/2+width/2.0f, 220.0f/400*height, paint);
+        currCanvas.drawText("Click to begin", 127.0f/400*width/2+width/2.0f + interLensOffset, 220.0f/400*height, paint);
     }
 
 
@@ -287,7 +288,7 @@ class TetrisDrawer {
     }
      */
 
-    public TetrisDrawer(WindowManager wm, TetrisModel tm) {
+    public TetrisDrawer(WindowManager wm, TetrisModel tm, int offset) {
         this.tm = tm;
 
         // get screen width and height
@@ -301,6 +302,7 @@ class TetrisDrawer {
         vertPadding = height/4;
         blockSize = (height - 2*vertPadding) / 20;
         xSideOffset = width/4 - blockSize* TetrisModel.levelwidth /2;
+        interLensOffset = offset;
     }
 
     public void setCanvas(Canvas c) {

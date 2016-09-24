@@ -15,12 +15,15 @@ import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
+
+import static android.text.InputType.TYPE_CLASS_NUMBER;
 
 public class MenuActivity extends ActionBarActivity {
     private SharedPreferences prefs;
@@ -90,6 +93,12 @@ public class MenuActivity extends ActionBarActivity {
         musicSwitch.setChecked(prefs.getBoolean("BackgroundMusic", true));
         layout.addView(musicSwitch);
 
+        final EditText interLensOffsetEntry = new EditText(this);
+        interLensOffsetEntry.setHint("Inter Lens Offset");
+        interLensOffsetEntry.setInputType(TYPE_CLASS_NUMBER);
+        interLensOffsetEntry.setText(Integer.toString(prefs.getInt("InterLensOffset", 0)));
+        layout.addView(interLensOffsetEntry);
+
         final Button activeColourButt = new Button(this);
         activeColourButt.setText("Select Active Block Colour");
         activeColourButt.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +141,7 @@ public class MenuActivity extends ActionBarActivity {
 
                 editor.putBoolean("HeadTracking", headTrackSwitch.isChecked());
                 editor.putBoolean("BackgroundMusic", musicSwitch.isChecked());
+                editor.putInt("InterLensOffset", Integer.parseInt(interLensOffsetEntry.getText().toString()));
 
                 editor.commit();
             }

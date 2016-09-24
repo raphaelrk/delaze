@@ -86,7 +86,7 @@ public class TetrisView extends View {
      * @param vibrator for vibrating
      * @param headTracking whether head tracking is enabled
      */
-    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator, Boolean headTracking, int[] globalColours) {
+    public TetrisView(Context context, MotionSensorModule motionSensorModule, Vibrator vibrator, Boolean headTracking, int[] globalColours, int interLensOffset) {
         super(context);
 
         isHeadTrackingEnabled = headTracking;
@@ -94,6 +94,6 @@ public class TetrisView extends View {
         tm = new TetrisModel(motionSensorModule, vibrator, globalColours);
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        td = new TetrisDrawer(wm, tm);
+        td = new TetrisDrawer(wm, tm, interLensOffset);
     }
 }
