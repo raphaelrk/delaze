@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
@@ -22,12 +21,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
-import yuku.ambilwarna.AmbilWarnaSquare;
-import yuku.ambilwarna.widget.AmbilWarnaPreference;
 
-import static net.qwuke.unblyopia.TetrisModel.fallenColour;
-
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends ActionBarActivity {
     private SharedPreferences prefs;
 
     @Override
