@@ -1,6 +1,7 @@
 package net.qwuke.unblyopia;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Vibrator;
 import android.util.Log;
 
@@ -15,15 +16,15 @@ public class TetrisModel {
     private long lastTimeMillis = 0;
 
     private Canvas currCanvas = null;
-    public MotionSensorModule motionSensor;
-    private Vibrator vibrator;
+    private final MotionSensorModule motionSensor;
+    private final Vibrator vibrator;
 
     // colors
-    public float initYaw;
-    public float initPitch;
-    public static int activeEyeBlockColor = 0xff000000; //0xff818CC7; // light blue
-    public static int rightEyeBlockColor = 0x11000000; //0xff182461; // dark blue
-    public static int bgColor = 0xff101B52; // darker blue
+    private float initYaw;
+    private float initPitch;
+    private static int activeEyeBlockColor; //0xff182461; // dark blue
+    public static int bgColor; //0xff101B52; // darker blue
+    public static int fallenColour; //= 0xff818CCD;
 
     // used in keyPress method
     public enum Input {
@@ -35,15 +36,15 @@ public class TetrisModel {
     //int borderX = 200;
     public int[] row = {0, 0, 1, 1};
     public int[] col = {5, 4, 5, 4};
-    public int levelwidth = 10;
-    public int levelheight = 20;
-    public int[] blockArray = new int[levelwidth * levelheight];
+    private int[] colours = new int[4];
+    public static final int levelwidth = 10;
+    public static final int levelheight = 20;
+    private int[] blockArray = new int[levelwidth * levelheight];
     public int time = 0;
     public int score = 0;
-    public int inputSpeed = 0;
-    public int baseSpeed = 20;
+    private int inputSpeed = 0;
+    private int baseSpeed = 20;
     public int updateSpeed = 20;
-    public int level = 1;
     public int linesCleared = 0;
 
     public enum Block {
@@ -81,8 +82,8 @@ public class TetrisModel {
     private int currentBlockRotation = 0;//0, 90, 180, 270
     //this is how many degrees
     //clockwise it is
-    public int currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
-    public int nextBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
+    private int currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
+    private int nextBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
     public Block nextBlockType = Block.getRandomBlock();
 
     /** Game state **/
@@ -101,36 +102,39 @@ public class TetrisModel {
     /**  Input time constants
      * Ensures that buttons aren't clicked too quickly on accident
      **/
-    private int defaultLagTime = 200;
-    private int lagChange = 150; // used for holding a button
+    private final int defaultLagTime = 400;
     private int leftLag  = defaultLagTime; // aka at least .2 seconds between lefts
     private int rightLag = defaultLagTime;
     private int upLag    = defaultLagTime * 2;
     private long lastLeftPressTime = 0;
     private long lastRightPressTime = 0;
     private long lastUpPressTime = 0;
-    private long lastPausePressTime = 0;
 
     /**
      * Resets all variables so that the
      * game can start anew
      */
-    public void reset() {
+    private void reset() {
         row = new int[]{0, 0, 1, 1};
         col = new int[]{5, 4, 5, 4};
         blockArray = new int[levelwidth * levelheight];
+        colours = new int[4];
         time = 0;
         score = 0;
         baseSpeed=20;
         inputSpeed=0;
         updateSpeed = 20;
-        level = 1;
+        int level = 1;
         linesCleared = 0;
         currentBlockType = Block.SQUARE;
         currentBlockRotation = 0;
         currentBlockColor = (int)(Math.random() * 255 + 255 * 255) + 1;
-        nextBlockColor = 0x000000 + (int)(Math.random() * 255 + 255 * 255) + 1;
+        nextBlockColor = (int) (Math.random() * 255 + 255 * 255) + 1;
         nextBlockType = Block.getRandomBlock();
+
+        for(int i= 0; i < 4;i++){
+            colours[i] = getRandomColour();
+        }
 
         gameState = GameState.IN_GAME;
         // mainMenu = false;
@@ -142,12 +146,13 @@ public class TetrisModel {
         lastLeftPressTime = 0;
         lastRightPressTime = 0;
         lastUpPressTime = 0;
-        lastPausePressTime = 0;
+        long lastPausePressTime = 0;
     }
 
     /** blockArray getter and setter **/
     public int getBlock(int column, int row)             { return blockArray[column + row * levelwidth];  }
-    public void setBlock(int column, int row, int value) { blockArray[column + row * levelwidth] = value; }
+    private void setBlock(int column, int row, int value) { blockArray[column + row * levelwidth] = value; }
+    public int getColour(int index) { return colours[index];}
 
     /**
      * Checks whether the current shape will collide with something if it goes down one row
@@ -178,7 +183,7 @@ public class TetrisModel {
                         break;
                     }
                 }
-                if(selfcollision == false) {
+                if(!selfcollision) {
                     return true;
                 }
             }
@@ -204,7 +209,7 @@ public class TetrisModel {
                         selfcollision = true;
                     }
                 }
-                if(selfcollision == false) {
+                if(!selfcollision) {
                     return true;
                 }
             }
@@ -230,7 +235,7 @@ public class TetrisModel {
                         selfcollision = true;
                     }
                 }
-                if(selfcollision == false) {
+                if(!selfcollision) {
                     return true;
                 }
             }
@@ -268,17 +273,23 @@ public class TetrisModel {
 
         int[] oldrow = {0, 0, 0, 0};
         int[] oldcol = {0, 0, 0, 0};
+        int[] oldColours = {0, 0, 0, 0};
         int[] newrow = {0, 0, 0, 0};
         int[] newcol = {0, 0, 0, 0};
 
         for(int i = 0; i < 4; i++) {
             oldrow[i] = row[i];
             oldcol[i] = col[i];
+            oldColours[i] = colours[i];
         }
 
         if(currentBlockType == Block.SQUARE) { // square
             newrow = row;
             newcol = col;
+            colours[0] = oldColours[3];
+            colours[1] = oldColours[0];
+            colours[2] = oldColours[1];
+            colours[3] = oldColours[2];
         }
         else if(currentBlockType == Block.REGULAR_L) { // normal l
             if(currentBlockRotation == 0) {
@@ -500,9 +511,11 @@ public class TetrisModel {
      * update block based on keypresses
      */
     public void keyPressed(Input input) {
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 4; i++) {
             setBlock(col[i], row[i], 0);
+        }
 
+        int lagChange = 250;
         if (input == Input.LEFT &&  !leftCollision() && System.currentTimeMillis() - lastLeftPressTime > leftLag){ // Left clicked, won't collide, and enough time passed
             lastLeftPressTime = System.currentTimeMillis();
             leftLag -= lagChange; // allows user to hold left to slide left
@@ -552,7 +565,7 @@ public class TetrisModel {
         for(int i = 0; i < 4; i++)
             setBlock(col[i], row[i], currentBlockColor);
     }
-    boolean alreadyExecuted = false;
+    private boolean alreadyExecuted = false;
     public void setInitAngle() {if(!alreadyExecuted) {
         initYaw = motionSensor.getHeadAngles()[1];
         initPitch = motionSensor.getQuatAngles()[2];
@@ -564,9 +577,9 @@ public class TetrisModel {
     public void motionSensorMove() {
         int leftCol = levelwidth;
         int rightCol = -1;
-        for(int i = 0; i < col.length; i++) {
-            if(col[i] < leftCol) leftCol = col[i];
-            if(col[i] > rightCol) rightCol = col[i];
+        for (int aCol : col) {
+            if (aCol < leftCol) leftCol = aCol;
+            if (aCol > rightCol) rightCol = aCol;
         }
         /**
          * track the yaw of your face based on cardboard sdk headtracker - this code is terrible and should be updated
@@ -638,16 +651,12 @@ public class TetrisModel {
      */
     public double map(double value, double istart, double istop, double ostart, double ostop) {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-    };
+    }
 
     /** sets your current block to what was shown and makes a
      * random next block
      */
     private void nextBlock() {
-        // swap colors, might help both eyes train
-        int temp                 = rightEyeBlockColor;
-        rightEyeBlockColor = activeEyeBlockColor;
-        activeEyeBlockColor  = temp;
 
         if(nextBlockType == Block.SQUARE) { // square
             row = new int[]{0, 0, 1, 1};
@@ -688,6 +697,9 @@ public class TetrisModel {
         currentBlockRotation = 0;
         nextBlockColor = (int) Math.floor(Math.random() * 255 + 255 * 255) + 1;
         nextBlockType = Block.getRandomBlock();
+        for(int i = 0; i < colours.length; i++){
+            colours[i] = getRandomColour();
+        }
     }
 
     /** move block down and check block under
@@ -711,7 +723,7 @@ public class TetrisModel {
         }
 
         for(int i = 0; i < 4; i++)
-            setBlock(col[i], row[i], currentBlockColor);
+            setBlock(col[i], row[i], colours[i]);
     }
 
     /**
@@ -744,7 +756,7 @@ public class TetrisModel {
             }
             // if a row is filled move everything above it down
             // else check the next row up
-            if(filled == true) {
+            if(filled) {
                 linesCleared++;
 
                 // move the lines down
@@ -761,7 +773,7 @@ public class TetrisModel {
                 score += 100;
 
                 // only reset your block once
-                if(posReset == false) {
+                if(!posReset) {
                     nextBlock();
                     posReset = true;
                 }
@@ -774,15 +786,22 @@ public class TetrisModel {
         }
     }
 
-    /**
-     * Called when a key is released
-     * Not added yet
-     * This is where the pause button pausing would be called
-     */
-    private void keyReleased() {
-        //if(keyCode == 80) {
-        //    paused = !paused;
-        //}
+    private int getRandomColour(){
+        if(Math.random() > 0.5){
+            return bgColor;
+        }else{
+            return activeEyeBlockColor;
+        }
+    }
+
+    public int[] getBlockColours(int index){
+        int[] blockColours;
+        if(colours[index] == bgColor){
+            blockColours = new int[]{bgColor, activeEyeBlockColor};
+        }else{
+            blockColours = new int[]{activeEyeBlockColor, bgColor};
+        }
+        return blockColours;
     }
 
     /**
@@ -819,12 +838,22 @@ public class TetrisModel {
      *
      * @param motionSensorModule accelerometer
      * @param vibrator for vibrating
+     * @param globalColours globally used colours
      */
-    public TetrisModel(MotionSensorModule motionSensorModule, Vibrator vibrator) {
+    public TetrisModel(MotionSensorModule motionSensorModule, Vibrator vibrator, int[] globalColours) {
         // accelerometer for detecting movement of the device
         motionSensor = motionSensorModule;
 
         this.vibrator = vibrator;
+
+        //assign global colours
+        activeEyeBlockColor = globalColours[0];
+        bgColor = globalColours[1];
+        fallenColour = globalColours[2];
+
+        for(int i = 0; i < colours.length;i++){
+            colours[i] = getRandomColour();
+        }
 
         for(int r = 0; r < levelwidth; r++) {
             for(int c = 0; c < levelheight; c++) {

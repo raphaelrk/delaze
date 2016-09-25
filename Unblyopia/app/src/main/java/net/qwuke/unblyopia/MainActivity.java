@@ -1,16 +1,12 @@
 package net.qwuke.unblyopia;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 
 
 import android.content.Context;
@@ -20,6 +16,8 @@ import android.view.MotionEvent;
 import com.google.vrtoolkit.cardboard.*;
 import com.google.vrtoolkit.cardboard.sensors.*;
 
+import static java.util.logging.Logger.global;
+
 
 public class MainActivity extends CardboardActivity {
     public static final String TAG = "net.qwuke.unblyopia";
@@ -27,21 +25,25 @@ public class MainActivity extends CardboardActivity {
     // Views
     private TetrisView mTetrisView;
 
-    // Interfacing- sensors, buttons, etc.
-    private Vibrator mVibrator;
-    private SensorManager mSensorManager;
     //private Sensor mAccelerometer;
     private HeadTracker mHeadTracker;
     private MotionSensorModule mMotionSensorModule;
+
+    private Boolean isHeadTrackingEnabled;
+    private Boolean isBackgroundMusicEnabled;
+
+    private int interLensOffset;
+
+    int[] globalColours = new int[3];
 
     //private double[] velocity = new double[3];
     //private double[] accel_offset = new double[3];
     //private boolean accel_offset_set = false;
 
-    BackgroundSound mBackgroundSound;
+    private BackgroundSound mBackgroundSound;
 
     public class BackgroundSound extends AsyncTask<Void, Void, Void> {
-        protected MediaPlayer player;
+        final MediaPlayer player;
 
         public BackgroundSound() {
             player = MediaPlayer.create(MainActivity.this, R.raw.tetris);
@@ -68,20 +70,42 @@ public class MainActivity extends CardboardActivity {
     }
 
     /******   OVERRIDDEN ACTIVITY METHODS   ******/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getPackageName(), MODE_PRIVATE);
+
+        isHeadTrackingEnabled = prefs.getBoolean("HeadTracking", true);
+        isBackgroundMusicEnabled = prefs.getBoolean("BackgroundMusic", true);
+
+        interLensOffset = prefs.getInt("InterLensOffset", 0);
+
+        globalColours[0] = prefs.getInt("activeEyeBlockColour", Color.CYAN);
+        globalColours[1] = prefs.getInt("bgColour", Color.LTGRAY);
+        globalColours[2] = prefs.getInt("fallenColour", Color.BLUE);
+
+        if(isHeadTrackingEnabled) {
+            mHeadTracker = new HeadTracker(this);
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         //setContentView(R.layout.activity_main);
 
-        mBackgroundSound = new BackgroundSound();
-        mBackgroundSound.doInBackground();
-        mHeadTracker.startTracking();
-        mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mMotionSensorModule = new MotionSensorModule(mSensorManager, mHeadTracker, this);
+        if(isBackgroundMusicEnabled) {
+            mBackgroundSound = new BackgroundSound();
+            mBackgroundSound.doInBackground();
+        }
+        if(isHeadTrackingEnabled) {
+            mHeadTracker.startTracking();
+            SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mMotionSensorModule = new MotionSensorModule(mSensorManager, mHeadTracker);
+        }
+        Vibrator mVibrator = ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE));
 
-        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator);
+        mTetrisView = new TetrisView(this, mMotionSensorModule, mVibrator, isHeadTrackingEnabled, globalColours, interLensOffset);
         mTetrisView.setBackgroundColor(Color.BLACK);
         setContentView(mTetrisView);
     }
@@ -89,9 +113,14 @@ public class MainActivity extends CardboardActivity {
     @Override
     public void onPause() {
         super.onPause();
-        mHeadTracker.stopTracking();
-        mBackgroundSound.pausePlayer();
-        mMotionSensorModule.unregister();
+        if (mHeadTracker != null) {
+            mHeadTracker.stopTracking();
+            mMotionSensorModule.unregister();
+        }
+        if (mBackgroundSound != null) {
+            mBackgroundSound.pausePlayer();
+        }
+
     }
 
     /******   INTERFACING: Methods for triggers, buttons, sensors   ******/
@@ -143,18 +172,7 @@ public class MainActivity extends CardboardActivity {
      */
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
+        return (keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) || super.onKeyUp(keyCode, event);
     }
 
-    /******   UNCHANGED INTERFACE METHODS   ******/
-
-
-    @Override
-    public void onStart() { super.onStart(); }
-    public void onStop() { super.onStop(); }
-    public void onDestroy() { super.onDestroy(); }
-    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mHeadTracker = new HeadTracker(this);}
 }
